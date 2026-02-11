@@ -1,0 +1,985 @@
+import { useEffect, useState } from 'react'
+import './App.css'
+import questions from './questions.json'
+import { supabase } from './supabaseClient'
+import Profile from './components/Profile'
+import Leaderboard from './components/Leaderboard'
+
+const TEST_DURATION_SECONDS = 90 * 60
+const QUESTION_COUNT = 45
+
+const questionBank = questions
+
+const shuffle = (items) => {
+  const array = [...items]
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+  return array
+}
+
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+}
+
+function App() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [authError, setAuthError] = useState('')
+  
+  const [started, setStarted] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(TEST_DURATION_SECONDS)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [answers, setAnswers] = useState({})
+  const [submitted, setSubmitted] = useState(false)
+  const [name, setName] = useState('')
+  const [resultFilter, setResultFilter] = useState('all') // 'all', 'wrong', 'correct'
+  const [expandedQuestion, setExpandedQuestion] = useState(null)
+  const [testStartTime, setTestStartTime] = useState(null)
+  const [savingResult, setSavingResult] = useState(false)
+  const [activeTab, setActiveTab] = useState('home') // 'home', 'profile', 'leaderboard'
+  const [userStats, setUserStats] = useState(null)
+  const [testHistory, setTestHistory] = useState([])
+  const [leaderboard, setLeaderboard] = useState([])
+  const [loadingStats, setLoadingStats] = useState(false)
+  const [selectedPdf, setSelectedPdf] = useState(null)
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode')
+    return saved === 'true'
+  })
+
+  const totalQuestions = Math.min(QUESTION_COUNT, questionBank.length)
+
+  const [selectedQuestions, setSelectedQuestions] = useState([])
+
+  // Dark mode effect
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    } else {
+      document.documentElement.removeAttribute('data-theme')
+    }
+    localStorage.setItem('darkMode', darkMode)
+  }, [darkMode])
+
+  const toggleDarkMode = () => {
+    setDarkMode(prev => !prev)
+  }
+
+  // Check for existing session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  // Fetch user stats and test history
+  useEffect(() => {
+    if (!user) return
+
+    const fetchUserData = async () => {
+      setLoadingStats(true)
+      try {
+        // Fetch user stats
+        const { data: stats } = await supabase
+          .from('user_stats')
+          .select('*')
+          .eq('user_id', user.id)
+          .single()
+
+        setUserStats(stats)
+
+        // Fetch test history
+        const { data: history } = await supabase
+          .from('test_results')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+
+        setTestHistory(history || [])
+
+        // Fetch leaderboard
+        const { data: leaderboardData } = await supabase
+          .from('leaderboard')
+          .select('*')
+          .limit(50)
+
+        setLeaderboard(leaderboardData || [])
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoadingStats(false)
+      }
+    }
+
+    fetchUserData()
+  }, [user, submitted])
+
+  // Fetch user stats and test history
+  useEffect(() => {
+    if (!user) return
+
+    const fetchUserData = async () => {
+      setLoadingStats(true)
+      try {
+        // Fetch user stats
+        const { data: stats } = await supabase
+          .from('user_stats')
+          .select('*')
+          .eq('user_id', user.id)
+          .single()
+
+        setUserStats(stats)
+
+        // Fetch test history
+        const { data: history } = await supabase
+          .from('test_results')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+
+        setTestHistory(history || [])
+
+        // Fetch leaderboard
+        const { data: leaderboardData } = await supabase
+          .from('leaderboard')
+          .select('*')
+          .limit(50)
+
+        setLeaderboard(leaderboardData || [])
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoadingStats(false)
+      }
+    }
+
+    fetchUserData()
+  }, [user, submitted])
+
+  useEffect(() => {
+    if (!started || submitted) return undefined
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          setSubmitted(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [started, submitted])
+
+  const startTest = () => {
+    if (!user) return
+    const randomSelection = shuffle(questionBank).slice(0, totalQuestions)
+    setSelectedQuestions(randomSelection)
+    setAnswers({})
+    setCurrentIndex(0)
+    setTimeLeft(TEST_DURATION_SECONDS)
+    setSubmitted(false)
+    setStarted(true)
+    setTestStartTime(Date.now())
+  }
+
+  const handleSelect = (questionId, optionIndex, isMulti) => {
+    if (isMulti) {
+      setAnswers((prev) => {
+        const existing = prev[questionId] || []
+        const next = existing.includes(optionIndex)
+          ? existing.filter((value) => value !== optionIndex)
+          : [...existing, optionIndex]
+        return {
+          ...prev,
+          [questionId]: next,
+        }
+      })
+      return
+    }
+
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionIndex,
+    }))
+  }
+
+  const handleSubmit = async () => {
+    setSubmitted(true)
+    setSavingResult(true)
+
+    try {
+      const timeTakenSeconds = Math.floor((Date.now() - testStartTime) / 1000)
+      const testScore = selectedQuestions.reduce((total, question) => {
+        if (question.multiSelect && Array.isArray(question.correctIndices)) {
+          const selected = Array.isArray(answers[question.id])
+            ? answers[question.id]
+            : []
+          const correct = question.correctIndices
+          const isCorrect =
+            selected.length === correct.length &&
+            selected.every((value) => correct.includes(value))
+          return isCorrect ? total + 1 : total
+        }
+        return answers[question.id] === question.correctIndex ? total + 1 : total
+      }, 0)
+
+      const { error } = await supabase.from('test_results').insert({
+        user_id: user.id,
+        test_name: 'Databricks Certified Associate Data Engineer Test',
+        score: testScore,
+        total_questions: selectedQuestions.length,
+        time_taken_seconds: timeTakenSeconds,
+        answers: answers,
+        questions: selectedQuestions.map(q => ({
+          id: q.id,
+          question: q.question,
+          options: q.options,
+          correctIndex: q.correctIndex,
+          code: q.code || null
+        }))
+      })
+
+      if (error) {
+        console.error('Error saving test result:', error)
+      }
+    } catch (error) {
+      console.error('Error saving test result:', error)
+    } finally {
+      setSavingResult(false)
+    }
+  }
+
+  const handleRestart = () => {
+    setStarted(false)
+    setSubmitted(false)
+    setAnswers({})
+    setSelectedQuestions([])
+    setTimeLeft(TEST_DURATION_SECONDS)
+    setCurrentIndex(0)
+    setTestStartTime(null)
+  }
+
+  const handleAuth = async (e) => {
+    e.preventDefault()
+    setAuthError('')
+
+    try {
+      if (isSignUp) {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        })
+        if (error) throw error
+        setAuthError('Check your email for the confirmation link!')
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        if (error) throw error
+      }
+    } catch (error) {
+      setAuthError(error.message)
+    }
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setStarted(false)
+    setSubmitted(false)
+    setAnswers({})
+    setSelectedQuestions([])
+    setName('')
+  }
+
+  const score = submitted
+    ? selectedQuestions.reduce((total, question) => {
+        if (question.multiSelect && Array.isArray(question.correctIndices)) {
+          const selected = Array.isArray(answers[question.id])
+            ? answers[question.id]
+            : []
+          const correct = question.correctIndices
+          const isCorrect =
+            selected.length === correct.length &&
+            selected.every((value) => correct.includes(value))
+          return isCorrect ? total + 1 : total
+        }
+
+        return answers[question.id] === question.correctIndex ? total + 1 : total
+      }, 0)
+    : 0
+
+  const currentQuestion = selectedQuestions[currentIndex]
+  const displayName = user?.email?.split('@')[0] || 'User'
+  const canStart = Boolean(user)
+
+  if (loading) {
+    return (
+      <div className="page">
+        <header className="cf-header">
+          <div className="cf-header__content">
+            <div className="cf-header__left">
+              <h1 className="cf-logo">Mock.sh 🐦</h1>
+            </div>
+          </div>
+        </header>
+        <div className="cf-container">
+          <div className="cf-box">
+            <div className="cf-box__body" style={{ textAlign: 'center', padding: '40px' }}>
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="page">
+        <header className="cf-header">
+          <div className="cf-header__content">
+            <div className="cf-header__left">
+              <div>
+                <h1 className="cf-logo">Mock.sh🐦</h1>
+                <div style={{ fontSize: '0.75rem', opacity: 0.85, marginTop: '2px' }}>
+                  made with love ❤️ by niazi
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="cf-container">
+          <div className="cf-box">
+            <div className="cf-box__header">
+              {isSignUp ? 'Create Account' : 'Login'}
+            </div>
+            <div className="cf-box__body">
+              <form onSubmit={handleAuth}>
+                <div className="cf-form-group">
+                  <label className="cf-label">Email</label>
+                  <input
+                    type="email"
+                    className="cf-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                <div className="cf-form-group">
+                  <label className="cf-label">Password</label>
+                  <input
+                    type="password"
+                    className="cf-input"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    required
+                    minLength={6}
+                  />
+                </div>
+                {authError && (
+                  <div className={`cf-alert ${authError.includes('Check') ? 'cf-alert--success' : 'cf-alert--error'}`}>
+                    {authError}
+                  </div>
+                )}
+                <button type="submit" className="cf-btn cf-btn--primary" style={{ width: '100%' }}>
+                  {isSignUp ? 'Sign Up' : 'Login'}
+                </button>
+                <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                  <button
+                    type="button"
+                    className="cf-link"
+                    onClick={() => {
+                      setIsSignUp(!isSignUp)
+                      setAuthError('')
+                    }}
+                  >
+                    {isSignUp
+                      ? 'Already have an account? Login'
+                      : "Don't have an account? Sign up"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="page">
+      <header className="cf-header">
+        <div className="cf-header__content">
+          <div className="cf-header__left">
+            <h1 className="cf-logo">Mock.sh🐦</h1>
+            {started && <span className="cf-header__subtitle">Testing Mode</span>}
+          </div>
+          {started ? (
+            <div className="cf-header__right">
+              <div className="cf-user">
+                <span className="cf-user__avatar">
+                  {displayName ? displayName[0].toUpperCase() : 'U'}
+                </span>
+                <span className="cf-user__name">{displayName}</span>
+              </div>
+              <div className="cf-timer">
+                <svg className="cf-timer__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm0 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm1 2v4.5l3 1.5-.5 1-3.5-1.75V4h1z"/>
+                </svg>
+                {formatTime(timeLeft)}
+              </div>
+              <button className="cf-theme-toggle" onClick={toggleDarkMode} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+                {darkMode ? '☀️' : '🌙'}
+              </button>
+              <button className="cf-btn cf-btn--secondary" onClick={handleRestart}>
+                End Test
+              </button>
+            </div>
+          ) : (
+            <div className="cf-header__right">
+              <div className="cf-user">
+                <span className="cf-user__avatar">
+                  {user.email ? user.email[0].toUpperCase() : 'U'}
+                </span>
+                <span className="cf-user__name">{user.email}</span>
+              </div>
+              <button className="cf-theme-toggle" onClick={toggleDarkMode} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+                {darkMode ? '☀️' : '🌙'}
+              </button>
+              <button className="cf-btn cf-btn--secondary" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {!started && !submitted && (
+        <nav className="cf-nav">
+          <button
+            className={`cf-nav-tab ${activeTab === 'home' ? 'cf-nav-tab--active' : ''}`}
+            onClick={() => setActiveTab('home')}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+            </svg>
+            Home
+          </button>
+          <button
+            className={`cf-nav-tab ${activeTab === 'profile' ? 'cf-nav-tab--active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+            </svg>
+            Profile
+          </button>
+          <button
+            className={`cf-nav-tab ${activeTab === 'leaderboard' ? 'cf-nav-tab--active' : ''}`}
+            onClick={() => setActiveTab('leaderboard')}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066Z"/>
+            </svg>
+            Leaderboard
+          </button>
+        </nav>
+      )}
+
+      {!started ? (
+        activeTab === 'home' ? (
+        <div className="cf-home-layout">
+          <div className="cf-main-content">
+            <div className="cf-box">
+              <div className="cf-box__header">Test Information</div>
+              <div className="cf-box__body">
+                <table className="cf-table">
+                  <tbody>
+                    <tr>
+                      <td className="cf-table__label">Questions:</td>
+                      <td>{totalQuestions}</td>
+                    </tr>
+                    <tr>
+                      <td className="cf-table__label">Duration:</td>
+                      <td>90 minutes</td>
+                    </tr>
+                    <tr>
+                      <td className="cf-table__label">Total Points:</td>
+                      <td>{totalQuestions}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="cf-box">
+              <div className="cf-box__header" style={{ background: '#1976d2', color: '#ffffff', borderColor: '#1976d2' }}>
+                Databricks Certified Associate Data Engineer Test
+              </div>
+              <div className="cf-box__body">
+                <div style={{ marginBottom: '20px' }}>
+                  <h3 style={{ marginBottom: '12px' }}>Welcome, {displayName}!</h3>
+                  <p style={{ lineHeight: '1.6' }}>
+                    This is a comprehensive assessment covering core data engineering concepts including:
+                  </p>
+                  <ul style={{ lineHeight: '1.8', marginLeft: '20px' }}>
+                    <li>Data architecture and design patterns</li>
+                    <li>ETL/ELT processes and workflows</li>
+                    <li>Data modeling and optimization</li>
+                    <li>Database systems and query performance</li>
+                    <li>Data quality and governance</li>
+                  </ul>
+                </div>
+                <button className="cf-btn cf-btn--primary" onClick={startTest} disabled={!canStart}>
+                  Begin Test
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <aside className="cf-sidebar">
+            <div className="cf-box">
+              <div className="cf-box__header">Study Resources</div>
+              <div className="cf-box__body">
+                <div className="cf-resources">
+                  <div className="cf-resource-item">
+                    <div className="cf-resource-icon">
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="#dc2626">
+                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                      </svg>
+                    </div>
+                    <div className="cf-resource-content">
+                      <div className="cf-resource-title" title="Databricks Associate_Data_Engineer dumps 1.pdf">Databricks Associate Data Engineer Dumps 1</div>
+                      <div className="cf-resource-meta">Practice Questions</div>
+                    </div>
+                    <div className="cf-resource-actions">
+                      <button 
+                        className="cf-resource-btn" 
+                        onClick={() => setSelectedPdf('/Databricks Associate_Data_Engineer dumps 1.pdf')}
+                        title="Preview"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                      </button>
+                      <a 
+                        href="/Databricks Associate_Data_Engineer dumps 1.pdf" 
+                        download
+                        className="cf-resource-btn"
+                        title="Download"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="cf-resource-item">
+                    <div className="cf-resource-icon">
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="#dc2626">
+                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                      </svg>
+                    </div>
+                    <div className="cf-resource-content">
+                      <div className="cf-resource-title" title="Databricks1 .pdf">Databricks 1</div>
+                      <div className="cf-resource-meta">Study Guide</div>
+                    </div>
+                    <div className="cf-resource-actions">
+                      <button 
+                        className="cf-resource-btn" 
+                        onClick={() => setSelectedPdf('/Databricks1 .pdf')}
+                        title="Preview"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                      </button>
+                      <a 
+                        href="/Databricks1 .pdf" 
+                        download
+                        className="cf-resource-btn"
+                        title="Download"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="cf-resource-item">
+                    <div className="cf-resource-icon">
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="#dc2626">
+                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                      </svg>
+                    </div>
+                    <div className="cf-resource-content">
+                      <div className="cf-resource-title" title="databricks_de_associate 1.pdf">Databricks DE Associate 1</div>
+                      <div className="cf-resource-meta">Exam Preparation</div>
+                    </div>
+                    <div className="cf-resource-actions">
+                      <button 
+                        className="cf-resource-btn" 
+                        onClick={() => setSelectedPdf('/databricks_de_associate 1.pdf')}
+                        title="Preview"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                      </button>
+                      <a 
+                        href="/databricks_de_associate 1.pdf" 
+                        download
+                        className="cf-resource-btn"
+                        title="Download"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        ) : activeTab === 'profile' ? (
+          <Profile userStats={userStats} testHistory={testHistory} loadingStats={loadingStats} />
+        ) : (
+          <Leaderboard leaderboard={leaderboard} currentUserId={user?.id} />
+        )
+      ) : submitted ? (
+        <div className="cf-container">
+          <div className="cf-box">
+            <div className="cf-box__header">Final Standings</div>
+            <div className="cf-box__body">
+              <table className="cf-standings">
+                <tbody>
+                  <tr>
+                    <td className="cf-standings__rank">#1</td>
+                    <td className="cf-standings__participant">{displayName}</td>
+                    <td className="cf-standings__score">
+                      <span className="cf-score-value">{score}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="cf-score-summary">
+                <span className="cf-score-label">Total Score:</span>
+                <span className="cf-score-main">{score} / {selectedQuestions.length}</span>
+                <span className="cf-score-percent">({Math.round((score / selectedQuestions.length) * 100)}%)</span>
+              </div>
+            </div>
+          </div>
+          <div className="cf-box">
+            <div className="cf-box__header">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Problem Results</span>
+                <div className="cf-filter">
+                  <button
+                    className={`cf-filter-btn ${resultFilter === 'all' ? 'cf-filter-btn--active' : ''}`}
+                    onClick={() => setResultFilter('all')}
+                  >
+                    All ({selectedQuestions.length})
+                  </button>
+                  <button
+                    className={`cf-filter-btn ${resultFilter === 'wrong' ? 'cf-filter-btn--active' : ''}`}
+                    onClick={() => setResultFilter('wrong')}
+                  >
+                    Wrong ({selectedQuestions.length - score})
+                  </button>
+                  <button
+                    className={`cf-filter-btn ${resultFilter === 'correct' ? 'cf-filter-btn--active' : ''}`}
+                    onClick={() => setResultFilter('correct')}
+                  >
+                    Correct ({score})
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="cf-box__body">
+              <div className="cf-results-list">
+                {selectedQuestions
+                  .filter((question) => {
+                    const userAnswer = answers[question.id]
+                    const isCorrect = userAnswer === question.correctIndex
+                    if (resultFilter === 'wrong') return !isCorrect
+                    if (resultFilter === 'correct') return isCorrect
+                    return true
+                  })
+                  .map((question, index) => {
+                    const userAnswer = answers[question.id]
+                    const isCorrect = userAnswer === question.correctIndex
+                    const isExpanded = expandedQuestion === question.id
+                    const actualIndex = selectedQuestions.indexOf(question)
+                    return (
+                      <div key={question.id} className="cf-result-item">
+                        <div
+                          className="cf-result-item__header"
+                          onClick={() => setExpandedQuestion(isExpanded ? null : question.id)}
+                        >
+                          <div className="cf-result-item__left">
+                            <span className="cf-result-item__number">#{actualIndex + 1}</span>
+                            <span className="cf-result-item__title">{question.question}</span>
+                          </div>
+                          <div className="cf-result-item__right">
+                            <span className={isCorrect ? 'cf-verdict cf-verdict--accepted' : 'cf-verdict cf-verdict--wrong'}>
+                              {isCorrect ? 'Accepted' : 'Wrong Answer'}
+                            </span>
+                            <svg
+                              className={`cf-result-item__icon ${isExpanded ? 'cf-result-item__icon--expanded' : ''}`}
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="currentColor"
+                            >
+                              <path d="M4 6l4 4 4-4z" />
+                            </svg>
+                          </div>
+                        </div>
+                        {isExpanded && (
+                          <div className="cf-result-item__content">
+                            {question.code && (
+                              <pre className="cf-code">
+                                <code>{question.code}</code>
+                              </pre>
+                            )}
+                            <div className="cf-answer-comparison">
+                              <div className="cf-answer-box cf-answer-box--user">
+                                <div className="cf-answer-box__label">
+                                  Your Answer:
+                                </div>
+                                <div className="cf-answer-box__content">
+                                  {userAnswer !== undefined ? (
+                                    <>
+                                      <span className="cf-answer-option">{String.fromCharCode(65 + userAnswer)}</span>
+                                      <span>{question.options[userAnswer]}</span>
+                                    </>
+                                  ) : (
+                                    <span style={{ color: '#999' }}>Not answered</span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className={`cf-answer-box ${isCorrect ? 'cf-answer-box--correct' : 'cf-answer-box--wrong'}`}>
+                                <div className="cf-answer-box__label">
+                                  Correct Answer:
+                                </div>
+                                <div className="cf-answer-box__content">
+                                  <span className="cf-answer-option">{String.fromCharCode(65 + question.correctIndex)}</span>
+                                  <span>{question.options[question.correctIndex]}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="cf-all-options">
+                              <div className="cf-all-options__label">All Options:</div>
+                              {question.options.map((option, idx) => (
+                                <div
+                                  key={idx}
+                                  className={`cf-option-display ${
+                                    idx === question.correctIndex ? 'cf-option-display--correct' : ''
+                                  } ${
+                                    idx === userAnswer && idx !== question.correctIndex ? 'cf-option-display--wrong' : ''
+                                  }`}
+                                >
+                                  <span className="cf-option-display__label">{String.fromCharCode(65 + idx)}</span>
+                                  <span>{option}</span>
+                                  {idx === question.correctIndex && (
+                                    <span className="cf-option-display__badge">✓ Correct</span>
+                                  )}
+                                  {idx === userAnswer && idx !== question.correctIndex && (
+                                    <span className="cf-option-display__badge cf-option-display__badge--wrong">✗ Your choice</span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+          </div>
+          <div className="cf-actions">
+            <button className="cf-btn cf-btn--primary" onClick={startTest}>
+              Virtual Participation Again
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="cf-container">
+          <div className="cf-problem-nav">
+            {selectedQuestions.map((q, idx) => (
+              <button
+                key={q.id}
+                className={`cf-problem-nav__item ${
+                  idx === currentIndex ? 'cf-problem-nav__item--active' : ''
+                } ${
+                  answers[q.id] !== undefined ? 'cf-problem-nav__item--answered' : ''
+                }`}
+                onClick={() => setCurrentIndex(idx)}
+              >
+                {String.fromCharCode(65 + idx)}
+              </button>
+            ))}
+          </div>
+          {currentQuestion ? (
+            <div className="cf-box">
+              <div className="cf-box__header">
+                Problem {String.fromCharCode(65 + currentIndex)}. {currentQuestion.question.substring(0, 50)}{currentQuestion.question.length > 50 ? '...' : ''}
+                {currentQuestion.multiSelect && <span className="cf-badge">Multiple Choice</span>}
+              </div>
+              <div className="cf-box__body cf-problem">
+                <div className="cf-problem__statement">
+                  <p>{currentQuestion.question}</p>
+                  {currentQuestion.code ? (
+                    <pre className="cf-code">
+                      <code>{currentQuestion.code}</code>
+                    </pre>
+                  ) : null}
+                </div>
+                <div className="cf-problem__section">
+                  <div className="cf-section-title">Select your answer:</div>
+                  <div className="cf-options">
+                    {currentQuestion.options.map((option, index) => (
+                      <label
+                        key={`${currentQuestion.id}-${index}`}
+                        className={`cf-option${
+                          currentQuestion.multiSelect
+                            ? Array.isArray(answers[currentQuestion.id]) &&
+                              answers[currentQuestion.id].includes(index)
+                              ? ' cf-option--selected'
+                              : ''
+                            : answers[currentQuestion.id] === index
+                              ? ' cf-option--selected'
+                              : ''
+                        }`}
+                      >
+                        <input
+                          type={currentQuestion.multiSelect ? 'checkbox' : 'radio'}
+                          name={`question-${currentQuestion.id}`}
+                          checked={
+                            currentQuestion.multiSelect
+                              ? Array.isArray(answers[currentQuestion.id]) &&
+                                answers[currentQuestion.id].includes(index)
+                              : answers[currentQuestion.id] === index
+                          }
+                          onChange={() =>
+                            handleSelect(
+                              currentQuestion.id,
+                              index,
+                              currentQuestion.multiSelect
+                            )
+                          }
+                        />
+                        <span className="cf-option__label">
+                          {String.fromCharCode(65 + index)}
+                        </span>
+                        <span className="cf-option__text">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div className="cf-problem__actions">
+                  <button
+                    className="cf-btn cf-btn--secondary"
+                    type="button"
+                    onClick={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
+                    disabled={currentIndex === 0}
+                  >
+                    ← Previous
+                  </button>
+                  <span className="cf-problem__counter">
+                    {currentIndex + 1} of {selectedQuestions.length}
+                  </span>
+                  {currentIndex === selectedQuestions.length - 1 ? (
+                    <button className="cf-btn cf-btn--primary" type="button" onClick={handleSubmit}>
+                      Submit All
+                    </button>
+                  ) : (
+                    <button
+                      className="cf-btn cf-btn--primary"
+                      type="button"
+                      onClick={() =>
+                        setCurrentIndex((prev) =>
+                          Math.min(prev + 1, selectedQuestions.length - 1)
+                        )
+                      }
+                    >
+                      Next →
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="cf-box">
+              <div className="cf-box__body">Loading...</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {selectedPdf && (
+        <div className="cf-modal" onClick={() => setSelectedPdf(null)}>
+          <div className="cf-modal__content" onClick={(e) => e.stopPropagation()}>
+            <div className="cf-modal__header">
+              <h3>Resource Preview</h3>
+              <button className="cf-modal__close" onClick={() => setSelectedPdf(null)}>
+                <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+              </button>
+            </div>
+            <div className="cf-modal__body">
+              <iframe
+                src={selectedPdf}
+                title="PDF Preview"
+                className="cf-pdf-viewer"
+              />
+            </div>
+            <div className="cf-modal__footer">
+              <a href={selectedPdf} download className="cf-btn cf-btn--primary">
+                Download PDF
+              </a>
+              <button className="cf-btn cf-btn--secondary" onClick={() => setSelectedPdf(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default App

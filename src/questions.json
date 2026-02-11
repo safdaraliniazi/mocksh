@@ -1,0 +1,2399 @@
+[
+  {
+    "id": 1,
+    "question": "In Databricks, which command displays the current Spark catalog?",
+    "options": [
+      "SHOW CATALOGS",
+      "SHOW SCHEMAS",
+      "SHOW DATABASES",
+      "SHOW TABLES"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 2,
+    "question": "What does the following PySpark code return?",
+    "code": "df.selectExpr(\"count(*) as total\").collect()[0][\"total\"]",
+    "options": [
+      "A DataFrame",
+      "A column expression",
+      "A single integer",
+      "A list of rows"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 3,
+    "question": "Which file format is optimized for Databricks Delta Lake?",
+    "options": [
+      "CSV",
+      "JSON",
+      "Parquet",
+      "XML"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 4,
+    "question": "A data engineer needs to develop integration tests for an ETL process and deploy a version-controlled, packaged workflow into production using an external job scheduler. Which tool should be used?",
+    "options": [
+      "Databricks Software Development Kit",
+      "Databricks Connect",
+      "Databricks Asset Bundles",
+      "Databricks Command Line Interface"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 5,
+    "question": "A data engineer streams customer orders into a Kafka topic (orders_topic) and is writing the ingestion script of a DLT pipeline. What is the correct code for ingesting the data?",
+    "options": [
+      "import dlt\n\n@dlt.table(name=\"orders_raw\")\ndef orders_raw():\n    return (\n        spark.readStream\n            .format(\"kafka\")\n            .option(\"kafka.bootstrap.servers\", \"broker:9092\")\n            .option(\"subscribe\", \"orders_topic\")\n            .option(\"startingOffsets\", \"earliest\")\n            .load()\n    )",
+      "CREATE STREAMING LIVE TABLE orders_raw AS SELECT value.order_id AS order_id, value.customer_id AS customer_id, value.amount AS amount, value.order_status AS order_status, value.order_timestamp AS order_timestamp FROM cloud_files(\"kafka://broker:9092/orders_topic\", \"json\");",
+      "import dlt\n\n@dlt.table(name=\"orders_raw\")\ndef orders_raw():\n    return (\n        spark.readStream\n            .format(\"cloudFiles\")\n            .option(\"cloudFiles.format\", \"json\")\n            .option(\"cloudFiles.schemaLocation\", \"/schema/location\")\n            .load(\"kafka://broker:9092/orders_topic\")\n    )",
+      "CREATE LIVE TABLE orders_raw AS SELECT CAST(json_data AS STRING) AS json_data FROM kafka.kafka_broker:9092.orders_topic;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 6,
+    "question": "A data engineer writes Python and SQL in the same command cell and tries to use a Python variable inside a SQL SELECT. Why does it fail?",
+    "options": [
+      "Databricks supports one language per cell.",
+      "Databricks supports language interoperability in the same cell but only between Scala and SQL.",
+      "Databricks supports multiple languages but only one per notebook.",
+      "Databricks supports language interoperability but only if a special character is used."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 7,
+    "question": "A Databricks single-task workflow fails at the last task due to an error in a notebook. The engineer fixes the notebook. What should they do to rerun the workflow?",
+    "options": [
+      "Repair the task",
+      "Rerun the pipeline",
+      "Restart the cluster",
+      "Switch the cluster"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 8,
+    "question": "A data engineer needs to filter out NULL values in order_datetime from orders_raw and store results in orders_valid using DLT. Which code snippet should be used?",
+    "options": [
+      "CREATE OR REFRESH STREAMING LIVE TABLE orders_valid CONSTRAINT valid_date EXPECT (order_datetime IS NOT NULL) ON VIOLATION DROP ROW AS SELECT * FROM orders_raw;",
+      "CREATE OR REFRESH STREAMING LIVE TABLE orders_valid EXPECT (order_datetime IS NOT NULL) ON VIOLATION DROP ROW AS SELECT * FROM STREAM orders_raw;",
+      "CREATE OR REFRESH STREAMING TABLE orders_valid AS SELECT * FROM STREAM orders_raw WHERE order_datetime IS NOT NULL;",
+      "CREATE OR REPLACE STREAMING TABLE orders_valid ( FILTER (order_datetime IS NOT NULL) ) AS SELECT * FROM STREAM orders_raw;"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 9,
+    "question": "A data engineer needs to provide access to a group named manufacturing-team. The team needs privileges to create tables in the quality schema. Which SQL commands grant the least privileges?",
+    "options": [
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT USE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 10,
+    "question": "A Python file is ready for production and the workload is small (~10GB) with simple joins. Which cluster is cheapest and efficient?",
+    "options": [
+      "Interactive cluster",
+      "Job cluster with spot instances enabled",
+      "Job cluster with spot instances disabled",
+      "Job cluster with Photon enabled"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 11,
+    "question": "What is the functionality of Auto Loader in Databricks?",
+    "options": [
+      "Auto Loader ingests new files from cloud storage, supports only streaming, no schema evolution.",
+      "Auto Loader ingests new files from cloud storage, supports batch data with schema evolution.",
+      "Auto Loader ingests new files from cloud storage, supports batch and streaming, no schema evolution.",
+      "Auto Loader ingests new files from cloud storage, supports batch and streaming with schema evolution."
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 12,
+    "question": "An organization needs Databricks to scale automatically for varying workloads to meet SLAs with minimal manual management. Which approach fits?",
+    "options": [
+      "Use Serverless compute in Databricks to automatically scale and provision resources.",
+      "Use Interactive Clusters and adjust sizes manually based on workload.",
+      "Use Spot Instances to allocate resources dynamically with potential interruptions.",
+      "Deploy Job Clusters with fixed configurations and no auto-scaling."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 13,
+    "question": "How are events formatted in Databricks audit logs?",
+    "options": [
+      "XML",
+      "JSON",
+      "CSV",
+      "Plain text"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 14,
+    "question": "An organization needs to share a dataset stored in Unity Catalog with an external partner using a different data platform. Which method should be used?",
+    "options": [
+      "Using Delta Sharing with the open sharing protocol",
+      "Exporting data as CSV files and emailing them",
+      "Using a third-party API to access the Delta table",
+      "Databricks-to-Databricks Sharing"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 15,
+    "question": "A data engineer wants to create an external table that references data stored in ADLS without moving it into Databricks-managed storage. Which step should be taken?",
+    "options": [
+      "Use CREATE TABLE and specify the LOCATION clause with the path to the external data.",
+      "Use CREATE MANAGED TABLE and specify the LOCATION clause with the path to the external data.",
+      "CREATE UNMANAGED TABLE without specifying a LOCATION clause.",
+      "CREATE EXTERNAL TABLE without specifying a LOCATION clause."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 16,
+    "question": "Why is Delta Live Tables (DLT) an appropriate choice for pipelines that need data quality checks, schema evolution, and easy maintenance?",
+    "options": [
+      "Automatic data quality checks, built-in support for schema evolution, and declarative pipeline development",
+      "Manual schema enforcement, high operational overhead, and limited scalability",
+      "Requires custom code for data quality checks, no support for streaming data, and complex pipeline maintenance",
+      "Supports only batch processing, no data versioning, and high infrastructure costs"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 17,
+    "question": "Which TWO items are characteristics of the Gold layer? (Choose 2 answers)",
+    "options": [
+      "Historical lineage",
+      "Normalised",
+      "Read-optimized",
+      "De-normalised",
+      "Raw data"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 18,
+    "question": "A data engineer uses Unity Catalog lineage to track data flow. How does lineage support visualization of relationships?",
+    "options": [
+      "Unity Catalog provides an interactive graph that visualizes dependencies between Delta tables, notebooks, jobs, and dashboards, with column-level tracking.",
+      "Unity Catalog lineage supports table-level relationships only and excludes notebooks, jobs, and dashboards.",
+      "Unity Catalog lineage tracks dependencies between tables and notebooks but excludes jobs and dashboards.",
+      "Unity Catalog lineage visualizes dependencies between Delta tables, notebooks, and jobs but excludes column-level tracing and dashboards."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 19,
+    "question": "A data engineer wants real-time results while developing in a notebook and to reduce cluster spikes. Which cluster meets this need?",
+    "options": [
+      "Job cluster with autoscaling enabled",
+      "All-Purpose Cluster with a large fixed memory size",
+      "All-Purpose Cluster with autoscaling",
+      "Job cluster with Photon enabled and autoscaling"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 20,
+    "question": "A team ingests Kafka events and wants to store historical event data cost-effectively in a medallion architecture. Where should it be stored?",
+    "options": [
+      "Gold",
+      "Silver",
+      "Bronze",
+      "Raw layer"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 21,
+    "question": "To set up Delta Sharing with an external partner that uses Unity Catalog, what is the first piece of information to request?",
+    "options": [
+      "The sharing identifier of their Unity Catalog metastore",
+      "Their Databricks account password",
+      "The name of their Databricks cluster",
+      "The IP address of their Databricks workspace"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 22,
+    "question": "A partner without Databricks needs secure, read-only access to a Delta dataset without creating an account. How should the data be shared?",
+    "options": [
+      "Share the dataset using Delta Sharing with a secure, read-only URL.",
+      "Share using Unity Catalog with full write access.",
+      "Export to CSV and transfer the file manually.",
+      "Grant partner workspace access with full write permissions."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 23,
+    "question": "A data engineer needs to parse only .png files in a directory using Auto Loader. Which code should be used?",
+    "options": [
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").load(\"/.png\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \".png\").load(\"<base-path>\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").append(\"/.png\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \".png\").append()"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 24,
+    "question": "A company uses Delta Sharing across clouds and regions. What results in additional costs due to cross-region or egress fees?",
+    "options": [
+      "Accessing Delta Sharing data using a VPN within the same data center",
+      "Transferring data via Delta Sharing across clouds and across different geographic regions",
+      "Sharing data within the same cloud provider and region",
+      "Using Delta Sharing for internal analytics within a single cloud environment"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 25,
+    "question": "A PySpark DataFrame df has columns product and revenue. Which code computes total revenue, average revenue, and transaction count per product?",
+    "options": [
+      "from pyspark.sql import functions as F\naggregated_df = df.groupBy(\"product\").agg(F.sum(\"revenue\").alias(\"total_revenue\"), F.avg(\"revenue\").alias(\"avg_revenue\"), F.count(\"*\").alias(\"transaction_count\"))",
+      "aggregated_df = df.groupBy(\"product\").agg(sum(\"revenue\"), \"avg(revenue)\", \"count(revenue)\")",
+      "from pyspark.sql import functions as F\naggregated_df = df.select(\"product\", \"revenue\").groupBy(\"product\").agg(F.sum(\"revenue\"), F.mean(\"revenue\"))",
+      "aggregated_df = df.groupBy(\"product\").agg(f\"revenue\": \"sum\", \"revenue\": \"avg\", \"revenue\": \"count\")"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 26,
+    "question": "A data engineer needs to drop out-of-parameter streaming data without failing the stream. Which DLT feature meets this requirement?",
+    "options": [
+      "Change Data Capture",
+      "Error Handling",
+      "Expectations",
+      "Monitoring"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 27,
+    "question": "A PySpark ETL job has high CPU time vs Task time. What action should be taken?",
+    "options": [
+      "Consider executor/core tuning or resizing the cluster for a CPU-bound job.",
+      "Repartition data because the cluster is under-utilized.",
+      "Increase parallelism due to over-utilized memory.",
+      "No change needed; it indicates efficient use."
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 28,
+    "question": "Which Databricks feature enables querying external systems (MySQL, Redshift, BigQuery) without ingesting, while maintaining centralized governance?",
+    "options": [
+      "Databricks Connect",
+      "MLflow",
+      "Delta Lake",
+      "Lakehouse Federation"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 29,
+    "question": "An organization needs an optimized storage layer supporting ACID transactions and schema enforcement. Which technology should be used?",
+    "options": [
+      "Delta Lake",
+      "Unity Catalog",
+      "Data lake",
+      "Cloud File Storage"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 30,
+    "question": "A streaming ingestion should fail when new columns appear until changes are verified. Which option meets this requirement?",
+    "options": [
+      "addNewColumns",
+      "rescue",
+      "failOnNewColumns",
+      "none"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 31,
+    "question": "How does Databricks Connect enable local development against Databricks clusters?",
+    "options": [
+      "Provides a local environment that mimics the Databricks runtime but requires a specific Databricks-only tool.",
+      "Provides a local environment that mimics the Databricks runtime, but only through the Databricks web interface.",
+      "Allows direct execution of Spark jobs locally without any network connection.",
+      "Provides a local environment that mimics the Databricks runtime, enabling development and debugging in a preferred IDE."
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 32,
+    "question": "What is the maximum output supported by a job cluster to ensure a notebook does not fail?",
+    "options": [
+      "15MBs",
+      "10MBs",
+      "30MBs",
+      "25MBs"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 33,
+    "question": "Given sales_df with category and sales_amount, how do you calculate total sales per category into category_sales?",
+    "options": [
+      "category_sales = sales_df.groupBy(\"category\").agg(sum(\"sales_amount\").alias(\"total_sales_amount\"))",
+      "category_sales = sales_df.sum(\"sales_amount\").groupBy(\"category\").alias(\"total_sales_amount\")",
+      "category_sales = sales_df.agg(sum(\"sales_amount\").groupBy(\"category\").alias(\"total_sales_amount\"))",
+      "category_sales = sales_df.groupBy(\"region\").agg(sum(\"sales_amount\").alias(\"total_sales_amount\"))"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 34,
+    "question": "A Databricks workflow fails at the last stage due to a notebook error. The engineer fixes it and wants to rerun to minimize downtime and cost. What action should they take?",
+    "options": [
+      "Re-run the entire workflow",
+      "Switch to another cluster",
+      "Restart the cluster",
+      "Repair run"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 35,
+    "question": "Which compute option is best for small ad-hoc Python scripts that run frequently and should wind down quickly?",
+    "options": [
+      "All-Purpose Cluster",
+      "Job Cluster",
+      "Serverless Compute",
+      "SQL Warehouse"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 36,
+    "question": "A Spark SQL ETL fails with java.lang.OutOfMemoryError: Java heap space. Which two corrective actions should be taken? (Choose 2 answers)",
+    "options": [
+      "Narrow the filters to collect less data in the query",
+      "Upsize the worker nodes and activate autoshuffle partitions",
+      "Upsize the driver node and deactivate autoshuffle partitions",
+      "Cache the dataset to boost query performance",
+      "Fix shuffle partitions to 50 to ensure allocation"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": 37,
+    "question": "Which SQL code snippet demonstrates a DDL operation used to create a table?",
+    "options": [
+      "CREATE TABLE employees (id INT, name STRING, salary DECIMAL(10,2));",
+      "ALTER TABLE employees ADD COLUMN new_column INT;",
+      "INSERT INTO employees VALUES (1, 'Alice');",
+      "SELECT * FROM employees;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 38,
+    "question": "A Databricks Notebook function sometimes receives wrong input data types. Which feature helps quickly identify incorrect data types?",
+    "options": [
+      "The Spark UI debug tab contains variables used in the session.",
+      "The Databricks debugger provides a variable explorer to inspect values.",
+      "Add print statements to check the variable.",
+      "The Databricks debugger breakpoints raise an error on wrong data types."
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 39,
+    "question": "A PySpark notebook fails during a DataFrame transformation. Which tool lets the engineer set breakpoints and inspect variable values?",
+    "options": [
+      "Spark UI to analyze execution plans",
+      "Databricks CLI to download driver logs",
+      "Ganglia UI to monitor cluster resources",
+      "Python Notebook Interactive Debugger to inspect variables"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 40,
+    "question": "Which SQL Warehouse should be used for large numbers of queries quickly and cost-effectively within a custom-defined network?",
+    "options": [
+      "Pro SQL Warehouse",
+      "Classic SQL Warehouse",
+      "Serverless SQL Warehouse",
+      "Serverless compute for notebooks"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 41,
+    "question": "What transformation is typically included when building the Bronze layer?",
+    "options": [
+      "Business rules and transformations",
+      "Include columns like load date/time and process ID",
+      "Aggregate data from multiple sources",
+      "Perform extensive data cleansing"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 42,
+    "question": "Which syntax loads JSON files as they arrive using Auto Loader and checks it with a DataFrame?",
+    "options": [
+      "df = spark.read.json(\"/input/path\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(\"/input/path\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"json\").load(\"/input/path\")",
+      "df = spark.read.format(\"cloud\").option(\"json\").load(\"/input/path\")"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 43,
+    "question": "Which Unity Catalog role allows granting/revoking privileges on objects within a schema without read/write access?",
+    "options": [
+      "Table Owner",
+      "USE catalog/schema privilege",
+      "Schema Owner",
+      "Catalog Owner"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 44,
+    "question": "Which DLT code snippet correctly ingests raw JSON data and creates a Delta table?",
+    "options": [
+      "import dlt\n\n@dlt.view\ndef raw_customers():\n    return spark.format.json(\"s3://my-bucket/raw-customers/\")",
+      "import dlt\n\n@dlt.table\ndef raw_customers():\n    return spark.read.format(\"parquet\").load(\"s3://my-bucket/raw-customers\")",
+      "import dlt\n\n@dlt.table\ndef raw_customers():\n    return spark.read.format(\"csv\").load(\"s3://my-bucket/raw-customers/\")",
+      "import dlt\n\n@dlt.table\ndef raw_customers():\n    return spark.read.json(\"s3://my-bucket/raw-customers/\")"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 45,
+    "question": "What is the first step in migrating to Databricks Serverless to reduce cost while maintaining SLAs?",
+    "options": [
+      "Low frequency BI dashboarding and ad-hoc SQL analytics",
+      "Legacy ingestion pipelines with APIs, files, JDBC/ODBC",
+      "Frequently running Python transformation pipeline compatible with latest runtime and Unity Catalog",
+      "Frequently running Scala transformation pipeline compatible with latest runtime and Unity Catalog"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 46,
+    "question": "Which Databricks feature can be used to check data sources and tables used in a workspace?",
+    "options": [
+      "Do not use lineage because it only tracks the last 3 months.",
+      "Use lineage to visualize where the table is used only in notebooks.",
+      "Use lineage to visualize where the table is used only in reports.",
+      "Use lineage to visualize a graph of all dependencies, including notebooks, tables, and reports."
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 47,
+    "question": "What is the primary function of the Silver layer in the Databricks medallion architecture?",
+    "options": [
+      "Store historical data solely for auditing purposes",
+      "Digest raw data in its original state",
+      "Aggregate and enrich data for business analytics",
+      "Validate, clean, and deduplicate data for further processing"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 48,
+    "question": "How should a data engineer optimize layout for queries filtering by customer_id within date ranges, when the table is partitioned by purchase_date?",
+    "options": [
+      "Implement liquid clustering by customer_id and purchase_date.",
+      "Enable delta caching on the cluster.",
+      "Implement liquid clustering on customer_id while keeping existing partitioning.",
+      "Partition the table by customer_id."
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 49,
+    "question": "A data engineer needs to combine on-prem PostgreSQL data with Azure Synapse data without duplication. What should they use?",
+    "options": [
+      "Custom ETL pipelines",
+      "Export to CSV and upload to Databricks",
+      "Manually synchronize into a single database",
+      "Lakehouse Federation to query both sources directly"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 50,
+    "question": "To reduce data egress costs when sharing a large dataset from Databricks on AWS to a partner on Azure, which strategy should be used?",
+    "options": [
+      "Use Delta Sharing without any additional configurations",
+      "Configure a VPN between AWS and Azure",
+      "Migrate the dataset to Cloudflare R2 object storage before sharing",
+      "Share data via pre-signed URLs without monitoring egress costs"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 51,
+    "question": "What is the structure of a Databricks Asset Bundle?",
+    "options": [
+      "A YAML configuration file specifying artifacts, resources, and configurations",
+      "A plain text file listing assets to migrate",
+      "A ZIP archive containing only workspace assets without metadata",
+      "A Docker image containing runtime environments and source code"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 52,
+    "question": "Which permission should be granted to analysts who can query tables but not modify data?",
+    "options": [
+      "INSERT",
+      "MODIFY",
+      "ALL PRIVILEGES",
+      "SELECT"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 53,
+    "question": "Which architectural solution meets strict SLAs with minimal runtime errors and avoids cluster management overhead?",
+    "options": [
+      "Databricks serverless compute",
+      "Hybrid scheduled batch jobs on custom VMs",
+      "User-managed autoscaling cluster",
+      "Dedicated manually managed cluster"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 54,
+    "question": "A data engineer wants to deploy an ETL pipeline from a GitHub repo as a Databricks workflow. Which approach should be used?",
+    "options": [
+      "Manually create and manage the workflow in the UI",
+      "Maintain workflow_config.json and deploy it using Databricks CLI",
+      "Maintain workflow_config.json and deploy it using Terraform",
+      "Databricks Asset Bundles (DAB) with GitHub integration"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 55,
+    "question": "A data engineer manages multiple external tables and wants least-privilege access per table. How should access be managed?",
+    "options": [
+      "Grant permissions at the workspace level to cover all external tables",
+      "Create a single role with full access to all external tables",
+      "Use Unity Catalog to manage access controls for each external table",
+      "Set storage permissions at the container level"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 56,
+    "question": "A data engineer needs to share Unity Catalog Delta tables and the notebooks that create them with a partner organization. What is the best approach?",
+    "options": [
+      "Share codebase via GitHub and let them ingest from your data lake",
+      "Share datasets and notebooks via Delta Sharing with permissions managed in Unity Catalog",
+      "Zip code and share via email with data ingestion from your data lake",
+      "Share data and notebooks using Unity Catalog only"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 57,
+    "question": "For daily batch ETL jobs that are resource-intensive and vary in size, which compute approach is most suitable?",
+    "options": [
+      "Databricks SQL Serverless",
+      "All-Purpose Cluster",
+      "Job Cluster",
+      "Dedicated Cluster"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 58,
+    "question": "A data engineer wants to step through code in a Databricks Python notebook and inspect variables in real-time. Which tool should be used?",
+    "options": [
+      "Python Notebook Interactive Debugger",
+      "SQL Analytics",
+      "Job Execution Dashboard",
+      "Cluster Logs"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 59,
+    "question": "Which benefit is provided by array functions in Spark SQL?",
+    "options": [
+      "Ability to work with data in a variety of types at once",
+      "Ability to work with data within certain partitions and windows",
+      "Ability to work with time-related data in specified intervals",
+      "Ability to work with complex, nested data ingested from JSON files"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 60,
+    "question": "Which of the following is hosted completely in the control plane of the classic Databricks architecture?",
+    "options": [
+      "Worker node",
+      "JDBC data source",
+      "Databricks web application",
+      "Databricks Filesystem",
+      "Driver node"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 61,
+    "question": "Which benefit of the Databricks Lakehouse Platform is provided by Delta Lake?",
+    "options": [
+      "Ability to manipulate the same data using a variety of languages",
+      "Ability to collaborate in real time on a single notebook",
+      "Ability to set up alerts for query failures",
+      "Ability to support batch and streaming workloads",
+      "Ability to distribute complex data operations"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 62,
+    "question": "Which describes the storage organization of a Delta table?",
+    "options": [
+      "Stored in a single file containing data, history, metadata, and other attributes",
+      "Data in a single file, metadata in separate files",
+      "Stored in a collection of files containing data, history, metadata, and other attributes",
+      "Stored in a collection of files containing only the table data",
+      "Stored in a single file containing only the table data"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 63,
+    "question": "Which code removes rows where age > 25 from the Delta table my_table and saves the update?",
+    "options": [
+      "SELECT * FROM my_table WHERE age > 25;",
+      "UPDATE my_table WHERE age > 25;",
+      "DELETE FROM my_table WHERE age > 25;",
+      "UPDATE my_table WHERE age <= 25;",
+      "DELETE FROM my_table WHERE age <= 25;"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 64,
+    "question": "Which tool is used by Auto Loader to process data incrementally?",
+    "options": [
+      "Checkpointing",
+      "Spark Structured Streaming",
+      "Databricks SQL",
+      "Unity Catalog"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 65,
+    "question": "Which command returns the number of null values in the member_id column?",
+    "options": [
+      "SELECT count(member_id) FROM my_table;",
+      "SELECT count(member_id) - count_null(member_id) FROM my_table;",
+      "SELECT count_if(member_id IS NULL) FROM my_table;",
+      "SELECT null(member_id) FROM my_table;"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 66,
+    "question": "Which data lakehouse feature improves data quality over a traditional data lake?",
+    "options": [
+      "Provides storage for structured and unstructured data",
+      "Supports ACID-compliant transactions",
+      "Allows SQL queries to examine data",
+      "Stores data in open formats",
+      "Enables ML and AI workloads"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 67,
+    "question": "A data engineer wants a relational object from two tables without storing physical data, and only for the current session. Which object should be created?",
+    "options": [
+      "Spark SQL Table",
+      "View",
+      "Delta Table",
+      "Temporary view"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 68,
+    "question": "A data engineer left the organization. Who can transfer ownership of their Delta tables in Data Explorer?",
+    "options": [
+      "Databricks account representative",
+      "This transfer is not possible",
+      "Workspace administrator",
+      "New lead data engineer",
+      "Original data engineer"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 69,
+    "question": "Which PySpark command can access a Delta table named sales created in SQL?",
+    "options": [
+      "SELECT * FROM sales",
+      "There is no way to share data between PySpark and SQL.",
+      "spark.sql(\"sales\")",
+      "spark.delta.table(\"sales\")",
+      "spark.table(\"sales\")"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 70,
+    "question": "Which command returns the location of database customer360?",
+    "options": [
+      "DESCRIBE LOCATION customer360;",
+      "DROP DATABASE customer360;",
+      "DESCRIBE DATABASE customer360;",
+      "ALTER DATABASE customer360 SET DBPROPERTIES ('location' = '/user'};",
+      "USE DATABASE customer360;"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 71,
+    "question": "A data engineer needs to create a table of customers in France and include a table property indicating it contains PII. Which line fills the blank?",
+    "options": [
+      "There is no way to indicate whether a table contains PII.",
+      "COMMENT PII",
+      "TBLPROPERTIES PII",
+      "COMMENT \"Contains PII\"",
+      "PII"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 72,
+    "question": "What is stored in the Databricks customer's cloud account?",
+    "options": [
+      "Databricks web application",
+      "Cluster management metadata",
+      "Notebooks",
+      "Data"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 73,
+    "question": "Which command can write data into a Delta table while avoiding duplicate records?",
+    "options": [
+      "DROP",
+      "IGNORE",
+      "MERGE",
+      "APPEND",
+      "INSERT"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 74,
+    "question": "Files arrive in a shared directory and must be ingested incrementally without deleting them. Which tool solves this?",
+    "options": [
+      "Unity Catalog",
+      "Delta Lake",
+      "Databricks SQL",
+      "Auto Loader"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 75,
+    "question": "A SQL program should run daily, but the final query should run only on Sundays. Which approach could be used?",
+    "options": [
+      "Submit a Databricks feature request",
+      "Wrap queries in PySpark and use Python control flow to run the final query on Sundays",
+      "Run the entire program only on Sundays",
+      "Restrict access to the source table so it's only accessible on Sundays",
+      "Redesign the model to separate data for the final query"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 76,
+    "question": "COPY INTO transactions from /transactions/raw did not add rows. Why might no new records be copied?",
+    "options": [
+      "FORMAT_OPTIONS was not used",
+      "FILES keyword was not used",
+      "The previous day's file was already copied",
+      "PARQUET does not support COPY INTO",
+      "The table must be refreshed to view copied rows"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 77,
+    "question": "When should MERGE INTO be used instead of INSERT INTO?",
+    "options": [
+      "When the data location must change",
+      "When the target table is external",
+      "When the source is not a Delta table",
+      "When the target table cannot contain duplicate records"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 78,
+    "question": "Which line fills in the blank to create a table from a SQLite database using JDBC?",
+    "options": [
+      "org.apache.spark.sql.jdbc",
+      "autoloader",
+      "org.apache.spark.sql.sqlite",
+      "sqlite"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 79,
+    "question": "How can a data engineer identify the owner of new_table?",
+    "options": [
+      "Review the Permissions tab in the table's page in Data Explorer",
+      "There is no way to identify the owner",
+      "Review the Owner field in the table's page in Data Explorer",
+      "Review the Owner field in the cloud storage solution"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 80,
+    "question": "A DROP TABLE removed metadata but data files still exist. Why?",
+    "options": [
+      "The table data was larger than 10 GB",
+      "The table data was smaller than 10 GB",
+      "The table was external",
+      "The table did not have a location",
+      "The table was managed"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 81,
+    "question": "A data entity must be shared across sessions and saved to a physical location. Which should be created?",
+    "options": [
+      "Database",
+      "Function",
+      "View",
+      "Temporary view",
+      "Table"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 82,
+    "question": "Which tool can automate monitoring of data quality as it degrades on ingestion?",
+    "options": [
+      "Unity Catalog",
+      "Data Explorer",
+      "Delta Lake",
+      "Delta Live Tables",
+      "Auto Loader"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 83,
+    "question": "When migrating to Delta Live Tables with Python for bronze/silver and SQL for gold, what change is needed?",
+    "options": [
+      "Write the pipeline entirely in Python",
+      "Use different notebook sources in SQL and Python",
+      "Write the pipeline entirely in SQL",
+      "Replace streaming source with batch"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 84,
+    "question": "A job has a complex run schedule and needs to transfer that schedule programmatically. Which tool can represent and submit it?",
+    "options": [
+      "pyspark.sql.types.DateType",
+      "datetime",
+      "pyspark.sql.types.TimestampType",
+      "Cron syntax"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 85,
+    "question": "Which operation lets a Python-based team run a SQL query and work with the results in PySpark?",
+    "options": [
+      "SELECT * FROM sales",
+      "spark.delta.table",
+      "spark.sql",
+      "spark.table"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 86,
+    "question": "How does a data lakehouse help reduce discrepancies between data engineering and analysis reports?",
+    "options": [
+      "Teams respond more quickly to ad-hoc requests",
+      "Both teams use the same source of truth",
+      "Both teams reorganize to the same department",
+      "Teams collaborate in real time"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 87,
+    "question": "Which Structured Streaming query performs a hop from Silver to Gold?",
+    "options": [
+      "spark.readstream.load(rawSalesLocation).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"append\").table(\"newsales\")",
+      "spark.table(\"sales\").withColumn(\"avgPrice\", col(\"sales\") / col(\"units\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"append\").table(\"newsales\")",
+      "spark.table(\"sales\").filter(col(\"units\") > 0).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"append\").table(\"newsales\")",
+      "spark.table(\"sales\").groupBy(\"store\").agg(sum(\"sales\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"complete\").table(\"newsales\")"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 88,
+    "question": "Which trigger configuration runs a micro-batch every 5 seconds?",
+    "options": [
+      "trigger(\"5 seconds\")",
+      "trigger()",
+      "seconds()",
+      "trigger(processingTime=\"5 seconds\")",
+      "seconds(\")"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 89,
+    "question": "DLT expectation: CONSTRAINT valid_timestamp EXPECT (timestamp > '2020-01-01') ON VIOLATION DROP ROW. What happens to violating records?",
+    "options": [
+      "Dropped from target and loaded into a quarantine table",
+      "Added to target and flagged invalid",
+      "Dropped from target and recorded as invalid in the event log",
+      "Added to target and recorded as invalid in the event log",
+      "Job fails"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 90,
+    "question": "When should CREATE STREAMING LIVE TABLE be used instead of CREATE LIVE TABLE?",
+    "options": [
+      "When the next DLT step is static",
+      "When data needs to be processed incrementally",
+      "It is redundant and never needed",
+      "When data requires complicated aggregations",
+      "When the previous DLT step is static"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 91,
+    "question": "In a DLT query using STREAM(LIVE.customers), why is STREAM included?",
+    "options": [
+      "It is not needed and will cause an error",
+      "The customers table has been updated since the last run",
+      "The customers table is a streaming live table",
+      "The customers table references a Structured Streaming query on a PySpark DataFrame"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 92,
+    "question": "Which Git operation must be performed outside of Databricks Repos?",
+    "options": [
+      "Commit",
+      "Pull",
+      "Merge",
+      "Clone"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 93,
+    "question": "In a DLT pipeline with expectations dropping invalid records, how can you identify where records are dropped?",
+    "options": [
+      "Set separate expectations for each table",
+      "It is not possible",
+      "Enable email notifications for dropped records",
+      "Use the DLT pipeline page and view data quality statistics per table",
+      "Use the Error button to review present errors"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 94,
+    "question": "A single-task Job needs a new notebook to run before the existing task. How should this be set up?",
+    "options": [
+      "Clone the existing task and update it",
+      "Create a new task and add it as a dependency of the original task",
+      "Create a new task and add the original task as its dependency",
+      "Create a new job from scratch and run both tasks concurrently",
+      "Clone the task into a new job and edit it"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 95,
+    "question": "A SQL query should refresh every minute for a week, then stop to avoid costs. What should be done?",
+    "options": [
+      "Set a DBU limit for the SQL endpoint",
+      "Set the refresh schedule to end after a number of refreshes",
+      "It cannot be ensured",
+      "Limit who can manage the refresh schedule",
+      "Set the refresh schedule to end on a certain date"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 96,
+    "question": "Which command creates all_transactions with all records from March and April without duplicates?",
+    "options": [
+      "CREATE TABLE all_transactions AS SELECT * FROM march_transactions INNER JOIN SELECT * FROM april_transactions;",
+      "CREATE TABLE all_transactions AS SELECT * FROM march_transactions UNION SELECT * FROM april_transactions;",
+      "CREATE TABLE all_transactions AS SELECT * FROM march_transactions OUTER JOIN SELECT * FROM april_transactions;",
+      "CREATE TABLE all_transactions AS SELECT * FROM march_transactions INTERSECT SELECT * from april_transactions;"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 97,
+    "question": "To minimize SQL endpoint runtime for a daily dashboard refresh, what should be enabled?",
+    "options": [
+      "Ensure the dashboard endpoint matches each query endpoint",
+      "Set the dashboard endpoint to serverless",
+      "Turn on Auto Stop for the SQL endpoint",
+      "Reduce the cluster size of the SQL endpoint",
+      "Ensure the dashboard endpoint is not one of the query endpoints"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 98,
+    "question": "When should a new Databricks Job Task select another task in the Depends On field?",
+    "options": [
+      "When another task needs to be replaced",
+      "When another task must successfully complete before the new task begins",
+      "When another task has the same dependency libraries",
+      "When another task needs to use minimal compute"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 99,
+    "question": "What must be specified when creating a new Delta Live Tables pipeline?",
+    "options": [
+      "A key-value pair configuration",
+      "At least one notebook library to be executed",
+      "A cloud storage path for written data",
+      "A target database location for written data"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 100,
+    "question": "A multi-task job runs slowly because clusters take long to start. What can improve startup time?",
+    "options": [
+      "Use Databricks SQL endpoints",
+      "Use jobs clusters instead of all-purpose clusters",
+      "Configure single-node clusters",
+      "Use clusters from a cluster pool",
+      "Enable autoscaling for larger data sizes"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 101,
+    "question": "Which command grants full privileges on database customers to a team?",
+    "options": [
+      "GRANT USAGE ON DATABASE customers TO team;",
+      "GRANT ALL PRIVILEGES ON DATABASE team TO customers;",
+      "GRANT SELECT PRIVILEGES ON DATABASE customers TO teams;",
+      "GRANT SELECT CREATE MODIFY USAGE PRIVILEGES ON DATABASE customers TO team;",
+      "GRANT ALL PRIVILEGES ON DATABASE customers TO team;"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 102,
+    "question": "Which command grants a team permission to see what tables exist in database customers?",
+    "options": [
+      "GRANT VIEW ON CATALOG customers TO team;",
+      "GRANT CREATE ON DATABASE customers TO team;",
+      "GRANT USAGE ON CATALOG team TO customers;",
+      "GRANT CREATE ON DATABASE team TO customers;",
+      "GRANT USAGE ON DATABASE customers TO team;"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 103,
+    "question": "A Databricks Repo needs updates from the central Git repository. Which Git operation is required?",
+    "options": [
+      "Merge",
+      "Push",
+      "Pull",
+      "Commit",
+      "Clone"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 104,
+    "question": "Which benefit comes from the Databricks Lakehouse Platform embracing open source technologies?",
+    "options": [
+      "Cloud-specific integrations",
+      "Simplified governance",
+      "Ability to scale storage",
+      "Ability to scale workloads",
+      "Avoiding vendor lock-in"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 105,
+    "question": "Which control flow statement begins a block that runs when day_of_week == 1 and review_period is True?",
+    "options": [
+      "if day_of_week = 1 and review_period:",
+      "if day_of_week = 1 and review_period = \"True\":",
+      "if day_of_week = 1 & review_period: = \"True\":",
+      "if day_of_week == 1 and review_period:"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 106,
+    "question": "When is a single-node cluster most appropriate?",
+    "options": [
+      "Working interactively with a small amount of data",
+      "Running automated reports to refresh as quickly as possible",
+      "Working with SQL in Databricks SQL",
+      "Needing automatic scaling with larger data",
+      "Running reports manually with a large amount of data"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 107,
+    "question": "Which describes the relationship between Bronze tables and raw data?",
+    "options": [
+      "Bronze tables contain less data than raw data files",
+      "Bronze tables contain more truthful data than raw data",
+      "Bronze tables contain raw data with a schema applied",
+      "Bronze tables contain a less refined view of data than raw data"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 108,
+    "question": "Which keyword can be used to compact small files for a Delta table?",
+    "options": [
+      "REDUCE",
+      "OPTIMIZE",
+      "COMPACTION",
+      "REPARTITION",
+      "VACUUM"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 109,
+    "question": "A data engineer cannot time travel to a 3-day-old version because data files were deleted. Why?",
+    "options": [
+      "VACUUM was run on the table",
+      "TIME TRAVEL was run on the table",
+      "DELETE HISTORY was run on the table",
+      "OPTIMIZE was run on the table"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 110,
+    "question": "Which code block creates a SQL UDF to apply custom logic to a city string?",
+    "options": [
+      "CREATE FUNCTION combine_nyc(city STRING) RETURNS STRING RETURN CASE WHEN city = 'brooklyn' THEN 'new york' ELSE city END;",
+      "CREATE VDF combine_nyc(city STRING) RETURNS STRING CASE WHEN city = 'brooklyn' THEN 'new york' ELSE city END;",
+      "CREATE FUNCTION combine_nyc(city STRING) RETURNS STRING CASE WHEN city = 'brooklyn' THEN 'new york' ELSE city;",
+      "CREATE RETURNS STRING combine_nyc city WHEN city = 'brooklyn' THEN 'new york' END;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 111,
+    "question": "Which can simplify and unify siloed data architectures specialized for specific use cases?",
+    "options": [
+      "None of these",
+      "Data lake",
+      "Data warehouse",
+      "All of these",
+      "Data lakehouse"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 112,
+    "question": "How can a manager ensure a Databricks SQL query refreshes daily?",
+    "options": [
+      "Schedule refresh every 1 day from the SQL endpoint's page",
+      "Schedule refresh every 12 hours from the SQL endpoint's page",
+      "Schedule refresh every 1 day from the query's page",
+      "Schedule the query every 12 hours from the Jobs UI"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 113,
+    "question": "How can SQL be used within a cell of a Python notebook without changing other cells?",
+    "options": [
+      "It is not possible to use SQL in a Python notebook",
+      "Attach the cell to a SQL endpoint",
+      "Simply write SQL syntax in the cell",
+      "Add %sql to the first line of the cell",
+      "Change the notebook default language to SQL"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 114,
+    "question": "Which SQL keyword converts a table from long format to wide format?",
+    "options": [
+      "TRANSFORM",
+      "PIVOT",
+      "SUM",
+      "CONVERT",
+      "WHERE"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 115,
+    "question": "Which benefit applies to creating an external table from Parquet rather than CSV using CTAS?",
+    "options": [
+      "Parquet files can be partitioned",
+      "CTAS cannot be used on files",
+      "Parquet files have a well-defined schema",
+      "Parquet files can be optimized",
+      "Parquet files will become Delta tables"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 116,
+    "question": "Which method ensures Workflows are triggered on schedule?",
+    "options": [
+      "Scheduled Workflows require an always-running cluster",
+      "Scheduled Workflows process data as it arrives at configured sources",
+      "Scheduled Workflows can reduce costs since clusters run only long enough to execute",
+      "Scheduled Workflows run continuously until manually stopped"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 117,
+    "question": "A data engineer has USAGE on catalog and schema. What minimum permission is needed to access a view and its data?",
+    "options": [
+      "SELECT on the view and the underlying table",
+      "SELECT only on the view",
+      "ALL PRIVILEGES on the view",
+      "ALL PRIVILEGES at the schema level"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 118,
+    "question": "Which query uses FILTER to keep employees with years_exp > 5 in an array column?",
+    "options": [
+      "SELECT store_id, FILTER(employees, e -> e.years_exp > 5) AS exp_employees FROM stores;",
+      "SELECT store_id, FILTER(employees, years_exp > 5) AS exp_employees FROM stores;",
+      "SELECT store_id, FILTER(employees, e.years_exp) AS exp_employees FROM stores;",
+      "SELECT store_id, CASE WHEN employees.years_exp > 5 THEN employees END AS exp_employees FROM stores;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 119,
+    "question": "A DLT pipeline must fail if location is NULL. Which constraint implements this?",
+    "options": [
+      "CONSTRAINT valid_location EXPECT (location = NULL)",
+      "CONSTRAINT valid_location EXPECT (location != NULL) ON VIOLATION FAIL UPDATE",
+      "CONSTRAINT valid_location EXPECT (location != NULL) ON DROP ROW",
+      "CONSTRAINT valid_location EXPECT (location != NULL) ON VIOLATION FAIL"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 120,
+    "question": "Which table should be created to store Parquet data at a specific external path?",
+    "options": [
+      "An external table with LOCATION pointing to the specific external path",
+      "An external table where schema has managed location pointing to the path",
+      "A managed table where the catalog has managed location pointing to the path",
+      "A managed table with LOCATION pointing to the external path"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 121,
+    "question": "When migrating a mixed Python/SQL pipeline to DLT, which change is needed?",
+    "options": [
+      "The pipeline can have different notebook sources in SQL and Python",
+      "The pipeline must be written entirely in SQL",
+      "The pipeline must use a batch source",
+      "The pipeline must be written entirely in Python"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 122,
+    "question": "Which Python function definition adds two integers and returns the sum?",
+    "options": [
+      "def add_integers(x, y):\n    return x + y",
+      "def add_integers(x, y):\n    print(x + y)",
+      "function add_integers(x, y)\n    return x + y",
+      "def add_integers(x, y):\n    return x + Y"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 123,
+    "question": "To process all available data in as many batches as required, which trigger should be used?",
+    "options": [
+      "trigger(availableNow=True)",
+      "trigger(processingTime=\"once\")",
+      "trigger(continuous=\"once\")",
+      "trigger(once=True)"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 124,
+    "question": "What can simplify and unify siloed data architectures specialized for specific use cases?",
+    "options": [
+      "Delta Lake",
+      "Data lake",
+      "Data warehouse",
+      "Data lakehouse"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 125,
+    "question": "How should an analyst query a Delta table version from two weeks ago?",
+    "options": [
+      "Truncate and reload the table from two weeks ago",
+      "Find the version in the Delta log and query using VERSION AS OF (or export that version)",
+      "RESTORE the table to two weeks ago and query",
+      "Run VACUUM to remove versions older than two weeks"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 126,
+    "question": "Why did Auto Loader infer all columns as STRING when ingesting JSON without schema hints?",
+    "options": [
+      "There was a type mismatch between schemas",
+      "JSON is a text-based format",
+      "Auto Loader only works with string data",
+      "All fields had at least one null",
+      "Auto Loader cannot infer schema"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 127,
+    "question": "A DLT pipeline in Development mode using Continuous mode is started. What is the expected outcome?",
+    "options": [
+      "All datasets update once, pipeline shuts down, compute terminated",
+      "All datasets update at intervals until shut down, compute persists",
+      "All datasets update once and pipeline persists idle with compute",
+      "All datasets update once and pipeline shuts down, compute persists",
+      "All datasets update at intervals until shut down, compute persists for testing"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 128,
+    "question": "Which workload uses a Gold table as its source?",
+    "options": [
+      "Parsing timestamps into a human-readable format",
+      "Aggregating uncleaned data for summary statistics",
+      "Cleaning data by removing malformed records",
+      "Querying aggregated data for a dashboard",
+      "Ingesting raw streaming data"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 129,
+    "question": "Which two components are in the Databricks platform control plane? (Choose 2 answers)",
+    "options": [
+      "Virtual Machines",
+      "Compute Orchestration",
+      "Serverless Compute",
+      "Compute",
+      "Unity Catalog"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      1,
+      4
+    ]
+  },
+  {
+    "id": 130,
+    "question": "Given values [0, 1, 2, NULL, 2, 3], what is the output of count_if(col > 1), count(*), count(col)?",
+    "options": [
+      "3 6 5",
+      "4 6 5",
+      "3 6 6",
+      "4 6 6"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 131,
+    "question": "Which workload type is always compatible with Auto Loader?",
+    "options": [
+      "Streaming workloads",
+      "Machine learning workloads",
+      "Serverless workloads",
+      "Batch workloads",
+      "Dashboard workloads"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 132,
+    "question": "A tested Python notebook should be scheduled in production. Which cluster is best?",
+    "options": [
+      "All-purpose cluster",
+      "Any Unity Catalog-enabled cluster",
+      "Jobs cluster",
+      "Serverless SQL warehouse"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 133,
+    "question": "A batch ingestion reads from a Delta table. What change is needed to read the table as a stream source?",
+    "options": [
+      "Replace predict with a stream-friendly prediction function",
+      "Replace schema(schema) with option(\"maxFilesPerTrigger\", 1)",
+      "Replace the table name with a path",
+      "Replace format(\"delta\") with format(\"stream\")",
+      "Replace spark.read with spark.readStream"
+    ],
+    "correctIndex": 4
+  },
+  {
+    "id": 134,
+    "question": "DLT expectation: CONSTRAINT valid_timestamp EXPECT (timestamp > '2020-01-01') ON VIOLATION FAIL UPDATE. What happens to violating records?",
+    "options": [
+      "Dropped from target and recorded in the event log",
+      "Job fails",
+      "Dropped and loaded into a quarantine table",
+      "Added to target and recorded as invalid in the event log",
+      "Added to target and flagged invalid"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 135,
+    "question": "Which statement about Silver vs Bronze tables is always true?",
+    "options": [
+      "Silver tables are less refined than Bronze",
+      "Silver tables are aggregated while Bronze is unaggregated",
+      "Silver tables contain more data than Bronze",
+      "Silver tables contain a more refined and cleaner view than Bronze",
+      "Silver tables contain less data than Bronze"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 136,
+    "question": "SQL queries are slow when submitted to a non-running SQL endpoint. How can startup time be reduced?",
+    "options": [
+      "Enable Serverless and set Spot Instance Policy to Reliability Optimized",
+      "Turn on Auto Stop",
+      "Increase the cluster size",
+      "Enable Serverless for the SQL endpoint",
+      "Increase the maximum scaling range"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 137,
+    "question": "Which command grants full privileges on table sales to a team?",
+    "options": [
+      "GRANT ALL PRIVILEGES ON TABLE sales TO team;",
+      "GRANT SELECT CREATE MODIFY ON TABLE sales TO team;",
+      "GRANT SELECT ON TABLE sales TO team;",
+      "GRANT ALL PRIVILEGES ON TABLE team TO sales;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 138,
+    "question": "How can a Job owner be emailed on job failure?",
+    "options": [
+      "Manually program alerts in each notebook cell",
+      "Set up an Alert in the Job page",
+      "Set up an Alert in the Notebook",
+      "There is no way to notify the Job owner",
+      "MLflow Model Registry Webhooks"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 139,
+    "question": "Which command grants a team permission to see tables in database customers?",
+    "options": [
+      "GRANT VIEW ON CATALOG customers TO team;",
+      "GRANT CREATE ON DATABASE customers TO team;",
+      "GRANT USAGE ON CATALOG team TO customers;",
+      "GRANT USAGE ON DATABASE customers TO team;"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 140,
+    "question": "How can a SQL query refresh every minute for a week and stop to avoid costs?",
+    "options": [
+      "Set a DBU limit",
+      "End the refresh schedule after a number of refreshes",
+      "End the refresh schedule on a certain date",
+      "Limit who can manage the schedule"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 141,
+    "question": "How can a team be notified via webhook when a SQL query result exceeds a threshold?",
+    "options": [
+      "Set up an Alert with a custom template",
+      "Set up an Alert with a new email destination",
+      "Set up an Alert with one-time notifications",
+      "Set up an Alert with a new webhook alert destination",
+      "Set up an Alert without notifications"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 142,
+    "question": "To minimize SQL endpoint runtime for hourly dashboard refreshes, what should be enabled?",
+    "options": [
+      "Turn on Auto Stop for the SQL endpoint",
+      "Ensure the dashboard endpoint is not one of the query endpoints",
+      "Reduce the cluster size",
+      "Ensure the dashboard endpoint matches each query endpoint",
+      "Set the dashboard endpoint to serverless"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 143,
+    "question": "Which two conditions apply for Unity Catalog governance? (Choose 2 answers)",
+    "options": [
+      "You can have more than 1 metastore per account, but only 1 per region",
+      "Both catalog and schema must have managed locations if the metastore has no location",
+      "You can have multiple catalogs per metastore and one catalog can be in multiple metastores",
+      "If a catalog has no location, the schema must have a managed location",
+      "If the metastore has no location, the catalog must have a managed location"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      0,
+      3
+    ]
+  },
+  {
+    "id": 144,
+    "question": "To minimize SQL endpoint runtime for daily dashboard refreshes, what should be enabled?",
+    "options": [
+      "Ensure the dashboard endpoint matches each query endpoint",
+      "Set the dashboard endpoint to serverless",
+      "Turn on Auto Stop for the SQL endpoint",
+      "Ensure the dashboard endpoint is not one of the query endpoints"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 145,
+    "question": "In which scenario should a data team use cluster pools?",
+    "options": [
+      "Automated report needs version control across collaborators",
+      "Automated report needs to be runnable by all stakeholders",
+      "Automated report needs to be refreshed as quickly as possible",
+      "Automated report needs to be reproducible"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 146,
+    "question": "What is hosted completely in the control plane of the classic Databricks architecture?",
+    "options": [
+      "Worker node",
+      "Databricks web application",
+      "Driver node",
+      "Databricks Filesystem"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 147,
+    "question": "What is an advantage of Databricks Repos over notebook versioning?",
+    "options": [
+      "Allows reverting to previous notebook versions",
+      "Is wholly housed within the Databricks Data Intelligence Platform",
+      "Provides the ability to comment on specific changes",
+      "Supports multiple branches"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 148,
+    "question": "What is a benefit of the Databricks Lakehouse Architecture embracing open source technologies?",
+    "options": [
+      "Avoiding vendor lock-in",
+      "Simplified governance",
+      "Ability to scale workloads",
+      "Cloud-specific integrations"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 149,
+    "question": "Where can a data engineer review their permissions on a Delta table?",
+    "options": [
+      "Jobs",
+      "Dashboards",
+      "Catalog Explorer",
+      "Repos"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 150,
+    "question": "A Databricks Repo needs updates from the central Git repository. Which operation is required?",
+    "options": [
+      "Clone",
+      "Pull",
+      "Merge",
+      "Push"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 151,
+    "question": "Which file format is used to store Delta Lake tables?",
+    "options": [
+      "CSV",
+      "Parquet",
+      "JSON",
+      "Delta"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 152,
+    "question": "Which SQL command appends ('a1', 6, 9.4) to an existing Delta table my_table?",
+    "options": [
+      "INSERT INTO my_table VALUES ('a1', 6, 9.4)",
+      "INSERT VALUES ('a1', 6, 9.4) INTO my_table",
+      "UPDATE my_table VALUES ('a1', 6, 9.4)",
+      "UPDATE VALUES ('a1', 6, 9.4) my_table"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 153,
+    "question": "Which keyword compacts small files in a Delta table?",
+    "options": [
+      "OPTIMIZE",
+      "VACUUM",
+      "COMPACTION",
+      "REPARTITION"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 154,
+    "question": "Which PySpark command can access the Delta table sales created in SQL?",
+    "options": [
+      "SELECT * FROM sales",
+      "spark.table(\"sales\")",
+      "spark.sql(\"sales\")",
+      "spark.delta.table(\"sales\")"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 155,
+    "question": "Where is a database created with CREATE DATABASE IF NOT EXISTS customer360 located by default?",
+    "options": [
+      "dbfs:/user/hive/database/customer360",
+      "dbfs:/user/hive/warehouse",
+      "dbfs:/user/hive/customer360",
+      "dbfs:/user/hive/database"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 156,
+    "question": "DROP TABLE IF EXISTS my_table removed data and metadata files. Why?",
+    "options": [
+      "The table was managed",
+      "The table data was smaller than 10 GB",
+      "The table did not have a location",
+      "The table was external"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 157,
+    "question": "Which line fills the blank to create a table from CSV data at /path/to/csv?",
+    "options": [
+      "FROM \"path/to/csv\"",
+      "USING CSV",
+      "FROM CSV",
+      "USING DELTA"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 158,
+    "question": "Which SQL keyword can convert a table from long format to wide format?",
+    "options": [
+      "TRANSFORM",
+      "PIVOT",
+      "SUM",
+      "CONVERT"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 159,
+    "question": "Which function fills the blank to execute a SQL query using table_name?",
+    "options": [
+      "spark.delta.sql",
+      "spark.sql",
+      "spark.table",
+      "dbutils.sql"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 160,
+    "question": "Which trigger runs a micro-batch every 5 seconds?",
+    "options": [
+      "trigger(\"5 seconds\")",
+      "trigger(continuous=\"5 seconds\")",
+      "trigger(once=\"5 seconds\")",
+      "trigger(processingTime=\"5 seconds\")"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 161,
+    "question": "How can a DLT pipeline identify which table is dropping invalid records?",
+    "options": [
+      "Set separate expectations for each table",
+      "Use the Error button to review errors",
+      "Enable email notifications",
+      "View data quality statistics per table in the pipeline page"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 162,
+    "question": "What is used to record offset ranges so Structured Streaming can track progress and recover?",
+    "options": [
+      "Checkpointing and Write-ahead Logs",
+      "Replayable Sources and Idempotent Sinks",
+      "Write-ahead Logs and Idempotent Sinks",
+      "Checkpointing and Idempotent Sinks"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 163,
+    "question": "What describes the relationship between Gold and Silver tables?",
+    "options": [
+      "Gold tables are more likely to contain aggregations than Silver tables",
+      "Gold tables are more likely to contain valuable data than Silver tables",
+      "Gold tables are less refined than Silver tables",
+      "Gold tables are more truthful than Silver tables"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 164,
+    "question": "A DLT pipeline runs in Production mode with Continuous mode. What happens after Start?",
+    "options": [
+      "Datasets update at intervals; compute persists for testing",
+      "Datasets update once; compute persists for testing",
+      "Datasets update at intervals; compute is deployed and terminated when stopped",
+      "Datasets update once; compute terminated"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 165,
+    "question": "Which workloads are compatible with Auto Loader?",
+    "options": [
+      "Streaming workloads",
+      "Machine learning workloads",
+      "Serverless workloads",
+      "Batch workloads"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 166,
+    "question": "Why did Auto Loader infer all columns as STRING without schema hints?",
+    "options": [
+      "Auto Loader cannot infer schema",
+      "JSON is a text-based format",
+      "Auto Loader only works with string data",
+      "All fields had at least one null"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 167,
+    "question": "A multi-task job starts slowly because clusters take time to start. What improves startup time?",
+    "options": [
+      "Use Databricks SQL endpoints",
+      "Use jobs clusters instead of all-purpose clusters",
+      "Enable autoscaling for larger data sizes",
+      "Use clusters from a cluster pool"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 168,
+    "question": "A new task must run before an existing single-task job. How should this be set up?",
+    "options": [
+      "Clone the existing task and update it",
+      "Create a new task and set it as a dependency of the original task",
+      "Create a new task and set the original task as its dependency",
+      "Create a new job from scratch and run both tasks concurrently"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 169,
+    "question": "A job has two notebook tasks; one is slow. Where should a tech lead look to diagnose?",
+    "options": [
+      "Runs tab and immediately review the processing notebook",
+      "Tasks tab and click the active run to review the processing notebook",
+      "Runs tab and click the active run to review the processing notebook",
+      "Tasks tab to immediately review the processing notebook"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 170,
+    "question": "SQL queries are slow on an always-on endpoint with many concurrent small queries. What helps?",
+    "options": [
+      "Increase the cluster size",
+      "Increase the maximum bound of the scaling range",
+      "Turn on Auto Stop",
+      "Turn on Serverless"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 171,
+    "question": "How can a team be notified via webhook when a SQL query result reaches a threshold?",
+    "options": [
+      "Alert with a custom template",
+      "Alert with a new email destination",
+      "Alert with a new webhook destination",
+      "Alert with one-time notifications"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 172,
+    "question": "Delta Sharing across clouds and regions incurs additional costs for which scenario?",
+    "options": [
+      "Sharing within the same cloud and region",
+      "Transferring across clouds and different regions",
+      "Accessing via VPN within the same data center",
+      "Internal analytics within a single cloud"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 173,
+    "question": "Which command enforces ingestion to fail when new columns appear?",
+    "options": [
+      "failOnNewColumns",
+      "none",
+      "rescue",
+      "addNewColumns"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 174,
+    "question": "Which SQL snippet is a DDL operation to create a table?",
+    "options": [
+      "CREATE TABLE employees (id INT, name STRING);",
+      "DROP TABLE employees;",
+      "ALTER TABLE employees ADD COLUMN salary DECIMAL(10,2);",
+      "INSERT INTO employees (id, name) VALUES (1 'Alice');"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 175,
+    "question": "Which Databricks notebook feature helps organize steps into a scheduled pipeline?",
+    "options": [
+      "Real-time streaming support",
+      "Collaborative editing",
+      "Task workflows and job scheduling",
+      "Notebook version control"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 176,
+    "question": "Which tool should be used to package and deploy version-controlled workflows with external schedulers?",
+    "options": [
+      "Databricks Connect",
+      "Databricks Asset Bundles",
+      "Databricks Command Line Interface",
+      "Databricks Software Development Kit"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 177,
+    "question": "Which Databricks Asset Bundle format is valid?",
+    "options": [
+      "resources: jobs: hello-job: name: hello-job tasks: - task_key: hello-task existing_cluster_id: 1234-567890-abcde123 notebook_task: notebook_path: ./hello.py",
+      "{ \"resources\": { \"jobs\": { \"name\": \"hello-job\", \"tasks\": { \"task_key\": \"hello-task\", \"existing_cluster_id\": \"1234-567890-abcde123\", \"notebook_task\": { \"notebook_path\": \".hello.py\" } } } } }",
+      "configuration = { \"resources\": { \"jobs\": { \"name\": \"hello-job\", \"tasks\": { \"task_key\": \"hello-task\", \"existing_cluster_id\": \"1234-567890-abcde123\", \"notebook_task\": { \"notebook_path\": \".hello.py\" } } } } }",
+      "resources { jobs { name = \"hello-job\" tasks { task_key = \"hello-task\" existing_cluster_id = \"1234-567890-abcde123\" notebook_task { notebook_path = \".hello.py\" } } } }"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 178,
+    "question": "A streaming pipeline should drop invalid records without failing. Which DLT feature does this?",
+    "options": [
+      "Change Data Capture",
+      "Error Handling",
+      "Monitoring",
+      "Expectations"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 179,
+    "question": "A pipeline is under-utilized and data is skewed. How should it be fixed?",
+    "options": [
+      "Coalesce the dataset",
+      "Increase executors",
+      "Repartition the dataset to spread data across nodes",
+      "Increase executor memory"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 180,
+    "question": "Which technology provides ACID transactions and schema enforcement?",
+    "options": [
+      "Delta Lake",
+      "Unity Catalog",
+      "Cloud File Storage",
+      "Data lake"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 181,
+    "question": "Which transformation is typical for the Bronze layer?",
+    "options": [
+      "Include columns like load date/time and process ID",
+      "Business rules and transformations",
+      "Perform extensive data cleansing",
+      "Aggregate data from multiple sources"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 182,
+    "question": "Which feature enables querying external systems (MySQL, Redshift, BigQuery) without ingesting into Databricks?",
+    "options": [
+      "Delta Lake",
+      "Lakehouse Federation",
+      "MLflow",
+      "Databricks Connect"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 183,
+    "question": "Which method securely shares Unity Catalog data with a non-Databricks partner?",
+    "options": [
+      "Delta Sharing with the open sharing protocol",
+      "Export CSV and email",
+      "Use a third-party API",
+      "Databricks-to-Databricks Sharing"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 184,
+    "question": "Why is Delta Live Tables appropriate for pipelines needing quality checks and schema evolution?",
+    "options": [
+      "Automatic quality checks, schema evolution, and declarative pipelines",
+      "Manual schema enforcement with high overhead",
+      "No streaming support and complex maintenance",
+      "Batch-only processing with high costs"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 185,
+    "question": "Why does mixing Python and SQL in the same cell fail in Databricks?",
+    "options": [
+      "Only Scala and SQL can interoperate in the same cell",
+      "Multiple languages are allowed but only one per notebook",
+      "Only one language per cell is supported",
+      "Interoperability requires a special character"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 186,
+    "question": "Which compute option fits small ad-hoc Python scripts that run frequently and should shut down quickly?",
+    "options": [
+      "All-purpose Cluster",
+      "Job Cluster",
+      "Serverless Compute",
+      "SQL Warehouse"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 187,
+    "question": "How does Databricks Connect enable local development with clusters?",
+    "options": [
+      "Requires a specific IDE",
+      "Only works via Databricks web interface",
+      "Runs Spark jobs locally without network",
+      "Mimics Databricks runtime for local dev in preferred IDE"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 188,
+    "question": "Where should historical Kafka event data be stored in a medallion architecture to be cost mindful?",
+    "options": [
+      "Gold",
+      "Silver",
+      "Bronze",
+      "Raw layer"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 189,
+    "question": "Which two items are characteristics of the Gold layer? (Choose two.)",
+    "options": [
+      "Historical lineage",
+      "Raw data",
+      "Normalised",
+      "De-normalised",
+      "Read-optimized"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": 190,
+    "question": "How can a data engineer confirm OPTIMIZE was executed on a Delta table?",
+    "options": [
+      "Check system.storage.predictive_optimization_operations_history",
+      "SHOW TABLES EXTENDED to check partitions",
+      "DESCRIBE DETAIL to see file size and number of files",
+      "DESCRIBE HISTORY to see OPTIMIZE operations"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 191,
+    "question": "Which cluster is cheapest and efficient for a small 10GB workload with simple joins?",
+    "options": [
+      "Interactive cluster",
+      "Job cluster with spot instances enabled",
+      "Job cluster with spot instances disabled",
+      "Job cluster with Photon enabled"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 192,
+    "question": "Which syntax loads JSON files as they arrive using Auto Loader?",
+    "options": [
+      "df = spark.read.json(\"input/path\")",
+      "df = spark.readStream.format(\"cloud\").option(\"json\").load(\"/input/path\")",
+      "df = spark.readStream.format(\"json\").load(\"input/path\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(\"/input/path\")"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 193,
+    "question": "Which layer pairing is appropriate in a medallion architecture?",
+    "options": [
+      "Silver layer - Raw deposit account data",
+      "Bronze layer - Summary of cash deposit amount per country and city",
+      "Silver layer - Cleansed master customer data",
+      "Gold layer - Deduplicated money transfer transaction"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 194,
+    "question": "How does Unity Catalog lineage visualize relationships?",
+    "options": [
+      "Visualizes dependencies between Delta tables, notebooks, and jobs without dashboards or column-level tracing",
+      "Only supports table-level relationships and excludes notebooks, jobs, and dashboards",
+      "Tracks dependencies between tables and notebooks but excludes jobs and dashboards",
+      "Visualizes dependencies between tables, notebooks, jobs, and dashboards with column-level tracking"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 195,
+    "question": "Which SQL Warehouse should be used for large numbers of queries quickly and cost-effectively in a custom network?",
+    "options": [
+      "Serverless compute for notebooks",
+      "Pro SQL Warehouse",
+      "Classic SQL Warehouse",
+      "Serverless SQL Warehouse"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 196,
+    "question": "Which role allows granting/revoking privileges in a schema without read/write access?",
+    "options": [
+      "Table Owner",
+      "Catalog Owner",
+      "Schema Owner",
+      "USE catalog/schema privilege"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 197,
+    "question": "Which tool should be used to debug a PySpark notebook and inspect variable values?",
+    "options": [
+      "Databricks CLI to analyze driver logs",
+      "Python Notebook Interactive Debugger",
+      "Ganglia UI",
+      "Spark UI"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 198,
+    "question": "How should an external table be created to reference ADLS data without moving it?",
+    "options": [
+      "CREATE MANAGED TABLE with LOCATION",
+      "CREATE UNMANAGED TABLE without LOCATION",
+      "CREATE TABLE with LOCATION pointing to external data",
+      "CREATE EXTERNAL TABLE without LOCATION"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 199,
+    "question": "Which cluster meets PoC needs with real-time results and reduced spikes?",
+    "options": [
+      "All-purpose cluster with autoscaling",
+      "Job cluster with Photon and autoscaling",
+      "Job cluster with autoscaling",
+      "All-purpose cluster with large fixed memory"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 200,
+    "question": "Which compute option auto-scales for fluctuating SQL workloads and charges per use?",
+    "options": [
+      "Databricks SQL Analytics",
+      "Databricks Runtime for ML",
+      "Databricks Jobs",
+      "Serverless SQL Warehouse"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 201,
+    "question": "How should a large Delta dataset be shared with a non-Databricks partner securely with read-only access?",
+    "options": [
+      "Export to CSV and transfer manually",
+      "Grant workspace access with write permissions",
+      "Share via Unity Catalog with full write access",
+      "Share via Delta Sharing with a secure, read-only URL"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 202,
+    "question": "What happens when OPTIMIZE is run twice on the same Delta table with unchanged data?",
+    "options": [
+      "No effect because it is idempotent",
+      "Significantly changes tuples per file",
+      "Further reduces file sizes by re-clustering",
+      "Triggers full liquid clustering"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 203,
+    "question": "What information is first required to set up Delta Sharing with a Unity Catalog partner?",
+    "options": [
+      "IP address of their workspace",
+      "Name of their cluster",
+      "Sharing identifier of their Unity Catalog metastore",
+      "Databricks account password"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 204,
+    "question": "A costly workflow failed at the last stage. After fixing, what should be done to minimize cost and downtime?",
+    "options": [
+      "Re-run the entire workflow",
+      "Repair run",
+      "Restart the cluster",
+      "Switch to another cluster"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 205,
+    "question": "Which approach ensures automatic scaling and minimal downtime with minimal manual cluster management?",
+    "options": [
+      "Job clusters with fixed configs and no auto-scaling",
+      "Spot instances with potential interruptions",
+      "Interactive clusters with manual scaling",
+      "Serverless compute with automatic scaling"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 206,
+    "question": "A single-task workflow fails due to a notebook error and is fixed. What should be done to rerun?",
+    "options": [
+      "Repair the task",
+      "Rerun the pipeline",
+      "Restart the cluster",
+      "Switch the cluster"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 207,
+    "question": "Which set of grants provides least privilege to create tables in manufacturing.quality?",
+    "options": [
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT USE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
+      "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 208,
+    "question": "High CPU time vs Task time indicates a CPU-bound job. What should be done?",
+    "options": [
+      "Repartition data because the cluster is under-utilized",
+      "No change needed",
+      "Tune executors/cores or resize the cluster",
+      "Increase parallelism due to memory pressure"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 209,
+    "question": "Which Auto Loader code parses only .png files in a directory?",
+    "options": [
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").append(\"/*.png\")",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \"*.png\").load()",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \"*.png\").append()",
+      "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").load(\"/*.png\")"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 210,
+    "question": "Which languages are supported by Serverless compute clusters? (Choose two.)",
+    "options": [
+      "SQL",
+      "Python",
+      "R",
+      "Scala",
+      "Java"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": 211,
+    "question": "Spark SQL fails with OutOfMemoryError. Which two corrective actions should be taken? (Choose two.)",
+    "options": [
+      "Narrow filters to collect less data",
+      "Upsize worker nodes and enable autoshuffle partitions",
+      "Upsize driver node and deactivate autoshuffle partitions",
+      "Cache the dataset",
+      "Fix shuffle partitions to 50"
+    ],
+    "multiSelect": true,
+    "correctIndices": [
+      0,
+      1
+    ]
+  }
+]
