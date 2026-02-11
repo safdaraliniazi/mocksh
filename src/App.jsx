@@ -731,14 +731,28 @@ function App() {
                 {selectedQuestions
                   .filter((question) => {
                     const userAnswer = answers[question.id]
-                    const isCorrect = userAnswer === question.correctIndex
+                    let isCorrect
+                    if (question.multiSelect && Array.isArray(question.correctIndices)) {
+                      const selected = Array.isArray(userAnswer) ? userAnswer : []
+                      const correct = question.correctIndices
+                      isCorrect = selected.length === correct.length && selected.every((value) => correct.includes(value))
+                    } else {
+                      isCorrect = userAnswer === question.correctIndex
+                    }
                     if (resultFilter === 'wrong') return !isCorrect
                     if (resultFilter === 'correct') return isCorrect
                     return true
                   })
                   .map((question, index) => {
                     const userAnswer = answers[question.id]
-                    const isCorrect = userAnswer === question.correctIndex
+                    let isCorrect
+                    if (question.multiSelect && Array.isArray(question.correctIndices)) {
+                      const selected = Array.isArray(userAnswer) ? userAnswer : []
+                      const correct = question.correctIndices
+                      isCorrect = selected.length === correct.length && selected.every((value) => correct.includes(value))
+                    } else {
+                      isCorrect = userAnswer === question.correctIndex
+                    }
                     const isExpanded = expandedQuestion === question.id
                     const actualIndex = selectedQuestions.indexOf(question)
                     return (
@@ -779,13 +793,28 @@ function App() {
                                   Your Answer:
                                 </div>
                                 <div className="cf-answer-box__content">
-                                  {userAnswer !== undefined ? (
-                                    <>
-                                      <span className="cf-answer-option">{String.fromCharCode(65 + userAnswer)}</span>
-                                      <span>{question.options[userAnswer]}</span>
-                                    </>
+                                  {question.multiSelect && Array.isArray(question.correctIndices) ? (
+                                    Array.isArray(userAnswer) && userAnswer.length > 0 ? (
+                                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {userAnswer.map((idx) => (
+                                          <div key={idx}>
+                                            <span className="cf-answer-option">{String.fromCharCode(65 + idx)}</span>
+                                            <span>{question.options[idx]}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ) : (
+                                      <span style={{ color: '#999' }}>Not answered</span>
+                                    )
                                   ) : (
-                                    <span style={{ color: '#999' }}>Not answered</span>
+                                    userAnswer !== undefined ? (
+                                      <>
+                                        <span className="cf-answer-option">{String.fromCharCode(65 + userAnswer)}</span>
+                                        <span>{question.options[userAnswer]}</span>
+                                      </>
+                                    ) : (
+                                      <span style={{ color: '#999' }}>Not answered</span>
+                                    )
                                   )}
                                 </div>
                               </div>
@@ -794,32 +823,55 @@ function App() {
                                   Correct Answer:
                                 </div>
                                 <div className="cf-answer-box__content">
-                                  <span className="cf-answer-option">{String.fromCharCode(65 + question.correctIndex)}</span>
-                                  <span>{question.options[question.correctIndex]}</span>
+                                  {question.multiSelect && Array.isArray(question.correctIndices) ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                      {question.correctIndices.map((idx) => (
+                                        <div key={idx}>
+                                          <span className="cf-answer-option">{String.fromCharCode(65 + idx)}</span>
+                                          <span>{question.options[idx]}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <span className="cf-answer-option">{String.fromCharCode(65 + question.correctIndex)}</span>
+                                      <span>{question.options[question.correctIndex]}</span>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="cf-all-options">
                               <div className="cf-all-options__label">All Options:</div>
-                              {question.options.map((option, idx) => (
-                                <div
-                                  key={idx}
-                                  className={`cf-option-display ${
-                                    idx === question.correctIndex ? 'cf-option-display--correct' : ''
-                                  } ${
-                                    idx === userAnswer && idx !== question.correctIndex ? 'cf-option-display--wrong' : ''
-                                  }`}
-                                >
-                                  <span className="cf-option-display__label">{String.fromCharCode(65 + idx)}</span>
-                                  <span>{option}</span>
-                                  {idx === question.correctIndex && (
-                                    <span className="cf-option-display__badge">✓ Correct</span>
-                                  )}
-                                  {idx === userAnswer && idx !== question.correctIndex && (
-                                    <span className="cf-option-display__badge cf-option-display__badge--wrong">✗ Your choice</span>
-                                  )}
-                                </div>
-                              ))}
+                              {question.options.map((option, idx) => {
+                                const isCorrectOption = question.multiSelect && Array.isArray(question.correctIndices)
+                                  ? question.correctIndices.includes(idx)
+                                  : idx === question.correctIndex
+                                const isUserChoice = question.multiSelect && Array.isArray(userAnswer)
+                                  ? userAnswer.includes(idx)
+                                  : idx === userAnswer
+                                const isWrongChoice = isUserChoice && !isCorrectOption
+                                
+                                return (
+                                  <div
+                                    key={idx}
+                                    className={`cf-option-display ${
+                                      isCorrectOption ? 'cf-option-display--correct' : ''
+                                    } ${
+                                      isWrongChoice ? 'cf-option-display--wrong' : ''
+                                    }`}
+                                  >
+                                    <span className="cf-option-display__label">{String.fromCharCode(65 + idx)}</span>
+                                    <span>{option}</span>
+                                    {isCorrectOption && (
+                                      <span className="cf-option-display__badge">✓ Correct</span>
+                                    )}
+                                    {isWrongChoice && (
+                                      <span className="cf-option-display__badge cf-option-display__badge--wrong">✗ Your choice</span>
+                                    )}
+                                  </div>
+                                )
+                              })}
                             </div>
                           </div>
                         )}

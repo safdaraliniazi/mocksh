@@ -2395,5 +2395,635 @@
       0,
       1
     ]
+  },
+  {
+    "id": 212,
+    "question": "One of the foundational technologies provided by the Databricks Lakehouse Platform is an open-source, file-based storage format that brings reliability to data lakes. Which of the following technologies is being described in the above statement?",
+    "options": [
+      "Delta Lives Tables (DLT)",
+      "Delta Lake",
+      "Apache Spark",
+      "Unity Catalog",
+      "Photon"
+    ],
+    "correctIndex": 1,
+    "explanation": "Delta Lake is an open source technology that extends Parquet data files with a file-based transaction log for ACID transactions that brings reliability to data lakes.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 213,
+    "question": "Which of the following commands can a data engineer use to purge stale data files of a Delta table?",
+    "options": [
+      "DELETE",
+      "GARBAGE COLLECTION",
+      "CLEAN",
+      "VACUUM",
+      "OPTIMIZE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The VACUUM command deletes the unused data files older than a specified data retention period.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 214,
+    "question": "In Databricks Repos (Git folders), which of the following operations a data engineer can use to save local changes of a repo to its remote repository?",
+    "options": [
+      "Create Pull Request",
+      "Commit & Pull",
+      "Commit & Push",
+      "Merge & Push",
+      "Merge & Pull"
+    ],
+    "correctIndex": 2,
+    "explanation": "Commit & Push is used to save the changes on a local repo, then uploads this local repo content to the remote repository.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 215,
+    "question": "In Delta Lake tables, which of the following is the primary format for the transaction log files?",
+    "options": [
+      "Delta",
+      "Parquet",
+      "JSON",
+      "Hive-specific format",
+      "XML"
+    ],
+    "correctIndex": 2,
+    "explanation": "Delta Lake builds upon standard data formats. Delta lake table gets stored on the storage in one or more data files in Parquet format, along with transaction logs in JSON format.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 216,
+    "question": "Which of the following functionalities can be performed in Databricks Repos (Git folders)?",
+    "options": [
+      "Create pull requests",
+      "Create new remote Git repositories",
+      "Delete branches",
+      "Create CI/CD pipelines",
+      "Pull from a remote Git repository"
+    ],
+    "correctIndex": 4,
+    "explanation": "Databricks Repos supports git Pull operation. It is used to fetch and download content from a remote repository and immediately update the local repo to match that content.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 217,
+    "question": "Which of the following locations completely hosts the customer data?",
+    "options": [
+      "Customer's cloud account",
+      "Control plane",
+      "Databricks account",
+      "Databricks-managed cluster",
+      "Repos"
+    ],
+    "correctIndex": 0,
+    "explanation": "According to the Databricks Lakehouse architecture, the storage account hosting the customer data is provisioned in the data plane in the Databricks customer's cloud account.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 218,
+    "question": "If the default notebook language is Python, which of the following options a data engineer can use to run SQL commands in this Python Notebook?",
+    "options": [
+      "They need first to import the SQL library in a cell",
+      "This is not possible! They need to change the default language of the notebook to SQL",
+      "Databricks detects cells language automatically, so they can write SQL syntax in any cell",
+      "They can add %language magic command at the start of a cell to force language detection.",
+      "They can add %sql at the start of a cell."
+    ],
+    "correctIndex": 4,
+    "explanation": "By default, cells use the default language of the notebook. You can override the default language in a cell by using the language magic command at the beginning of a cell. The supported magic commands are: %python, %sql, %scala, and %r.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 219,
+    "question": "A junior data engineer uses the built-in Databricks Notebooks versioning for source control. A senior data engineer recommended using Databricks Repos (Git folders) instead. Which of the following could explain why Databricks Repos is recommended instead of Databricks Notebooks versioning?",
+    "options": [
+      "Databricks Repos supports creating and managing branches for development work.",
+      "Databricks Repos automatically tracks the changes and keeps the history.",
+      "Databricks Repos allows users to resolve merge conflicts",
+      "Databricks Repos allows users to restore previous versions of a notebook",
+      "All of these advantages explain why Databricks Repos is recommended instead of Notebooks versioning"
+    ],
+    "correctIndex": 0,
+    "explanation": "One advantage of Databricks Repos over the built-in Databricks Notebooks versioning is that Databricks Repos supports creating and managing branches for development work.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 220,
+    "question": "Which of the following services provides a data warehousing experience to its users?",
+    "options": [
+      "Databricks SQL",
+      "Databricks Machine Learning",
+      "Data Science and Engineering Workspace",
+      "Unity Catalog",
+      "Delta Lives Tables (DLT)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Databricks SQL (DB SQL) is a data warehouse on the Databricks Lakehouse Platform that lets you run all your SQL and BI applications at scale.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 221,
+    "question": "A data engineer noticed that there are unused data files in the directory of a Delta table. They executed the VACUUM command on this table; however, only some of those unused data files have been deleted. Which of the following could explain why only some of the unused data files have been deleted after running the VACUUM command?",
+    "options": [
+      "The deleted data files were larger than the default size threshold. While the remaining files are smaller than the default size threshold and can not be deleted.",
+      "The deleted data files were smaller than the default size threshold. While the remaining files are larger than the default size threshold and can not be deleted.",
+      "The deleted data files were older than the default retention threshold. While the remaining files are newer than the default retention threshold and can not be deleted.",
+      "The deleted data files were newer than the default retention threshold. While the remaining files are older than the default retention threshold and can not be deleted.",
+      "More information is needed to determine the correct answer"
+    ],
+    "correctIndex": 2,
+    "explanation": "Running the VACUUM command on a Delta table deletes the unused data files older than a specified data retention period. Unused files newer than the default retention threshold are kept untouched.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 222,
+    "question": "The data engineering team has a Delta table called products that contains products' details including the net price. Which of the following code blocks will apply a 50% discount on all the products where the price is greater than 1000 and save the new price to the table?",
+    "options": [
+      "UPDATE products SET price = price * 0.5 WHERE price >= 1000;",
+      "SELECT price * 0.5 AS new_price FROM products WHERE price > 1000;",
+      "MERGE INTO products WHERE price < 1000 WHEN MATCHED UPDATE price = price * 0.5;",
+      "UPDATE products SET price = price * 0.5 WHERE price > 1000;",
+      "MERGE INTO products WHERE price > 1000 WHEN MATCHED UPDATE price = price * 0.5;"
+    ],
+    "correctIndex": 3,
+    "explanation": "The UPDATE statement is used to modify the existing records in a table that match the WHERE condition. In this case, we are updating the products where the price is strictly greater than 1000.",
+    "domain": "Databricks Lakehouse Platform"
+  },
+  {
+    "id": 223,
+    "question": "A data engineer wants to create a relational object by pulling data from two tables. The relational object will only be used in the current session. In order to save on storage costs, the data engineer wants to avoid copying and storing physical data. Which of the following relational objects should the data engineer create?",
+    "options": [
+      "External table",
+      "Temporary view",
+      "Managed table",
+      "Global Temporary view",
+      "View"
+    ],
+    "correctIndex": 1,
+    "explanation": "In order to avoid copying and storing physical data, the data engineer must create a view object. A view in databricks is a virtual table that has no physical data. It's just a saved SQL query against actual tables. The view type should be Temporary view since it's tied to a Spark session and dropped when the session ends.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 224,
+    "question": "A data engineer has a database named db_hr, and they want to know where this database was created in the underlying storage. Which of the following commands can the data engineer use to complete this task?",
+    "options": [
+      "DESCRIBE db_hr",
+      "DESCRIBE EXTENDED db_hr",
+      "DESCRIBE DATABASE db_hr",
+      "SELECT location FROM db_hr.db",
+      "There is no need for a command since all databases are created under the default hive metastore directory"
+    ],
+    "correctIndex": 2,
+    "explanation": "The DESCRIBE DATABASE or DESCRIBE SCHEMA returns the metadata of an existing database (schema). The metadata information includes the database's name, comment, and location on the filesystem. If the optional EXTENDED option is specified, database properties are also returned.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 225,
+    "question": "Which of the following commands a data engineer can use to register the table orders from an existing SQLite database?",
+    "options": [
+      "CREATE TABLE orders USING sqlite OPTIONS (url \"jdbc:sqlite:/bookstore.db\", dbtable \"orders\")",
+      "CREATE TABLE orders USING org.apache.spark.sql.jdbc OPTIONS (url \"jdbc:sqlite:/bookstore.db\", dbtable \"orders\")",
+      "CREATE TABLE orders USING cloudfiles OPTIONS (url \"jdbc:sqlite:/bookstore.db\", dbtable \"orders\")",
+      "CREATE TABLE orders USING EXTERNAL OPTIONS (url \"jdbc:sqlite:/bookstore.db\", dbtable \"orders\")",
+      "CREATE TABLE orders USING DATABASE OPTIONS (url \"jdbc:sqlite:/bookstore.db\", dbtable \"orders\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "Using the JDBC library, Spark SQL can extract data from any existing relational database that supports JDBC. Examples include mysql, postgres, SQLite, and more.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 226,
+    "question": "When dropping a Delta table, which of the following explains why both the table's metadata and the data files will be deleted?",
+    "options": [
+      "The table is shallow cloned",
+      "The table is external",
+      "The user running the command has the necessary permissions to delete the data files",
+      "The table is managed",
+      "The data files are older than the default retention period"
+    ],
+    "correctIndex": 3,
+    "explanation": "Managed tables are tables whose metadata and the data are managed by Databricks. When you run DROP TABLE on a managed table, both the metadata and the underlying data files are deleted.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 227,
+    "question": "Given the following commands: CREATE DATABASE db_hr; USE db_hr; CREATE TABLE employees; In which of the following locations will the employees table be located?",
+    "options": [
+      "dbfs:/user/hive/warehouse",
+      "dbfs:/user/hive/warehouse/db_hr.db",
+      "dbfs:/user/hive/warehouse/db_hr",
+      "dbfs:/user/hive/databases/db_hr.db",
+      "More information is needed to determine the correct answer"
+    ],
+    "correctIndex": 1,
+    "explanation": "Since we are creating the database here without specifying a LOCATION clause, the database will be created in the default warehouse directory under dbfs:/user/hive/warehouse. The database folder have the extension (.db) And since we are creating the table also without specifying a LOCATION clause, the table becomes a managed table created under the database directory (in db_hr.db folder)",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 228,
+    "question": "Which of the following code blocks can a data engineer use to create a Python function to multiply two integers and return the result?",
+    "options": [
+      "def multiply_numbers(num1, num2):\n    print(num1 * num2)",
+      "def fun: multiply_numbers(num1, num2):\n    return num1 * num2",
+      "def multiply_numbers(num1, num2):\n    return num1 * num2",
+      "fun multiply_numbers(num1, num2):\n    return num1 * num2",
+      "fun def multiply_numbers(num1, num2):\n    return num1 * num2"
+    ],
+    "correctIndex": 2,
+    "explanation": "In Python, a function is defined using the def keyword. Here, we used the return keyword since the question clearly asks to return the result, and not printing the output.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 229,
+    "question": "Given the following 2 tables, fill in the blank to make the following query return the result showing all students and their course IDs: SELECT students.name, students.age, enrollments.course_id FROM students _____________ enrollments ON students.student_id = enrollments.student_id",
+    "options": [
+      "RIGHT JOIN",
+      "LEFT JOIN",
+      "INNER JOIN",
+      "ANTI JOIN",
+      "CROSS JOIN"
+    ],
+    "correctIndex": 1,
+    "explanation": "LEFT JOIN returns all values from the left table and the matched values from the right table, or appends NULL if there is no match. In the above example, we see NULL in the course_id of John (U0003) since he is not enrolled in any course.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 230,
+    "question": "Which of the following SQL keywords can be used to rotate rows of a table by turning row values into multiple columns?",
+    "options": [
+      "ROTATE",
+      "TRANSFORM",
+      "PIVOT",
+      "GROUP BY",
+      "ZORDER BY"
+    ],
+    "correctIndex": 2,
+    "explanation": "PIVOT transforms the rows of a table by rotating unique values of a specified column list into separate columns. In other words, It converts a table from a long format to a wide format.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 231,
+    "question": "Fill in the below blank to get the number of courses incremented by 1 for each student in array column students: SELECT faculty_id, students, ___________ AS new_totals FROM faculties",
+    "options": [
+      "TRANSFORM (students, total_courses + 1)",
+      "TRANSFORM (students, i -> i.total_courses + 1)",
+      "FILTER (students, total_courses + 1)",
+      "FILTER (students, i -> i.total_courses + 1)",
+      "CASE WHEN students.total_courses IS NOT NULL THEN students.total_courses + 1 ELSE NULL END"
+    ],
+    "correctIndex": 1,
+    "explanation": "transform(input_array, lambd_function) is a higher order function that returns an output array from an input array by transforming each element in the array using a given lambda function.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 232,
+    "question": "Fill in the below blank to successfully create a table using data from CSV files located at /path/input: CREATE TABLE my_table (col1 STRING, col2 STRING) ____________ OPTIONS (header = \"true\", delimiter = \";\") LOCATION = \"/path/input\"",
+    "options": [
+      "FROM CSV",
+      "USING CSV",
+      "USING DELTA",
+      "AS",
+      "AS CSV"
+    ],
+    "correctIndex": 1,
+    "explanation": "CREATE TABLE USING allows to specify an external data source type like CSV format, and with any additional options. This creates an external table pointing to files stored in an external location.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 233,
+    "question": "Which of the following statements best describes the usage of CREATE SCHEMA command?",
+    "options": [
+      "It's used to create a table schema (columns names and datatype)",
+      "It's used to create a Hive catalog",
+      "It's used to infer and store schema in \"cloudFiles.schemaLocation\"",
+      "It's used to create a database",
+      "It's used to merge the schema when writing data into a target table"
+    ],
+    "correctIndex": 3,
+    "explanation": "CREATE SCHEMA is an alias for CREATE DATABASE statement. While usage of SCHEMA and DATABASE is interchangeable, SCHEMA is preferred.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 234,
+    "question": "Which of the following statements is Not true about CTAS statements?",
+    "options": [
+      "CTAS statements automatically infer schema information from query results",
+      "CTAS statements support manual schema declaration",
+      "CTAS statements stand for CREATE TABLE _ AS SELECT statement",
+      "With CTAS statements, data will be inserted during the table creation",
+      "All these statements are Not true about CTAS statements"
+    ],
+    "correctIndex": 1,
+    "explanation": "CREATE TABLE AS SELECT statements, or CTAS statements create and populate Delta tables using the output of a SELECT query. CTAS statements automatically infer schema information from query results and do not support manual schema declaration.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 235,
+    "question": "Which of the following SQL commands will append this new row to the existing Delta table users?",
+    "options": [
+      "APPEND INTO users VALUES (\"0015\", \"Adam\", 23)",
+      "INSERT VALUES (\"0015\", \"Adam\", 23) INTO users",
+      "APPEND VALUES (\"0015\", \"Adam\", 23) INTO users",
+      "INSERT INTO users VALUES (\"0015\", \"Adam\", 23)",
+      "UPDATE users VALUES (\"0015\", \"Adam\", 23)"
+    ],
+    "correctIndex": 3,
+    "explanation": "INSERT INTO allows inserting new rows into a Delta table. You specify the inserted rows by value expressions or the result of a query.",
+    "domain": "ELT with Spark SQL and Python"
+  },
+  {
+    "id": 236,
+    "question": "Given the following Structured Streaming query: (spark.table(\"orders\").withColumn(\"total_after_tax\", col(\"total\")+col(\"tax\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"append\").___________table(\"new_orders\")). Fill in the blank to make the query executes multiple micro-batches to process all available data, then stops the trigger.",
+    "options": [
+      "trigger(\"micro-batches\")",
+      "trigger(once=True)",
+      "trigger(processingTime=\"0 seconds\")",
+      "trigger(micro-batches=True)",
+      "trigger(availableNow=True)"
+    ],
+    "correctIndex": 4,
+    "explanation": "In Spark Structured Streaming, we use trigger(availableNow=True) to run the stream in batch mode where it processes all available data in multiple micro-batches. The trigger will stop on its own once it finishes processing the available data.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 237,
+    "question": "Which of the following techniques allows Auto Loader to track the ingestion progress and store metadata of the discovered files?",
+    "options": [
+      "mergeSchema",
+      "COPY INTO",
+      "Watermarking",
+      "Checkpointing",
+      "Z-Ordering"
+    ],
+    "correctIndex": 3,
+    "explanation": "Auto Loader keeps track of discovered files using checkpointing in the checkpoint location. Checkpointing allows Auto loader to provide exactly-once ingestion guarantees.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 238,
+    "question": "A data engineer has defined the following data quality constraint in a Delta Live Tables pipeline: CONSTRAINT valid_id EXPECT (id IS NOT NULL) _____________. Fill in the above blank so records violating this constraint cause the pipeline to fail.",
+    "options": [
+      "ON VIOLATION FAIL",
+      "ON VIOLATION FAIL UPDATE",
+      "ON VIOLATION DROP ROW",
+      "ON VIOLATION FAIL PIPELINE",
+      "There is no need to add ON VIOLATION clause. By default, records violating the constraint cause the pipeline to fail."
+    ],
+    "correctIndex": 1,
+    "explanation": "With ON VIOLATION FAIL UPDATE, records that violate the expectation will cause the pipeline to fail. When a pipeline fails because of an expectation violation, you must fix the pipeline code to handle the invalid data correctly before re-running the pipeline.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 239,
+    "question": "In multi-hop architecture, which of the following statements best describes the Silver layer tables?",
+    "options": [
+      "They maintain data that powers analytics, machine learning, and production applications",
+      "They maintain raw data ingested from various sources",
+      "The table structure in this layer resembles that of the source system table structure with any additional metadata columns like the load time, and input file name.",
+      "They provide business-level aggregated version of data",
+      "They provide a more refined view of raw data, where it's filtered, cleaned, and enriched."
+    ],
+    "correctIndex": 4,
+    "explanation": "Silver tables provide a more refined view of the raw data. For example, data can be cleaned and filtered at this level. And we can also join fields from various bronze tables to enrich our silver records.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 240,
+    "question": "The data engineer team has a DLT pipeline that updates all the tables at defined intervals until manually stopped. The compute resources of the pipeline continue running to allow for quick testing. Which of the following best describes the execution modes of this DLT pipeline?",
+    "options": [
+      "The DLT pipeline executes in Continuous Pipeline mode under Production mode.",
+      "The DLT pipeline executes in Continuous Pipeline mode under Development mode.",
+      "The DLT pipeline executes in Triggered Pipeline mode under Production mode.",
+      "The DLT pipeline executes in Triggered Pipeline mode under Development mode.",
+      "More information is needed to determine the correct response"
+    ],
+    "correctIndex": 1,
+    "explanation": "Continuous pipelines update tables continuously as input data changes. Once an update is started, it continues to run until the pipeline is shut down. In Development mode, the Delta Live Tables system ease the development process by reusing a cluster to avoid the overhead of restarts. The cluster runs for two hours when development mode is enabled. Disabling pipeline retries so you can immediately detect and fix errors.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 241,
+    "question": "Given the following Structured Streaming query: (spark.readStream.table(\"cleanedOrders\").groupBy(\"productCategory\").agg(sum(\"totalWithTax\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"complete\").table(\"aggregatedOrders\")). Which of the following best describe the purpose of this query in a multi-hop architecture?",
+    "options": [
+      "The query is performing raw data ingestion into a Bronze table",
+      "The query is performing a hop from a Bronze table to a Silver table",
+      "The query is performing a hop from Silver layer to a Gold table",
+      "The query is performing data transfer from a Gold table into a production application",
+      "This query is performing data quality controls prior to Silver layer"
+    ],
+    "correctIndex": 2,
+    "explanation": "The above Structured Streaming query creates business-level aggregates from clean orders data in the silver table cleanedOrders, and loads them in the gold table aggregatedOrders.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 242,
+    "question": "Given the following Structured Streaming query: (spark.readStream.table(\"orders\").writeStream.option(\"checkpointLocation\", checkpointPath).table(\"Output_Table\")). Which of the following is the trigger Interval for this query?",
+    "options": [
+      "Every half second",
+      "Every half min",
+      "Every half hour",
+      "The query will run in batch mode to process all available data at once, then the trigger stops.",
+      "More information is needed to determine the correct response"
+    ],
+    "correctIndex": 0,
+    "explanation": "By default, if you don't provide any trigger interval, the data will be processed every half second. This is equivalent to trigger(processingTime=\"500ms\")",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 243,
+    "question": "A data engineer has the following query in a Delta Live Tables pipeline: CREATE STREAMING TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM LIVE.sales_bronze. The pipeline is failing to start due to an error in this query. Which of the following changes should be made to this query to successfully start the DLT pipeline?",
+    "options": [
+      "CREATE LIVE TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM STREAMING(LIVE.sales_bronze)",
+      "CREATE STREAMING TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM LIVE(STREAM.sales_bronze)",
+      "CREATE STREAMING TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM STREAM(sales_bronze)",
+      "CREATE STREAMING TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM STREAMING(LIVE.sales_bronze)",
+      "CREATE STREAMING TABLE sales_silver AS SELECT store_id, total + tax AS total_after_tax FROM STREAM(LIVE.sales_bronze)"
+    ],
+    "correctIndex": 4,
+    "explanation": "In DLT pipelines, You can stream data from other tables in the same pipeline by using the STREAM() function. In this case, you must define a streaming table using the CREATE STREAMING TABLE syntax. Remember, to query another DLT table, prepend always the LIVE. keyword to the table name.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 244,
+    "question": "In multi-hop architecture, which of the following statements best describes the Gold layer tables?",
+    "options": [
+      "They provide a more refined view of the data",
+      "They maintain raw data ingested from various sources",
+      "The table structure in this layer resembles that of the source system table structure with any additional metadata columns like the load time, and input file name.",
+      "They provide business-level aggregations that power analytics, machine learning, and production applications",
+      "They represent a filtered, cleaned, and enriched version of data"
+    ],
+    "correctIndex": 3,
+    "explanation": "Gold layer is the final layer in the multi-hop architecture, where tables provide business level aggregates often used for reporting and dashboarding, or even for Machine learning.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 245,
+    "question": "The data engineer team has a DLT pipeline that updates all the tables once and then stops. The compute resources of the pipeline terminate when the pipeline is stopped. Which of the following best describes the execution modes of this DLT pipeline?",
+    "options": [
+      "The DLT pipeline executes in Continuous Pipeline mode under Production mode.",
+      "The DLT pipeline executes in Continuous Pipeline mode under Development mode.",
+      "The DLT pipeline executes in Triggered Pipeline mode under Production mode.",
+      "The DLT pipeline executes in Triggered Pipeline mode under Development mode.",
+      "More information is needed to determine the correct response"
+    ],
+    "correctIndex": 2,
+    "explanation": "Triggered pipelines update each table with whatever data is currently available and then they shut down. In Production mode, the Delta Live Tables system terminates the cluster immediately when the pipeline is stopped, restarts the cluster for recoverable errors, and retries execution in case of specific errors.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 246,
+    "question": "A data engineer needs to determine whether to use Auto Loader or COPY INTO command in order to load input data files incrementally. In which of the following scenarios should the data engineer use Auto Loader over COPY INTO command?",
+    "options": [
+      "If they are going to ingest files in the order of millions or more over time",
+      "If they are going to ingest few number of files in the order of thousands",
+      "If they are going to load a subset of re-uploaded files",
+      "If the data schema is not going to evolve frequently",
+      "There is no difference between using Auto Loader and Copy Into command"
+    ],
+    "correctIndex": 0,
+    "explanation": "If you're going to ingest files in the order of thousands, you can use COPY INTO. If you are expecting files in the order of millions or more over time, use Auto Loader. If your data schema is going to evolve frequently, Auto Loader provides better primitives around schema inference and evolution.",
+    "domain": "Incremental Data Processing"
+  },
+  {
+    "id": 247,
+    "question": "From which of the following locations can a data engineer set a schedule to automatically refresh a Databricks SQL query?",
+    "options": [
+      "From the jobs UI",
+      "From the SQL warehouses page in Databricks SQL",
+      "From the Alerts page in Databricks SQL",
+      "From the query's page in Databricks SQL",
+      "There is no way to automatically refresh a query in Databricks SQL. Schedules can be set only for dashboards to refresh their underlying queries."
+    ],
+    "correctIndex": 3,
+    "explanation": "In Databricks SQL, you can set a schedule to automatically refresh a query from the query's page.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 248,
+    "question": "Databricks provides a declarative ETL framework for building reliable and maintainable data processing pipelines, while maintaining table dependencies and data quality. Which of the following technologies is being described above?",
+    "options": [
+      "Delta Live Tables",
+      "Delta Lake",
+      "Databricks Jobs",
+      "Unity Catalog Lineage",
+      "Databricks SQL"
+    ],
+    "correctIndex": 0,
+    "explanation": "Delta Live Tables is a framework for building reliable, maintainable, and testable data processing pipelines. You define the transformations to perform on your data, and Delta Live Tables manages task orchestration, cluster management, monitoring, data quality, and error handling.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 249,
+    "question": "Which of the following services can a data engineer use for orchestration purposes in Databricks platform?",
+    "options": [
+      "Delta Live Tables",
+      "Cluster Pools",
+      "Databricks Jobs",
+      "Data Explorer",
+      "Unity Catalog Lineage"
+    ],
+    "correctIndex": 2,
+    "explanation": "Databricks Jobs allow to orchestrate data processing tasks. This means the ability to run and manage multiple tasks as a directed acyclic graph (DAG) in a job.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 250,
+    "question": "A data engineer has a Job with multiple tasks that takes more than 2 hours to complete. In the last run, the final task unexpectedly failed. Which of the following actions can the data engineer perform to complete this Job Run while minimizing the execution time?",
+    "options": [
+      "They can rerun this Job Run to execute all the tasks",
+      "They can repair this Job Run so only the failed tasks will be re-executed",
+      "They need to delete the failed Run, and start a new Run for the Job",
+      "They can keep the failed Run, and simply start a new Run for the Job",
+      "They can run the Job in Production mode which automatically retries execution in case of errors"
+    ],
+    "correctIndex": 1,
+    "explanation": "You can repair failed multi-task jobs by running only the subset of unsuccessful tasks and any dependent tasks. Because successful tasks are not re-run, this feature reduces the time and resources required to recover from unsuccessful job runs.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 251,
+    "question": "A data engineering team has a multi-tasks Job in production. The team members need to be notified in the case of job failure. Which of the following approaches can be used to send emails to the team members in the case of job failure?",
+    "options": [
+      "They can use Job API to programmatically send emails according to each task status",
+      "They can configure email notifications settings in the job page",
+      "There is no way to notify users in the case of job failure",
+      "Only Job owner can be configured to be notified in the case of job failure",
+      "They can configure email notifications settings per notebook in the task page"
+    ],
+    "correctIndex": 1,
+    "explanation": "Databricks Jobs support email notifications to be notified in the case of job start, success, or failure. Simply, click Edit email notifications from the details panel in the Job page. From there, you can add one or more email addresses.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 252,
+    "question": "For production jobs, which of the following cluster types is recommended to use?",
+    "options": [
+      "All-purpose clusters",
+      "Production clusters",
+      "Job clusters",
+      "On-premises clusters",
+      "Serverless clusters"
+    ],
+    "correctIndex": 2,
+    "explanation": "Job Clusters are dedicated clusters for a job or task run. A job cluster auto terminates once the job is completed, which saves cost compared to all-purpose clusters. In addition, Databricks recommends using job clusters in production so that each job runs in a fully isolated environment.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 253,
+    "question": "In Databricks Jobs, which of the following approaches can a data engineer use to configure a linear dependency between Task A and Task B?",
+    "options": [
+      "They can select the Task A in the Depends On field of the Task B configuration",
+      "They can assign Task A an Order number of 1, and assign Task B an Order number of 2",
+      "They can visually drag and drop an arrow from Task A to Task B in the Job canvas",
+      "They can configure the dependency at the notebook level using the dbutils.jobs utility",
+      "Databricks Jobs do not support linear dependency between tasks. This can only be achieved in Delta Live Tables pipelines"
+    ],
+    "correctIndex": 0,
+    "explanation": "You can define the order of execution of tasks in a job using the Depends on dropdown menu. You can set this field to one or more tasks in the job.",
+    "domain": "Production Pipelines"
+  },
+  {
+    "id": 254,
+    "question": "Which part of the Databricks Platform can a data engineer use to revoke permissions from users on tables?",
+    "options": [
+      "Data Explorer",
+      "Cluster event log",
+      "Workspace Admin Console",
+      "DBFS",
+      "There is no way to revoke permissions in Databricks platform. The data engineer needs to clone the table with the updated permissions"
+    ],
+    "correctIndex": 0,
+    "explanation": "Data Explorer in Databricks SQL allows you to manage data object permissions. This includes revoking privileges on tables and databases from users or groups of users.",
+    "domain": "Data Governance"
+  },
+  {
+    "id": 255,
+    "question": "A data engineer uses the following SQL query: GRANT USAGE ON DATABASE sales_db TO finance_team. Which of the following is the benefit of the USAGE privilege?",
+    "options": [
+      "Gives read access on the database",
+      "Gives full permissions on the entire database",
+      "Gives the ability to view database objects and their metadata",
+      "No effect! but it's required to perform any action on the database",
+      "USAGE privilege is not part of the Databricks governance model"
+    ],
+    "correctIndex": 3,
+    "explanation": "The USAGE does not give any abilities, but it's an additional requirement to perform any action on a schema (database) object.",
+    "domain": "Data Governance"
+  },
+  {
+    "id": 256,
+    "question": "In which of the following locations can a data engineer change the owner of a table?",
+    "options": [
+      "In DBFS, from the properties tab of the table's data files",
+      "In Data Explorer, under the Permissions tab of the table's page",
+      "In Data Explorer, from the Owner field in the table's page",
+      "In Data Explorer, under the Permissions tab of the database's page, since owners are set at database-level",
+      "In Data Explorer, from the Owner field in the database's page, since owners are set at database-level"
+    ],
+    "correctIndex": 2,
+    "explanation": "In Data Explorer, you can change the owner of a table from the Owner field in the table's page.",
+    "domain": "Data Governance"
   }
 ]
