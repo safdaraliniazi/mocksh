@@ -1,3 +1,6 @@
+-- Drop existing policy if it exists
+drop policy if exists "All users can view profiles for leaderboard" on public.profiles;
+
 -- Add RLS policy to allow all authenticated users to read profiles for leaderboard
 create policy "All users can view profiles for leaderboard"
   on public.profiles for select
@@ -5,7 +8,8 @@ create policy "All users can view profiles for leaderboard"
   using (true);
 
 -- Update leaderboard view to join with profiles table instead of auth.users
-create or replace view public.leaderboard as
+drop view if exists public.leaderboard cascade;
+create view public.leaderboard as
 select 
   tr.user_id,
   coalesce(p.full_name, p.email, au.email) as email,

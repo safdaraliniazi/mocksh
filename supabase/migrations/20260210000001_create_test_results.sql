@@ -23,6 +23,10 @@ create index if not exists test_results_score_idx on public.test_results (score 
 -- Enable row level security
 alter table public.test_results enable row level security;
 
+-- Drop existing policies if they exist
+drop policy if exists "Users can view their own test results" on public.test_results;
+drop policy if exists "Users can insert their own test results" on public.test_results;
+
 -- Users can view their own test results
 create policy "Users can view their own test results"
   on public.test_results for select
@@ -34,7 +38,8 @@ create policy "Users can insert their own test results"
   with check (auth.uid() = user_id);
 
 -- Create a view for leaderboard (public read access)
-create or replace view public.leaderboard as
+drop view if exists public.leaderboard cascade;
+create view public.leaderboard as
 select 
   tr.user_id,
   au.email,
@@ -54,7 +59,8 @@ alter table public.leaderboard owner to postgres;
 grant select on public.leaderboard to authenticated;
 
 -- Create a view for user statistics
-create or replace view public.user_stats as
+drop view if exists public.user_stats cascade;
+create view public.user_stats as
 select 
   user_id,
   count(*) as total_tests,

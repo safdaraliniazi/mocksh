@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import questions from './questions.json'
-import { supabase } from './supabaseClient'
+import { supabase, retryWithBackoff, verifyProfileExists } from './supabaseClient'
 import Profile from './components/Profile'
 import Leaderboard from './components/Leaderboard'
 
@@ -32,6 +32,8 @@ function App() {
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [authError, setAuthError] = useState('')
+  const [authLoading, setAuthLoading] = useState(false)
+  const [authSuccess, setAuthSuccess] = useState('')
   
   const [started, setStarted] = useState(false)
   const [timeLeft, setTimeLeft] = useState(TEST_DURATION_SECONDS)
@@ -281,24 +283,82 @@ function App() {
   const handleAuth = async (e) => {
     e.preventDefault()
     setAuthError('')
+    setAuthSuccess('')
+    setAuthLoading(true)
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
+        // Sign up with retry logic for rate limiting
+        const signUpResult = await retryWithBackoff(async () => {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: `${window.location.origin}`,
+              data: {
+                email: email
+              }
+            }
+          })
+          if (error) throw error
+          return data
         })
-        if (error) throw error
-        setAuthError('Check your email for the confirmation link!')
+
+        if (signUpResult?.user) {
+          // Verify profile was created
+          const profileExists = await verifyProfileExists(signUpResult.user.id)
+          
+          if (!profileExists) {
+            // If profile doesn't exist after retries, try to create it manually
+            try {
+              await supabase.from('profiles').insert({
+                id: signUpResult.user.id,
+                email: email
+              })
+            } catch (insertError) {
+              console.error('Error creating profile:', insertError)
+              throw new Error('Account created but profile setup failed. Please contact support.')
+            }
+          }
+
+          setAuthSuccess('✅ Success! Please check your email for the confirmation link. Check spam folder if you don\'t see it.')
+          setEmail('')
+          setPassword('')
+        } else {
+          throw new Error('Signup failed. Please try again.')
+        }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        // Login with retry logic for rate limiting
+        await retryWithBackoff(async () => {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          })
+          if (error) throw error
         })
-        if (error) throw error
+        setAuthSuccess('✅ Successfully logged in!')
+        setEmail('')
+        setPassword('')
       }
     } catch (error) {
-      setAuthError(error.message)
+      console.error('Auth error:', error)
+      
+      // Provide user-friendly error messages
+      let errorMessage = error.message
+      
+      if (error.message?.toLowerCase().includes('rate limit')) {
+        errorMessage = '⚠️ Too many requests. Please wait a moment and try again.'
+      } else if (error.message?.toLowerCase().includes('invalid login credentials')) {
+        errorMessage = '❌ Invalid email or password. Please check and try again.'
+      } else if (error.message?.toLowerCase().includes('email not confirmed')) {
+        errorMessage = '⚠️ Please confirm your email address first. Check your inbox for the confirmation link.'
+      } else if (error.message?.toLowerCase().includes('user already registered')) {
+        errorMessage = '⚠️ This email is already registered. Try logging in instead or use password reset if you forgot your password.'
+      }
+      
+      setAuthError(errorMessage)
+    } finally {
+      setAuthLoading(false)
     }
   }
 
@@ -384,6 +444,7 @@ function App() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     required
+                    disabled={authLoading}
                   />
                 </div>
                 <div className="cf-form-group">
@@ -396,15 +457,44 @@ function App() {
                     placeholder="Enter your password"
                     required
                     minLength={6}
+                    disabled={authLoading}
                   />
+                  {!isSignUp && (
+                    <div style={{ fontSize: '0.85rem', marginTop: '4px', opacity: 0.7 }}>
+                      Minimum 6 characters
+                    </div>
+                  )}
                 </div>
+                {authSuccess && (
+                  <div className="cf-alert cf-alert--success">
+                    {authSuccess}
+                  </div>
+                )}
                 {authError && (
-                  <div className={`cf-alert ${authError.includes('Check') ? 'cf-alert--success' : 'cf-alert--error'}`}>
+                  <div className="cf-alert cf-alert--error">
                     {authError}
                   </div>
                 )}
-                <button type="submit" className="cf-btn cf-btn--primary" style={{ width: '100%' }}>
-                  {isSignUp ? 'Sign Up' : 'Login'}
+                {isSignUp && (
+                  <div className="cf-alert" style={{ backgroundColor: '#e3f2fd', borderColor: '#2196f3', color: '#1565c0', fontSize: '0.9rem' }}>
+                    💡 <strong>Important:</strong> After signing up, you'll receive a confirmation email. 
+                    Please check your inbox (and spam folder) and click the confirmation link to activate your account.
+                  </div>
+                )}
+                <button 
+                  type="submit" 
+                  className="cf-btn cf-btn--primary" 
+                  style={{ width: '100%' }}
+                  disabled={authLoading}
+                >
+                  {authLoading ? (
+                    <>
+                      <span style={{ display: 'inline-block', marginRight: '8px' }}>⏳</span>
+                      {isSignUp ? 'Creating Account...' : 'Logging in...'}
+                    </>
+                  ) : (
+                    <>{isSignUp ? 'Sign Up' : 'Login'}</>
+                  )}
                 </button>
                 <div style={{ textAlign: 'center', marginTop: '16px' }}>
                   <button
@@ -413,7 +503,9 @@ function App() {
                     onClick={() => {
                       setIsSignUp(!isSignUp)
                       setAuthError('')
+                      setAuthSuccess('')
                     }}
+                    disabled={authLoading}
                   >
                     {isSignUp
                       ? 'Already have an account? Login'
@@ -537,23 +629,39 @@ function App() {
               <div className="cf-box__header" style={{ background: '#1976d2', color: '#ffffff', borderColor: '#1976d2' }}>
                 Databricks Certified Associate Data Engineer Test
               </div>
-              <div className="cf-box__body">
-                <div style={{ marginBottom: '20px' }}>
-                  <h3 style={{ marginBottom: '12px' }}>Welcome, {displayName}!</h3>
-                  <p style={{ lineHeight: '1.6' }}>
-                    This is a comprehensive assessment covering core data engineering concepts including:
-                  </p>
-                  <ul style={{ lineHeight: '1.8', marginLeft: '20px' }}>
-                    <li>Data architecture and design patterns</li>
-                    <li>ETL/ELT processes and workflows</li>
-                    <li>Data modeling and optimization</li>
-                    <li>Database systems and query performance</li>
-                    <li>Data quality and governance</li>
-                  </ul>
+              <div className="cf-box__body" style={{ 
+                position: 'relative',
+                backgroundImage: 'url(/primary-lockup-full-color-rgb.svg)',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center center',
+                backgroundSize: '50%',
+                backgroundBlendMode: 'overlay',
+                opacity: 1
+              }}>
+                <div style={{ 
+                  position: 'relative',
+                  zIndex: 1,
+                  background: 'rgba(255, 255, 255, 0.92)',
+                  padding: '20px',
+                  borderRadius: '8px'
+                }}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginBottom: '12px' }}>Welcome, {displayName}!</h3>
+                    <p style={{ lineHeight: '1.6' }}>
+                      This is a comprehensive assessment covering core data engineering concepts including:
+                    </p>
+                    <ul style={{ lineHeight: '1.8', marginLeft: '20px' }}>
+                      <li>Data architecture and design patterns</li>
+                      <li>ETL/ELT processes and workflows</li>
+                      <li>Data modeling and optimization</li>
+                      <li>Database systems and query performance</li>
+                      <li>Data quality and governance</li>
+                    </ul>
+                  </div>
+                  <button className="cf-btn cf-btn--primary" onClick={startTest} disabled={!canStart}>
+                    Begin Test
+                  </button>
                 </div>
-                <button className="cf-btn cf-btn--primary" onClick={startTest} disabled={!canStart}>
-                  Begin Test
-                </button>
               </div>
             </div>
           </div>
@@ -656,6 +764,41 @@ function App() {
                       </button>
                       <a 
                         href="/databricks_de_associate 1.pdf" 
+                        download
+                        className="cf-resource-btn"
+                        title="Download"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="cf-resource-item">
+                    <div className="cf-resource-icon">
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="#dc2626">
+                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                      </svg>
+                    </div>
+                    <div className="cf-resource-content">
+                      <div className="cf-resource-title" title="Databricks2.pdf">Databricks 2</div>
+                      <div className="cf-resource-meta">Study Guide</div>
+                    </div>
+                    <div className="cf-resource-actions">
+                      <button 
+                        className="cf-resource-btn" 
+                        onClick={() => setSelectedPdf('/Databricks2.pdf')}
+                        title="Preview"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                      </button>
+                      <a 
+                        href="/Databricks2.pdf" 
                         download
                         className="cf-resource-btn"
                         title="Download"

@@ -7,6 +7,12 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Drop existing policies if they exist
+drop policy if exists "Users can view their profile" on public.profiles;
+drop policy if exists "Users can insert their profile" on public.profiles;
+drop policy if exists "Users can update their profile" on public.profiles;
+drop policy if exists "Users can delete their profile" on public.profiles;
+
 create policy "Users can view their profile"
   on public.profiles for select
   using (auth.uid() = id);
