@@ -13,8 +13,29 @@ function Leaderboard({ leaderboard, currentUserId }) {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)))
   }
 
+  // Find user's best rank
+  const userEntries = leaderboard.filter(entry => entry.user_id === currentUserId)
+  const userBestRank = userEntries.length > 0 
+    ? Math.min(...userEntries.map(entry => entry.rank))
+    : null
+
   return (
     <div className="cf-container">
+      {/* User's Best Rank */}
+      {userBestRank && (
+        <div className="cf-user-rank-highlight">
+          <div className="cf-user-rank-highlight__content">
+            <div className="cf-user-rank-highlight__label">Your Best Rank</div>
+            <div className="cf-user-rank-highlight__rank">
+              {userBestRank <= 3 ? ['🥇', '🥈', '🥉'][userBestRank - 1] : `#${userBestRank}`}
+            </div>
+            <div className="cf-user-rank-highlight__info">
+              {userEntries.length} {userEntries.length === 1 ? 'entry' : 'entries'} on leaderboard
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="cf-box">
         <div className="cf-box__header">
           Global Leaderboard

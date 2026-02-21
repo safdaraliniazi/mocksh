@@ -50,6 +50,7 @@ function App() {
   const [testHistory, setTestHistory] = useState([])
   const [leaderboard, setLeaderboard] = useState([])
   const [loadingStats, setLoadingStats] = useState(false)
+  const [userProfile, setUserProfile] = useState(null)
   const [selectedPdf, setSelectedPdf] = useState(null)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
@@ -139,6 +140,15 @@ function App() {
     const fetchUserData = async () => {
       setLoadingStats(true)
       try {
+        // Fetch user profile
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
+
+        setUserProfile(profile)
+
         // Fetch user stats
         const { data: stats } = await supabase
           .from('user_stats')
@@ -271,13 +281,15 @@ function App() {
   }
 
   const handleRestart = () => {
-    setStarted(false)
-    setSubmitted(false)
-    setAnswers({})
-    setSelectedQuestions([])
-    setTimeLeft(TEST_DURATION_SECONDS)
-    setCurrentIndex(0)
-    setTestStartTime(null)
+    if (window.confirm('Are you sure you want to end the test? Your progress will be lost.')) {
+      setStarted(false)
+      setSubmitted(false)
+      setAnswers({})
+      setSelectedQuestions([])
+      setTimeLeft(TEST_DURATION_SECONDS)
+      setCurrentIndex(0)
+      setTestStartTime(null)
+    }
   }
 
   const handleAuth = async (e) => {
@@ -638,13 +650,7 @@ function App() {
                 backgroundBlendMode: 'overlay',
                 opacity: 1
               }}>
-                <div style={{ 
-                  position: 'relative',
-                  zIndex: 1,
-                  background: 'rgba(255, 255, 255, 0.92)',
-                  padding: '20px',
-                  borderRadius: '8px'
-                }}>
+                <div className="cf-welcome-box">
                   <div style={{ marginBottom: '20px' }}>
                     <h3 style={{ marginBottom: '12px' }}>Welcome, {displayName}!</h3>
                     <p style={{ lineHeight: '1.6' }}>
@@ -816,7 +822,7 @@ function App() {
           </aside>
         </div>
         ) : activeTab === 'profile' ? (
-          <Profile userStats={userStats} testHistory={testHistory} loadingStats={loadingStats} />
+          <Profile user={user} userProfile={userProfile} userStats={userStats} testHistory={testHistory} loadingStats={loadingStats} totalQuestionsInBank={questionBank.length} />
         ) : (
           <Leaderboard leaderboard={leaderboard} currentUserId={user?.id} />
         )
