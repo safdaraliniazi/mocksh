@@ -281,7 +281,8 @@ function App() {
   }
 
   const handleRestart = () => {
-    if (window.confirm('Are you sure you want to end the test? Your progress will be lost.')) {
+    // If already submitted, no need for confirmation
+    if (submitted || window.confirm('Are you sure you want to end the test? Your progress will be lost.')) {
       setStarted(false)
       setSubmitted(false)
       setAnswers({})
