@@ -90,12 +90,33 @@ body {
   margin: 0;
   min-height: 100vh;
   background: var(--bg-primary);
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Touch optimization for mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button, a, .cf-option, .cf-nav-tab, .cf-problem-nav__item {
+    min-height: 44px;
+  }
 }
 
 #root {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px 20px 40px;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 10px 10px 30px;
+  }
 }
 
 h1,
@@ -115,4 +136,27 @@ button {
   font-size: 1rem;
   border: none;
   background: none;
+}
+
+/* Responsive media elements */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent code blocks from causing horizontal scroll */
+pre,
+code {
+  overflow-x: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+  pre,
+  code {
+    font-size: 0.85rem;
+  }
 }

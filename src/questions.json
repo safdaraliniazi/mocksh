@@ -8,7 +8,9 @@
       "SHOW DATABASES",
       "SHOW TABLES"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "SHOW CATALOGS is the correct command to display all catalogs in the metastore in Databricks."
   },
   {
     "id": 2,
@@ -20,7 +22,9 @@
       "A single integer",
       "A list of rows"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The collect() method returns a list of rows, and accessing [0]['total'] retrieves the first row's 'total' column value as a single integer."
   },
   {
     "id": 3,
@@ -31,7 +35,9 @@
       "Parquet",
       "XML"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Lake uses Parquet as the underlying file format for data storage, adding a transaction log for ACID properties."
   },
   {
     "id": 4,
@@ -42,7 +48,9 @@
       "Databricks Asset Bundles",
       "Databricks Command Line Interface"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Databricks Asset Bundles provide a standardized way to package, deploy, and manage data pipelines with version control and testing capabilities."
   },
   {
     "id": 5,
@@ -53,7 +61,9 @@
       "import dlt\n\n@dlt.table(name=\"orders_raw\")\ndef orders_raw():\n    return (\n        spark.readStream\n            .format(\"cloudFiles\")\n            .option(\"cloudFiles.format\", \"json\")\n            .option(\"cloudFiles.schemaLocation\", \"/schema/location\")\n            .load(\"kafka://broker:9092/orders_topic\")\n    )",
       "CREATE LIVE TABLE orders_raw AS SELECT CAST(json_data AS STRING) AS json_data FROM kafka.kafka_broker:9092.orders_topic;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Live Tables (DLT) supports reading from Kafka using spark.readStream with the kafka format and appropriate connection options."
   },
   {
     "id": 6,
@@ -64,7 +74,9 @@
       "Databricks supports multiple languages but only one per notebook.",
       "Databricks supports language interoperability but only if a special character is used."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks cells support only one default language, though you can use magic commands (%python, %sql, %scala, %r) to switch languages between cells."
   },
   {
     "id": 7,
@@ -75,7 +87,9 @@
       "Restart the cluster",
       "Switch the cluster"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The repair task option allows rerunning a failed workflow task after fixing issues, without restarting the entire workflow."
   },
   {
     "id": 8,
@@ -86,7 +100,9 @@
       "CREATE OR REFRESH STREAMING TABLE orders_valid AS SELECT * FROM STREAM orders_raw WHERE order_datetime IS NOT NULL;",
       "CREATE OR REPLACE STREAMING TABLE orders_valid ( FILTER (order_datetime IS NOT NULL) ) AS SELECT * FROM STREAM orders_raw;"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 9,
@@ -97,7 +113,9 @@
       "GRANT USE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
       "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Governance & Quality",
+    "explanation": "Granting CREATE TABLE on schema, USE SCHEMA on schema, and USE CATALOG on catalog provides the minimum necessary privileges for creating tables."
   },
   {
     "id": 10,
@@ -108,7 +126,9 @@
       "Job cluster with spot instances disabled",
       "Job cluster with Photon enabled"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "Job clusters with spot instances enabled provide the most cost-effective solution for small workloads since they use cheaper spot pricing and terminate after job completion."
   },
   {
     "id": 11,
@@ -119,7 +139,9 @@
       "Auto Loader ingests new files from cloud storage, supports batch and streaming, no schema evolution.",
       "Auto Loader ingests new files from cloud storage, supports batch and streaming with schema evolution."
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "Auto Loader efficiently processes new files from cloud storage, supporting both batch and streaming modes with automatic schema inference and evolution."
   },
   {
     "id": 12,
@@ -130,7 +152,9 @@
       "Use Spot Instances to allocate resources dynamically with potential interruptions.",
       "Deploy Job Clusters with fixed configurations and no auto-scaling."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 13,
@@ -141,7 +165,9 @@
       "CSV",
       "Plain text"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks audit logs use JSON format for structured event data, making it easy to parse and analyze security and usage information."
   },
   {
     "id": 14,
@@ -152,7 +178,9 @@
       "Using a third-party API to access the Delta table",
       "Databricks-to-Databricks Sharing"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 15,
@@ -163,7 +191,9 @@
       "CREATE UNMANAGED TABLE without specifying a LOCATION clause.",
       "CREATE EXTERNAL TABLE without specifying a LOCATION clause."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "CREATE TABLE with a LOCATION clause creates an external table that references data in external storage without moving it into managed storage."
   },
   {
     "id": 16,
@@ -174,7 +204,9 @@
       "Requires custom code for data quality checks, no support for streaming data, and complex pipeline maintenance",
       "Supports only batch processing, no data versioning, and high infrastructure costs"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 17,
@@ -186,7 +218,9 @@
       "De-normalised",
       "Raw data"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Governance & Quality",
+    "explanation": "The Gold layer contains business-level aggregates and optimized tables for read performance, typically denormalized for analytical queries."
   },
   {
     "id": 18,
@@ -197,7 +231,9 @@
       "Unity Catalog lineage tracks dependencies between tables and notebooks but excludes jobs and dashboards.",
       "Unity Catalog lineage visualizes dependencies between Delta tables, notebooks, and jobs but excludes column-level tracing and dashboards."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Unity Catalog lineage provides interactive visualization of data dependencies across tables, notebooks, jobs, and dashboards with column-level tracking."
   },
   {
     "id": 19,
@@ -208,7 +244,9 @@
       "All-Purpose Cluster with autoscaling",
       "Job cluster with Photon enabled and autoscaling"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'All-Purpose Cluster with autoscaling' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 20,
@@ -219,7 +257,9 @@
       "Bronze",
       "Raw layer"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Bronze' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 21,
@@ -230,7 +270,9 @@
       "The name of their Databricks cluster",
       "The IP address of their Databricks workspace"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'The sharing identifier of their Unity Catalog metastore' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 22,
@@ -241,7 +283,9 @@
       "Export to CSV and transfer the file manually.",
       "Grant partner workspace access with full write permissions."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 23,
@@ -252,7 +296,9 @@
       "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").append(\"/.png\")",
       "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \".png\").append()"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \".png\").load(\"<base-path>\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 24,
@@ -263,7 +309,9 @@
       "Sharing data within the same cloud provider and region",
       "Using Delta Sharing for internal analytics within a single cloud environment"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 25,
@@ -274,7 +322,9 @@
       "from pyspark.sql import functions as F\naggregated_df = df.select(\"product\", \"revenue\").groupBy(\"product\").agg(F.sum(\"revenue\"), F.mean(\"revenue\"))",
       "aggregated_df = df.groupBy(\"product\").agg(f\"revenue\": \"sum\", \"revenue\": \"avg\", \"revenue\": \"count\")"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'from pyspark.sql import functions as F\naggregated_df = df.groupBy(\"product\").agg(F.sum(\"revenue\").alias(\"total_revenue\"), F.avg(\"revenue\").alias(\"avg_revenue\"), F.count(\"*\").alias(\"transaction_count\"))' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 26,
@@ -285,7 +335,9 @@
       "Expectations",
       "Monitoring"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 27,
@@ -296,7 +348,9 @@
       "Increase parallelism due to over-utilized memory.",
       "No change needed; it indicates efficient use."
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Consider executor/core tuning or resizing the cluster for a CPU-bound job.' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 28,
@@ -307,7 +361,9 @@
       "Delta Lake",
       "Lakehouse Federation"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Lakehouse Federation' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 29,
@@ -318,7 +374,9 @@
       "Data lake",
       "Cloud File Storage"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'Delta Lake' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 30,
@@ -329,7 +387,9 @@
       "failOnNewColumns",
       "none"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'failOnNewColumns' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 31,
@@ -340,7 +400,9 @@
       "Allows direct execution of Spark jobs locally without any network connection.",
       "Provides a local environment that mimics the Databricks runtime, enabling development and debugging in a preferred IDE."
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Provides a local environment that mimics the Databricks runtime, enabling development and debugging in a preferred IDE.' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 32,
@@ -351,7 +413,9 @@
       "30MBs",
       "25MBs"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is '30MBs' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 33,
@@ -362,7 +426,9 @@
       "category_sales = sales_df.agg(sum(\"sales_amount\").groupBy(\"category\").alias(\"total_sales_amount\"))",
       "category_sales = sales_df.groupBy(\"region\").agg(sum(\"sales_amount\").alias(\"total_sales_amount\"))"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'category_sales = sales_df.groupBy(\"category\").agg(sum(\"sales_amount\").alias(\"total_sales_amount\"))' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 34,
@@ -373,7 +439,9 @@
       "Restart the cluster",
       "Repair run"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The repair task option allows rerunning a failed workflow task after fixing issues, without restarting the entire workflow."
   },
   {
     "id": 35,
@@ -384,7 +452,9 @@
       "Serverless Compute",
       "SQL Warehouse"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Job Cluster' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 36,
@@ -400,7 +470,9 @@
     "correctIndices": [
       0,
       1
-    ]
+    ],
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Narrow the filters to collect less data in the query' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 37,
@@ -411,7 +483,9 @@
       "INSERT INTO employees VALUES (1, 'Alice');",
       "SELECT * FROM employees;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'CREATE TABLE employees (id INT, name STRING, salary DECIMAL(10,2));' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 38,
@@ -422,7 +496,9 @@
       "Add print statements to check the variable.",
       "The Databricks debugger breakpoints raise an error on wrong data types."
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'The Databricks debugger provides a variable explorer to inspect values.' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 39,
@@ -433,7 +509,9 @@
       "Ganglia UI to monitor cluster resources",
       "Python Notebook Interactive Debugger to inspect variables"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Python Notebook Interactive Debugger to inspect variables' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 40,
@@ -444,7 +522,9 @@
       "Serverless SQL Warehouse",
       "Serverless compute for notebooks"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Pro SQL Warehouse' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 41,
@@ -455,7 +535,9 @@
       "Aggregate data from multiple sources",
       "Perform extensive data cleansing"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Include columns like load date/time and process ID' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 42,
@@ -466,7 +548,9 @@
       "df = spark.readStream.format(\"cloudFiles\").option(\"json\").load(\"/input/path\")",
       "df = spark.read.format(\"cloud\").option(\"json\").load(\"/input/path\")"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(\"/input/path\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 43,
@@ -477,7 +561,9 @@
       "Schema Owner",
       "Catalog Owner"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'Schema Owner' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 44,
@@ -488,7 +574,9 @@
       "import dlt\n\n@dlt.table\ndef raw_customers():\n    return spark.read.format(\"csv\").load(\"s3://my-bucket/raw-customers/\")",
       "import dlt\n\n@dlt.table\ndef raw_customers():\n    return spark.read.json(\"s3://my-bucket/raw-customers/\")"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 45,
@@ -499,7 +587,9 @@
       "Frequently running Python transformation pipeline compatible with latest runtime and Unity Catalog",
       "Frequently running Scala transformation pipeline compatible with latest runtime and Unity Catalog"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Low frequency BI dashboarding and ad-hoc SQL analytics' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 46,
@@ -510,7 +600,9 @@
       "Use lineage to visualize where the table is used only in reports.",
       "Use lineage to visualize a graph of all dependencies, including notebooks, tables, and reports."
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Use lineage to visualize a graph of all dependencies, including notebooks, tables, and reports.' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 47,
@@ -521,7 +613,9 @@
       "Aggregate and enrich data for business analytics",
       "Validate, clean, and deduplicate data for further processing"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Validate, clean, and deduplicate data for further processing' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 48,
@@ -532,7 +626,9 @@
       "Implement liquid clustering on customer_id while keeping existing partitioning.",
       "Partition the table by customer_id."
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Implement liquid clustering on customer_id while keeping existing partitioning.' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 49,
@@ -543,7 +639,9 @@
       "Manually synchronize into a single database",
       "Lakehouse Federation to query both sources directly"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Lakehouse Federation to query both sources directly' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 50,
@@ -554,7 +652,9 @@
       "Migrate the dataset to Cloudflare R2 object storage before sharing",
       "Share data via pre-signed URLs without monitoring egress costs"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Migrate the dataset to Cloudflare R2 object storage before sharing' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 51,
@@ -565,7 +665,9 @@
       "A ZIP archive containing only workspace assets without metadata",
       "A Docker image containing runtime environments and source code"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'A YAML configuration file specifying artifacts, resources, and configurations' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 52,
@@ -576,7 +678,9 @@
       "ALL PRIVILEGES",
       "SELECT"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'SELECT' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 53,
@@ -587,7 +691,9 @@
       "User-managed autoscaling cluster",
       "Dedicated manually managed cluster"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 54,
@@ -598,7 +704,9 @@
       "Maintain workflow_config.json and deploy it using Terraform",
       "Databricks Asset Bundles (DAB) with GitHub integration"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Databricks Asset Bundles provide a standardized way to package, deploy, and manage data pipelines with version control and testing capabilities."
   },
   {
     "id": 55,
@@ -609,7 +717,9 @@
       "Use Unity Catalog to manage access controls for each external table",
       "Set storage permissions at the container level"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'Use Unity Catalog to manage access controls for each external table' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 56,
@@ -620,7 +730,9 @@
       "Zip code and share via email with data ingestion from your data lake",
       "Share data and notebooks using Unity Catalog only"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 57,
@@ -631,7 +743,9 @@
       "Job Cluster",
       "Dedicated Cluster"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Job Cluster' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 58,
@@ -642,7 +756,9 @@
       "Job Execution Dashboard",
       "Cluster Logs"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Python Notebook Interactive Debugger' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 59,
@@ -653,7 +769,9 @@
       "Ability to work with time-related data in specified intervals",
       "Ability to work with complex, nested data ingested from JSON files"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Ability to work with complex, nested data ingested from JSON files' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 60,
@@ -665,7 +783,9 @@
       "Databricks Filesystem",
       "Driver node"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Databricks web application' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 61,
@@ -677,7 +797,9 @@
       "Ability to support batch and streaming workloads",
       "Ability to distribute complex data operations"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Ability to support batch and streaming workloads' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 62,
@@ -689,7 +811,9 @@
       "Stored in a collection of files containing only the table data",
       "Stored in a single file containing only the table data"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Stored in a collection of files containing data, history, metadata, and other attributes' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 63,
@@ -701,7 +825,9 @@
       "UPDATE my_table WHERE age <= 25;",
       "DELETE FROM my_table WHERE age <= 25;"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'DELETE FROM my_table WHERE age > 25;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 64,
@@ -712,7 +838,9 @@
       "Databricks SQL",
       "Unity Catalog"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Spark Structured Streaming' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 65,
@@ -723,7 +851,9 @@
       "SELECT count_if(member_id IS NULL) FROM my_table;",
       "SELECT null(member_id) FROM my_table;"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'SELECT count_if(member_id IS NULL) FROM my_table;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 66,
@@ -735,7 +865,9 @@
       "Stores data in open formats",
       "Enables ML and AI workloads"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Supports ACID-compliant transactions' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 67,
@@ -746,7 +878,9 @@
       "Delta Table",
       "Temporary view"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Temporary view' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 68,
@@ -758,7 +892,9 @@
       "New lead data engineer",
       "Original data engineer"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Workspace administrator' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 69,
@@ -770,7 +906,9 @@
       "spark.delta.table(\"sales\")",
       "spark.table(\"sales\")"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'spark.table(\"sales\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 70,
@@ -782,7 +920,9 @@
       "ALTER DATABASE customer360 SET DBPROPERTIES ('location' = '/user'};",
       "USE DATABASE customer360;"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'DESCRIBE DATABASE customer360;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 71,
@@ -794,7 +934,9 @@
       "COMMENT \"Contains PII\"",
       "PII"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'COMMENT \"Contains PII\"' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 72,
@@ -805,7 +947,9 @@
       "Notebooks",
       "Data"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Data' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 73,
@@ -817,7 +961,9 @@
       "APPEND",
       "INSERT"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'MERGE' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 74,
@@ -828,7 +974,9 @@
       "Databricks SQL",
       "Auto Loader"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Auto Loader' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 75,
@@ -840,7 +988,9 @@
       "Restrict access to the source table so it's only accessible on Sundays",
       "Redesign the model to separate data for the final query"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Wrap queries in PySpark and use Python control flow to run the final query on Sundays' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 76,
@@ -852,7 +1002,9 @@
       "PARQUET does not support COPY INTO",
       "The table must be refreshed to view copied rows"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'The previous day's file was already copied' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 77,
@@ -863,7 +1015,9 @@
       "When the source is not a Delta table",
       "When the target table cannot contain duplicate records"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'When the target table cannot contain duplicate records' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 78,
@@ -874,7 +1028,9 @@
       "org.apache.spark.sql.sqlite",
       "sqlite"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'org.apache.spark.sql.jdbc' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 79,
@@ -885,7 +1041,9 @@
       "Review the Owner field in the table's page in Data Explorer",
       "Review the Owner field in the cloud storage solution"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Review the Owner field in the table's page in Data Explorer' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 80,
@@ -897,7 +1055,9 @@
       "The table did not have a location",
       "The table was managed"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'The table was external' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 81,
@@ -909,7 +1069,9 @@
       "Temporary view",
       "Table"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Table' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 82,
@@ -921,7 +1083,9 @@
       "Delta Live Tables",
       "Auto Loader"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 83,
@@ -932,7 +1096,9 @@
       "Write the pipeline entirely in SQL",
       "Replace streaming source with batch"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Use different notebook sources in SQL and Python' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 84,
@@ -943,7 +1109,9 @@
       "pyspark.sql.types.TimestampType",
       "Cron syntax"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Cron syntax' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 85,
@@ -954,7 +1122,9 @@
       "spark.sql",
       "spark.table"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'spark.sql' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 86,
@@ -965,7 +1135,9 @@
       "Both teams reorganize to the same department",
       "Teams collaborate in real time"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Both teams use the same source of truth' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 87,
@@ -976,7 +1148,9 @@
       "spark.table(\"sales\").filter(col(\"units\") > 0).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"append\").table(\"newsales\")",
       "spark.table(\"sales\").groupBy(\"store\").agg(sum(\"sales\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"complete\").table(\"newsales\")"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'spark.table(\"sales\").groupBy(\"store\").agg(sum(\"sales\")).writeStream.option(\"checkpointLocation\", checkpointPath).outputMode(\"complete\").table(\"newsales\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 88,
@@ -988,7 +1162,9 @@
       "trigger(processingTime=\"5 seconds\")",
       "seconds(\")"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'trigger(processingTime=\"5 seconds\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 89,
@@ -1000,7 +1176,9 @@
       "Added to target and recorded as invalid in the event log",
       "Job fails"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 90,
@@ -1012,7 +1190,9 @@
       "When data requires complicated aggregations",
       "When the previous DLT step is static"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'When data needs to be processed incrementally' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 91,
@@ -1023,7 +1203,9 @@
       "The customers table is a streaming live table",
       "The customers table references a Structured Streaming query on a PySpark DataFrame"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Processing & Transformations",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 92,
@@ -1034,7 +1216,9 @@
       "Merge",
       "Clone"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Merge' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 93,
@@ -1046,7 +1230,9 @@
       "Use the DLT pipeline page and view data quality statistics per table",
       "Use the Error button to review present errors"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Governance & Quality",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 94,
@@ -1058,7 +1244,9 @@
       "Create a new job from scratch and run both tasks concurrently",
       "Clone the task into a new job and edit it"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Create a new task and add it as a dependency of the original task' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 95,
@@ -1070,7 +1258,9 @@
       "Limit who can manage the refresh schedule",
       "Set the refresh schedule to end on a certain date"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Set the refresh schedule to end on a certain date' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 96,
@@ -1081,7 +1271,9 @@
       "CREATE TABLE all_transactions AS SELECT * FROM march_transactions OUTER JOIN SELECT * FROM april_transactions;",
       "CREATE TABLE all_transactions AS SELECT * FROM march_transactions INTERSECT SELECT * from april_transactions;"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'CREATE TABLE all_transactions AS SELECT * FROM march_transactions UNION SELECT * FROM april_transactions;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 97,
@@ -1093,7 +1285,9 @@
       "Reduce the cluster size of the SQL endpoint",
       "Ensure the dashboard endpoint is not one of the query endpoints"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Turn on Auto Stop for the SQL endpoint' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 98,
@@ -1104,7 +1298,9 @@
       "When another task has the same dependency libraries",
       "When another task needs to use minimal compute"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'When another task must successfully complete before the new task begins' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 99,
@@ -1115,7 +1311,9 @@
       "A cloud storage path for written data",
       "A target database location for written data"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'At least one notebook library to be executed' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 100,
@@ -1127,7 +1325,9 @@
       "Use clusters from a cluster pool",
       "Enable autoscaling for larger data sizes"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Use clusters from a cluster pool' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 101,
@@ -1139,7 +1339,9 @@
       "GRANT SELECT CREATE MODIFY USAGE PRIVILEGES ON DATABASE customers TO team;",
       "GRANT ALL PRIVILEGES ON DATABASE customers TO team;"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'GRANT ALL PRIVILEGES ON DATABASE customers TO team;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 102,
@@ -1151,7 +1353,9 @@
       "GRANT CREATE ON DATABASE team TO customers;",
       "GRANT USAGE ON DATABASE customers TO team;"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'GRANT USAGE ON DATABASE customers TO team;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 103,
@@ -1163,7 +1367,9 @@
       "Commit",
       "Clone"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Pull' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 104,
@@ -1175,7 +1381,9 @@
       "Ability to scale workloads",
       "Avoiding vendor lock-in"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Avoiding vendor lock-in' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 105,
@@ -1186,7 +1394,9 @@
       "if day_of_week = 1 & review_period: = \"True\":",
       "if day_of_week == 1 and review_period:"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'if day_of_week == 1 and review_period:' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 106,
@@ -1198,7 +1408,9 @@
       "Needing automatic scaling with larger data",
       "Running reports manually with a large amount of data"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Working interactively with a small amount of data' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 107,
@@ -1209,7 +1421,9 @@
       "Bronze tables contain raw data with a schema applied",
       "Bronze tables contain a less refined view of data than raw data"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Bronze tables contain raw data with a schema applied' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 108,
@@ -1221,7 +1435,9 @@
       "REPARTITION",
       "VACUUM"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'OPTIMIZE' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 109,
@@ -1232,7 +1448,9 @@
       "DELETE HISTORY was run on the table",
       "OPTIMIZE was run on the table"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'VACUUM was run on the table' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 110,
@@ -1243,7 +1461,9 @@
       "CREATE FUNCTION combine_nyc(city STRING) RETURNS STRING CASE WHEN city = 'brooklyn' THEN 'new york' ELSE city;",
       "CREATE RETURNS STRING combine_nyc city WHEN city = 'brooklyn' THEN 'new york' END;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'CREATE FUNCTION combine_nyc(city STRING) RETURNS STRING RETURN CASE WHEN city = 'brooklyn' THEN 'new york' ELSE city END;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 111,
@@ -1255,7 +1475,9 @@
       "All of these",
       "Data lakehouse"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Data lakehouse' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 112,
@@ -1266,7 +1488,9 @@
       "Schedule refresh every 1 day from the query's page",
       "Schedule the query every 12 hours from the Jobs UI"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Schedule refresh every 1 day from the query's page' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 113,
@@ -1278,7 +1502,9 @@
       "Add %sql to the first line of the cell",
       "Change the notebook default language to SQL"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Add %sql to the first line of the cell' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 114,
@@ -1290,7 +1516,9 @@
       "CONVERT",
       "WHERE"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'PIVOT' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 115,
@@ -1302,7 +1530,9 @@
       "Parquet files can be optimized",
       "Parquet files will become Delta tables"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Parquet files have a well-defined schema' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 116,
@@ -1313,7 +1543,9 @@
       "Scheduled Workflows can reduce costs since clusters run only long enough to execute",
       "Scheduled Workflows run continuously until manually stopped"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Scheduled Workflows can reduce costs since clusters run only long enough to execute' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 117,
@@ -1324,7 +1556,9 @@
       "ALL PRIVILEGES on the view",
       "ALL PRIVILEGES at the schema level"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'SELECT on the view and the underlying table' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 118,
@@ -1335,7 +1569,9 @@
       "SELECT store_id, FILTER(employees, e.years_exp) AS exp_employees FROM stores;",
       "SELECT store_id, CASE WHEN employees.years_exp > 5 THEN employees END AS exp_employees FROM stores;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'SELECT store_id, FILTER(employees, e -> e.years_exp > 5) AS exp_employees FROM stores;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 119,
@@ -1346,7 +1582,9 @@
       "CONSTRAINT valid_location EXPECT (location != NULL) ON DROP ROW",
       "CONSTRAINT valid_location EXPECT (location != NULL) ON VIOLATION FAIL"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 120,
@@ -1357,7 +1595,9 @@
       "A managed table where the catalog has managed location pointing to the path",
       "A managed table with LOCATION pointing to the external path"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "CREATE TABLE with a LOCATION clause creates an external table that references data in external storage without moving it into managed storage."
   },
   {
     "id": 121,
@@ -1368,7 +1608,9 @@
       "The pipeline must use a batch source",
       "The pipeline must be written entirely in Python"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 122,
@@ -1379,7 +1621,9 @@
       "function add_integers(x, y)\n    return x + y",
       "def add_integers(x, y):\n    return x + Y"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'def add_integers(x, y):\n    return x + y' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 123,
@@ -1390,7 +1634,9 @@
       "trigger(continuous=\"once\")",
       "trigger(once=True)"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'trigger(availableNow=True)' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 124,
@@ -1401,7 +1647,9 @@
       "Data warehouse",
       "Data lakehouse"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Data lakehouse' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 125,
@@ -1412,7 +1660,9 @@
       "RESTORE the table to two weeks ago and query",
       "Run VACUUM to remove versions older than two weeks"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Find the version in the Delta log and query using VERSION AS OF (or export that version)' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 126,
@@ -1424,7 +1674,9 @@
       "All fields had at least one null",
       "Auto Loader cannot infer schema"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'JSON is a text-based format' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 127,
@@ -1436,7 +1688,9 @@
       "All datasets update once and pipeline shuts down, compute persists",
       "All datasets update at intervals until shut down, compute persists for testing"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 128,
@@ -1448,7 +1702,9 @@
       "Querying aggregated data for a dashboard",
       "Ingesting raw streaming data"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Querying aggregated data for a dashboard' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 129,
@@ -1464,7 +1720,9 @@
     "correctIndices": [
       1,
       4
-    ]
+    ],
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Compute Orchestration' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 130,
@@ -1475,7 +1733,9 @@
       "3 6 6",
       "4 6 6"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is '3 6 5' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 131,
@@ -1487,7 +1747,9 @@
       "Batch workloads",
       "Dashboard workloads"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Streaming workloads' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 132,
@@ -1498,7 +1760,9 @@
       "Jobs cluster",
       "Serverless SQL warehouse"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Jobs cluster' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 133,
@@ -1510,7 +1774,9 @@
       "Replace format(\"delta\") with format(\"stream\")",
       "Replace spark.read with spark.readStream"
     ],
-    "correctIndex": 4
+    "correctIndex": 4,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Replace spark.read with spark.readStream' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 134,
@@ -1522,7 +1788,9 @@
       "Added to target and recorded as invalid in the event log",
       "Added to target and flagged invalid"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 135,
@@ -1534,7 +1802,9 @@
       "Silver tables contain a more refined and cleaner view than Bronze",
       "Silver tables contain less data than Bronze"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Silver tables contain a more refined and cleaner view than Bronze' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 136,
@@ -1546,7 +1816,9 @@
       "Enable Serverless for the SQL endpoint",
       "Increase the maximum scaling range"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 137,
@@ -1557,7 +1829,9 @@
       "GRANT SELECT ON TABLE sales TO team;",
       "GRANT ALL PRIVILEGES ON TABLE team TO sales;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'GRANT ALL PRIVILEGES ON TABLE sales TO team;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 138,
@@ -1569,7 +1843,9 @@
       "There is no way to notify the Job owner",
       "MLflow Model Registry Webhooks"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Set up an Alert in the Job page' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 139,
@@ -1580,7 +1856,9 @@
       "GRANT USAGE ON CATALOG team TO customers;",
       "GRANT USAGE ON DATABASE customers TO team;"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'GRANT USAGE ON DATABASE customers TO team;' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 140,
@@ -1591,7 +1869,9 @@
       "End the refresh schedule on a certain date",
       "Limit who can manage the schedule"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'End the refresh schedule on a certain date' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 141,
@@ -1603,7 +1883,9 @@
       "Set up an Alert with a new webhook alert destination",
       "Set up an Alert without notifications"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Set up an Alert with a new webhook alert destination' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 142,
@@ -1615,7 +1897,9 @@
       "Ensure the dashboard endpoint matches each query endpoint",
       "Set the dashboard endpoint to serverless"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Turn on Auto Stop for the SQL endpoint' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 143,
@@ -1631,7 +1915,9 @@
     "correctIndices": [
       0,
       3
-    ]
+    ],
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'You can have more than 1 metastore per account, but only 1 per region' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 144,
@@ -1642,7 +1928,9 @@
       "Turn on Auto Stop for the SQL endpoint",
       "Ensure the dashboard endpoint is not one of the query endpoints"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Turn on Auto Stop for the SQL endpoint' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 145,
@@ -1653,7 +1941,9 @@
       "Automated report needs to be refreshed as quickly as possible",
       "Automated report needs to be reproducible"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Automated report needs to be refreshed as quickly as possible' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 146,
@@ -1664,7 +1954,9 @@
       "Driver node",
       "Databricks Filesystem"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Databricks web application' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 147,
@@ -1675,7 +1967,9 @@
       "Provides the ability to comment on specific changes",
       "Supports multiple branches"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Supports multiple branches' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 148,
@@ -1686,7 +1980,9 @@
       "Ability to scale workloads",
       "Cloud-specific integrations"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Avoiding vendor lock-in' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 149,
@@ -1697,7 +1993,9 @@
       "Catalog Explorer",
       "Repos"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Catalog Explorer' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 150,
@@ -1708,7 +2006,9 @@
       "Merge",
       "Push"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Pull' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 151,
@@ -1719,7 +2019,9 @@
       "JSON",
       "Delta"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "Delta Lake uses Parquet as the underlying file format for data storage, adding a transaction log for ACID properties."
   },
   {
     "id": 152,
@@ -1730,7 +2032,9 @@
       "UPDATE my_table VALUES ('a1', 6, 9.4)",
       "UPDATE VALUES ('a1', 6, 9.4) my_table"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'INSERT INTO my_table VALUES ('a1', 6, 9.4)' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 153,
@@ -1741,7 +2045,9 @@
       "COMPACTION",
       "REPARTITION"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'OPTIMIZE' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 154,
@@ -1752,7 +2058,9 @@
       "spark.sql(\"sales\")",
       "spark.delta.table(\"sales\")"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'spark.table(\"sales\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 155,
@@ -1763,7 +2071,9 @@
       "dbfs:/user/hive/customer360",
       "dbfs:/user/hive/database"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'dbfs:/user/hive/warehouse' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 156,
@@ -1774,7 +2084,9 @@
       "The table did not have a location",
       "The table was external"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'The table was managed' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 157,
@@ -1785,7 +2097,9 @@
       "FROM CSV",
       "USING DELTA"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'USING CSV' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 158,
@@ -1796,7 +2110,9 @@
       "SUM",
       "CONVERT"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'PIVOT' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 159,
@@ -1807,7 +2123,9 @@
       "spark.table",
       "dbutils.sql"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'spark.sql' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 160,
@@ -1818,7 +2136,9 @@
       "trigger(once=\"5 seconds\")",
       "trigger(processingTime=\"5 seconds\")"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'trigger(processingTime=\"5 seconds\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 161,
@@ -1829,7 +2149,9 @@
       "Enable email notifications",
       "View data quality statistics per table in the pipeline page"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Governance & Quality",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 162,
@@ -1840,7 +2162,9 @@
       "Write-ahead Logs and Idempotent Sinks",
       "Checkpointing and Idempotent Sinks"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Checkpointing and Idempotent Sinks' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 163,
@@ -1851,7 +2175,9 @@
       "Gold tables are less refined than Silver tables",
       "Gold tables are more truthful than Silver tables"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Gold tables are more likely to contain aggregations than Silver tables' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 164,
@@ -1862,7 +2188,9 @@
       "Datasets update at intervals; compute is deployed and terminated when stopped",
       "Datasets update once; compute terminated"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 165,
@@ -1873,7 +2201,9 @@
       "Serverless workloads",
       "Batch workloads"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Streaming workloads' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 166,
@@ -1884,7 +2214,9 @@
       "Auto Loader only works with string data",
       "All fields had at least one null"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'JSON is a text-based format' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 167,
@@ -1895,7 +2227,9 @@
       "Enable autoscaling for larger data sizes",
       "Use clusters from a cluster pool"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Use clusters from a cluster pool' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 168,
@@ -1906,7 +2240,9 @@
       "Create a new task and set the original task as its dependency",
       "Create a new job from scratch and run both tasks concurrently"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Create a new task and set it as a dependency of the original task' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 169,
@@ -1917,7 +2253,9 @@
       "Runs tab and click the active run to review the processing notebook",
       "Tasks tab to immediately review the processing notebook"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Runs tab and click the active run to review the processing notebook' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 170,
@@ -1928,7 +2266,9 @@
       "Turn on Auto Stop",
       "Turn on Serverless"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Increase the maximum bound of the scaling range' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 171,
@@ -1939,7 +2279,9 @@
       "Alert with a new webhook destination",
       "Alert with one-time notifications"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Alert with a new webhook destination' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 172,
@@ -1950,7 +2292,9 @@
       "Accessing via VPN within the same data center",
       "Internal analytics within a single cloud"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Transferring across clouds and different regions' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 173,
@@ -1961,7 +2305,9 @@
       "rescue",
       "addNewColumns"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'failOnNewColumns' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 174,
@@ -1972,7 +2318,9 @@
       "ALTER TABLE employees ADD COLUMN salary DECIMAL(10,2);",
       "INSERT INTO employees (id, name) VALUES (1 'Alice');"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'CREATE TABLE employees (id INT, name STRING);' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 175,
@@ -1983,7 +2331,9 @@
       "Task workflows and job scheduling",
       "Notebook version control"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Task workflows and job scheduling' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 176,
@@ -1994,7 +2344,9 @@
       "Databricks Command Line Interface",
       "Databricks Software Development Kit"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Databricks Asset Bundles provide a standardized way to package, deploy, and manage data pipelines with version control and testing capabilities."
   },
   {
     "id": 177,
@@ -2005,7 +2357,9 @@
       "configuration = { \"resources\": { \"jobs\": { \"name\": \"hello-job\", \"tasks\": { \"task_key\": \"hello-task\", \"existing_cluster_id\": \"1234-567890-abcde123\", \"notebook_task\": { \"notebook_path\": \".hello.py\" } } } } }",
       "resources { jobs { name = \"hello-job\" tasks { task_key = \"hello-task\" existing_cluster_id = \"1234-567890-abcde123\" notebook_task { notebook_path = \".hello.py\" } } } }"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'resources: jobs: hello-job: name: hello-job tasks: - task_key: hello-task existing_cluster_id: 1234-567890-abcde123 notebook_task: notebook_path: ./hello.py' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 178,
@@ -2016,7 +2370,9 @@
       "Monitoring",
       "Expectations"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "Delta Live Tables (DLT) provides declarative pipeline development with automatic data quality checks, schema evolution, and simplified maintenance."
   },
   {
     "id": 179,
@@ -2027,7 +2383,9 @@
       "Repartition the dataset to spread data across nodes",
       "Increase executor memory"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Repartition the dataset to spread data across nodes' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 180,
@@ -2038,7 +2396,9 @@
       "Cloud File Storage",
       "Data lake"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Delta Lake' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 181,
@@ -2049,7 +2409,9 @@
       "Perform extensive data cleansing",
       "Aggregate data from multiple sources"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Include columns like load date/time and process ID' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 182,
@@ -2060,7 +2422,9 @@
       "MLflow",
       "Databricks Connect"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'Lakehouse Federation' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 183,
@@ -2071,7 +2435,9 @@
       "Use a third-party API",
       "Databricks-to-Databricks Sharing"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 184,
@@ -2082,7 +2448,9 @@
       "No streaming support and complex maintenance",
       "Batch-only processing with high costs"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Automatic quality checks, schema evolution, and declarative pipelines' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 185,
@@ -2093,7 +2461,9 @@
       "Only one language per cell is supported",
       "Interoperability requires a special character"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks cells support only one default language, though you can use magic commands (%python, %sql, %scala, %r) to switch languages between cells."
   },
   {
     "id": 186,
@@ -2104,7 +2474,9 @@
       "Serverless Compute",
       "SQL Warehouse"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 187,
@@ -2115,7 +2487,9 @@
       "Runs Spark jobs locally without network",
       "Mimics Databricks runtime for local dev in preferred IDE"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Mimics Databricks runtime for local dev in preferred IDE' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 188,
@@ -2126,7 +2500,9 @@
       "Bronze",
       "Raw layer"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Bronze' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 189,
@@ -2142,7 +2518,9 @@
     "correctIndices": [
       3,
       4
-    ]
+    ],
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'De-normalised' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 190,
@@ -2153,7 +2531,9 @@
       "DESCRIBE DETAIL to see file size and number of files",
       "DESCRIBE HISTORY to see OPTIMIZE operations"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'DESCRIBE HISTORY to see OPTIMIZE operations' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 191,
@@ -2164,7 +2544,9 @@
       "Job cluster with spot instances disabled",
       "Job cluster with Photon enabled"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Job clusters with spot instances enabled provide the most cost-effective solution for small workloads since they use cheaper spot pricing and terminate after job completion."
   },
   {
     "id": 192,
@@ -2175,7 +2557,9 @@
       "df = spark.readStream.format(\"json\").load(\"input/path\")",
       "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(\"/input/path\")"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"json\").load(\"/input/path\")' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 193,
@@ -2186,7 +2570,9 @@
       "Silver layer - Cleansed master customer data",
       "Gold layer - Deduplicated money transfer transaction"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Silver layer - Cleansed master customer data' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 194,
@@ -2197,7 +2583,9 @@
       "Tracks dependencies between tables and notebooks but excludes jobs and dashboards",
       "Visualizes dependencies between tables, notebooks, jobs, and dashboards with column-level tracking"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Only supports table-level relationships and excludes notebooks, jobs, and dashboards' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 195,
@@ -2208,7 +2596,9 @@
       "Classic SQL Warehouse",
       "Serverless SQL Warehouse"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Pro SQL Warehouse' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 196,
@@ -2219,7 +2609,9 @@
       "Schema Owner",
       "USE catalog/schema privilege"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Data Governance & Quality",
+    "explanation": "The correct answer is 'Schema Owner' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 197,
@@ -2230,7 +2622,9 @@
       "Ganglia UI",
       "Spark UI"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Python Notebook Interactive Debugger' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 198,
@@ -2241,7 +2635,9 @@
       "CREATE TABLE with LOCATION pointing to external data",
       "CREATE EXTERNAL TABLE without LOCATION"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Development and Ingestion",
+    "explanation": "CREATE TABLE with a LOCATION clause creates an external table that references data in external storage without moving it into managed storage."
   },
   {
     "id": 199,
@@ -2252,7 +2648,9 @@
       "Job cluster with autoscaling",
       "All-purpose cluster with large fixed memory"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'All-purpose cluster with autoscaling' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 200,
@@ -2263,7 +2661,9 @@
       "Databricks Jobs",
       "Serverless SQL Warehouse"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 201,
@@ -2274,7 +2674,9 @@
       "Share via Unity Catalog with full write access",
       "Share via Delta Sharing with a secure, read-only URL"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Delta Sharing is an open protocol for secure data sharing across different platforms without copying data, supporting Unity Catalog integration."
   },
   {
     "id": 202,
@@ -2285,7 +2687,9 @@
       "Further reduces file sizes by re-clustering",
       "Triggers full liquid clustering"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'No effect because it is idempotent' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 203,
@@ -2296,7 +2700,9 @@
       "Sharing identifier of their Unity Catalog metastore",
       "Databricks account password"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'Sharing identifier of their Unity Catalog metastore' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 204,
@@ -2307,7 +2713,9 @@
       "Restart the cluster",
       "Switch to another cluster"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The repair task option allows rerunning a failed workflow task after fixing issues, without restarting the entire workflow."
   },
   {
     "id": 205,
@@ -2318,7 +2726,9 @@
       "Interactive clusters with manual scaling",
       "Serverless compute with automatic scaling"
     ],
-    "correctIndex": 3
+    "correctIndex": 3,
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "Databricks Serverless compute automatically scales resources based on workload demands without manual cluster management, optimizing cost and performance."
   },
   {
     "id": 206,
@@ -2329,7 +2739,9 @@
       "Restart the cluster",
       "Switch the cluster"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The repair task option allows rerunning a failed workflow task after fixing issues, without restarting the entire workflow."
   },
   {
     "id": 207,
@@ -2340,7 +2752,9 @@
       "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE CATALOG ON CATALOG manufacturing TO manufacturing-team;",
       "GRANT CREATE TABLE ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT CREATE SCHEMA ON SCHEMA manufacturing.quality TO manufacturing-team; GRANT USE CATALOG ON CATALOG manufacturing TO manufacturing-team;"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "domain": "Data Governance & Quality",
+    "explanation": "Granting CREATE TABLE on schema, USE SCHEMA on schema, and USE CATALOG on catalog provides the minimum necessary privileges for creating tables."
   },
   {
     "id": 208,
@@ -2351,7 +2765,9 @@
       "Tune executors/cores or resize the cluster",
       "Increase parallelism due to memory pressure"
     ],
-    "correctIndex": 2
+    "correctIndex": 2,
+    "domain": "Productionizing Data Pipelines",
+    "explanation": "The correct answer is 'Tune executors/cores or resize the cluster' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 209,
@@ -2362,7 +2778,9 @@
       "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \"*.png\").append()",
       "df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").load(\"/*.png\")"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "domain": "Development and Ingestion",
+    "explanation": "The correct answer is 'df = spark.readStream.format(\"cloudFiles\").option(\"cloudFiles.format\", \"binaryFile\").option(\"pathGlobFilter\", \"*.png\").load()' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 210,
@@ -2378,7 +2796,9 @@
     "correctIndices": [
       0,
       1
-    ]
+    ],
+    "domain": "Databricks Intelligence Platform",
+    "explanation": "The correct answer is 'SQL' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 211,
@@ -2394,7 +2814,9 @@
     "correctIndices": [
       0,
       1
-    ]
+    ],
+    "domain": "Data Processing & Transformations",
+    "explanation": "The correct answer is 'Narrow filters to collect less data' based on Databricks best practices and platform capabilities."
   },
   {
     "id": 212,
@@ -2408,7 +2830,7 @@
     ],
     "correctIndex": 1,
     "explanation": "Delta Lake is an open source technology that extends Parquet data files with a file-based transaction log for ACID transactions that brings reliability to data lakes.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 213,
@@ -2422,7 +2844,7 @@
     ],
     "correctIndex": 3,
     "explanation": "The VACUUM command deletes the unused data files older than a specified data retention period.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 214,
@@ -2436,7 +2858,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Commit & Push is used to save the changes on a local repo, then uploads this local repo content to the remote repository.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 215,
@@ -2450,7 +2872,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Delta Lake builds upon standard data formats. Delta lake table gets stored on the storage in one or more data files in Parquet format, along with transaction logs in JSON format.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 216,
@@ -2464,7 +2886,7 @@
     ],
     "correctIndex": 4,
     "explanation": "Databricks Repos supports git Pull operation. It is used to fetch and download content from a remote repository and immediately update the local repo to match that content.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 217,
@@ -2478,7 +2900,7 @@
     ],
     "correctIndex": 0,
     "explanation": "According to the Databricks Lakehouse architecture, the storage account hosting the customer data is provisioned in the data plane in the Databricks customer's cloud account.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 218,
@@ -2492,7 +2914,7 @@
     ],
     "correctIndex": 4,
     "explanation": "By default, cells use the default language of the notebook. You can override the default language in a cell by using the language magic command at the beginning of a cell. The supported magic commands are: %python, %sql, %scala, and %r.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 219,
@@ -2506,7 +2928,7 @@
     ],
     "correctIndex": 0,
     "explanation": "One advantage of Databricks Repos over the built-in Databricks Notebooks versioning is that Databricks Repos supports creating and managing branches for development work.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 220,
@@ -2520,7 +2942,7 @@
     ],
     "correctIndex": 0,
     "explanation": "Databricks SQL (DB SQL) is a data warehouse on the Databricks Lakehouse Platform that lets you run all your SQL and BI applications at scale.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 221,
@@ -2534,7 +2956,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Running the VACUUM command on a Delta table deletes the unused data files older than a specified data retention period. Unused files newer than the default retention threshold are kept untouched.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 222,
@@ -2548,7 +2970,7 @@
     ],
     "correctIndex": 3,
     "explanation": "The UPDATE statement is used to modify the existing records in a table that match the WHERE condition. In this case, we are updating the products where the price is strictly greater than 1000.",
-    "domain": "Databricks Lakehouse Platform"
+    "domain": "Databricks Intelligence Platform"
   },
   {
     "id": 223,
@@ -2562,7 +2984,7 @@
     ],
     "correctIndex": 1,
     "explanation": "In order to avoid copying and storing physical data, the data engineer must create a view object. A view in databricks is a virtual table that has no physical data. It's just a saved SQL query against actual tables. The view type should be Temporary view since it's tied to a Spark session and dropped when the session ends.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 224,
@@ -2576,7 +2998,7 @@
     ],
     "correctIndex": 2,
     "explanation": "The DESCRIBE DATABASE or DESCRIBE SCHEMA returns the metadata of an existing database (schema). The metadata information includes the database's name, comment, and location on the filesystem. If the optional EXTENDED option is specified, database properties are also returned.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 225,
@@ -2590,7 +3012,7 @@
     ],
     "correctIndex": 1,
     "explanation": "Using the JDBC library, Spark SQL can extract data from any existing relational database that supports JDBC. Examples include mysql, postgres, SQLite, and more.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 226,
@@ -2604,7 +3026,7 @@
     ],
     "correctIndex": 3,
     "explanation": "Managed tables are tables whose metadata and the data are managed by Databricks. When you run DROP TABLE on a managed table, both the metadata and the underlying data files are deleted.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 227,
@@ -2618,7 +3040,7 @@
     ],
     "correctIndex": 1,
     "explanation": "Since we are creating the database here without specifying a LOCATION clause, the database will be created in the default warehouse directory under dbfs:/user/hive/warehouse. The database folder have the extension (.db) And since we are creating the table also without specifying a LOCATION clause, the table becomes a managed table created under the database directory (in db_hr.db folder)",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 228,
@@ -2632,7 +3054,7 @@
     ],
     "correctIndex": 2,
     "explanation": "In Python, a function is defined using the def keyword. Here, we used the return keyword since the question clearly asks to return the result, and not printing the output.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 229,
@@ -2646,7 +3068,7 @@
     ],
     "correctIndex": 1,
     "explanation": "LEFT JOIN returns all values from the left table and the matched values from the right table, or appends NULL if there is no match. In the above example, we see NULL in the course_id of John (U0003) since he is not enrolled in any course.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 230,
@@ -2660,7 +3082,7 @@
     ],
     "correctIndex": 2,
     "explanation": "PIVOT transforms the rows of a table by rotating unique values of a specified column list into separate columns. In other words, It converts a table from a long format to a wide format.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 231,
@@ -2674,7 +3096,7 @@
     ],
     "correctIndex": 1,
     "explanation": "transform(input_array, lambd_function) is a higher order function that returns an output array from an input array by transforming each element in the array using a given lambda function.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 232,
@@ -2688,7 +3110,7 @@
     ],
     "correctIndex": 1,
     "explanation": "CREATE TABLE USING allows to specify an external data source type like CSV format, and with any additional options. This creates an external table pointing to files stored in an external location.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 233,
@@ -2702,7 +3124,7 @@
     ],
     "correctIndex": 3,
     "explanation": "CREATE SCHEMA is an alias for CREATE DATABASE statement. While usage of SCHEMA and DATABASE is interchangeable, SCHEMA is preferred.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 234,
@@ -2716,7 +3138,7 @@
     ],
     "correctIndex": 1,
     "explanation": "CREATE TABLE AS SELECT statements, or CTAS statements create and populate Delta tables using the output of a SELECT query. CTAS statements automatically infer schema information from query results and do not support manual schema declaration.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 235,
@@ -2730,7 +3152,7 @@
     ],
     "correctIndex": 3,
     "explanation": "INSERT INTO allows inserting new rows into a Delta table. You specify the inserted rows by value expressions or the result of a query.",
-    "domain": "ELT with Spark SQL and Python"
+    "domain": "Data Processing & Transformations"
   },
   {
     "id": 236,
@@ -2744,7 +3166,7 @@
     ],
     "correctIndex": 4,
     "explanation": "In Spark Structured Streaming, we use trigger(availableNow=True) to run the stream in batch mode where it processes all available data in multiple micro-batches. The trigger will stop on its own once it finishes processing the available data.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 237,
@@ -2758,7 +3180,7 @@
     ],
     "correctIndex": 3,
     "explanation": "Auto Loader keeps track of discovered files using checkpointing in the checkpoint location. Checkpointing allows Auto loader to provide exactly-once ingestion guarantees.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 238,
@@ -2772,7 +3194,7 @@
     ],
     "correctIndex": 1,
     "explanation": "With ON VIOLATION FAIL UPDATE, records that violate the expectation will cause the pipeline to fail. When a pipeline fails because of an expectation violation, you must fix the pipeline code to handle the invalid data correctly before re-running the pipeline.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 239,
@@ -2786,7 +3208,7 @@
     ],
     "correctIndex": 4,
     "explanation": "Silver tables provide a more refined view of the raw data. For example, data can be cleaned and filtered at this level. And we can also join fields from various bronze tables to enrich our silver records.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 240,
@@ -2800,7 +3222,7 @@
     ],
     "correctIndex": 1,
     "explanation": "Continuous pipelines update tables continuously as input data changes. Once an update is started, it continues to run until the pipeline is shut down. In Development mode, the Delta Live Tables system ease the development process by reusing a cluster to avoid the overhead of restarts. The cluster runs for two hours when development mode is enabled. Disabling pipeline retries so you can immediately detect and fix errors.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 241,
@@ -2814,7 +3236,7 @@
     ],
     "correctIndex": 2,
     "explanation": "The above Structured Streaming query creates business-level aggregates from clean orders data in the silver table cleanedOrders, and loads them in the gold table aggregatedOrders.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 242,
@@ -2828,7 +3250,7 @@
     ],
     "correctIndex": 0,
     "explanation": "By default, if you don't provide any trigger interval, the data will be processed every half second. This is equivalent to trigger(processingTime=\"500ms\")",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 243,
@@ -2842,7 +3264,7 @@
     ],
     "correctIndex": 4,
     "explanation": "In DLT pipelines, You can stream data from other tables in the same pipeline by using the STREAM() function. In this case, you must define a streaming table using the CREATE STREAMING TABLE syntax. Remember, to query another DLT table, prepend always the LIVE. keyword to the table name.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 244,
@@ -2856,7 +3278,7 @@
     ],
     "correctIndex": 3,
     "explanation": "Gold layer is the final layer in the multi-hop architecture, where tables provide business level aggregates often used for reporting and dashboarding, or even for Machine learning.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 245,
@@ -2870,7 +3292,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Triggered pipelines update each table with whatever data is currently available and then they shut down. In Production mode, the Delta Live Tables system terminates the cluster immediately when the pipeline is stopped, restarts the cluster for recoverable errors, and retries execution in case of specific errors.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 246,
@@ -2884,7 +3306,7 @@
     ],
     "correctIndex": 0,
     "explanation": "If you're going to ingest files in the order of thousands, you can use COPY INTO. If you are expecting files in the order of millions or more over time, use Auto Loader. If your data schema is going to evolve frequently, Auto Loader provides better primitives around schema inference and evolution.",
-    "domain": "Incremental Data Processing"
+    "domain": "Development and Ingestion"
   },
   {
     "id": 247,
@@ -2898,7 +3320,7 @@
     ],
     "correctIndex": 3,
     "explanation": "In Databricks SQL, you can set a schedule to automatically refresh a query from the query's page.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 248,
@@ -2912,7 +3334,7 @@
     ],
     "correctIndex": 0,
     "explanation": "Delta Live Tables is a framework for building reliable, maintainable, and testable data processing pipelines. You define the transformations to perform on your data, and Delta Live Tables manages task orchestration, cluster management, monitoring, data quality, and error handling.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 249,
@@ -2926,7 +3348,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Databricks Jobs allow to orchestrate data processing tasks. This means the ability to run and manage multiple tasks as a directed acyclic graph (DAG) in a job.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 250,
@@ -2940,7 +3362,7 @@
     ],
     "correctIndex": 1,
     "explanation": "You can repair failed multi-task jobs by running only the subset of unsuccessful tasks and any dependent tasks. Because successful tasks are not re-run, this feature reduces the time and resources required to recover from unsuccessful job runs.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 251,
@@ -2954,7 +3376,7 @@
     ],
     "correctIndex": 1,
     "explanation": "Databricks Jobs support email notifications to be notified in the case of job start, success, or failure. Simply, click Edit email notifications from the details panel in the Job page. From there, you can add one or more email addresses.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 252,
@@ -2968,7 +3390,7 @@
     ],
     "correctIndex": 2,
     "explanation": "Job Clusters are dedicated clusters for a job or task run. A job cluster auto terminates once the job is completed, which saves cost compared to all-purpose clusters. In addition, Databricks recommends using job clusters in production so that each job runs in a fully isolated environment.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 253,
@@ -2982,7 +3404,7 @@
     ],
     "correctIndex": 0,
     "explanation": "You can define the order of execution of tasks in a job using the Depends on dropdown menu. You can set this field to one or more tasks in the job.",
-    "domain": "Production Pipelines"
+    "domain": "Productionizing Data Pipelines"
   },
   {
     "id": 254,
@@ -2996,7 +3418,7 @@
     ],
     "correctIndex": 0,
     "explanation": "Data Explorer in Databricks SQL allows you to manage data object permissions. This includes revoking privileges on tables and databases from users or groups of users.",
-    "domain": "Data Governance"
+    "domain": "Data Governance & Quality"
   },
   {
     "id": 255,
@@ -3010,7 +3432,7 @@
     ],
     "correctIndex": 3,
     "explanation": "The USAGE does not give any abilities, but it's an additional requirement to perform any action on a schema (database) object.",
-    "domain": "Data Governance"
+    "domain": "Data Governance & Quality"
   },
   {
     "id": 256,
@@ -3024,7 +3446,7 @@
     ],
     "correctIndex": 2,
     "explanation": "In Data Explorer, you can change the owner of a table from the Owner field in the table's page.",
-    "domain": "Data Governance"
+    "domain": "Data Governance & Quality"
   },
   {
     "id": 257,

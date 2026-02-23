@@ -1017,6 +1017,80 @@
   border-collapse: collapse;
 }
 
+/* Domain and Explanation Display */
+.cf-question-domain {
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: var(--bg-box-header);
+  border-radius: 4px;
+  border-left: 3px solid var(--accent-primary);
+}
+
+.cf-question-domain__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cf-question-domain__value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.cf-question-explanation {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: var(--bg-correct);
+  border-radius: 4px;
+  border-left: 3px solid var(--accent-correct);
+}
+
+[data-theme='dark'] .cf-question-explanation {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.cf-question-explanation__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-correct);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-question-explanation__label::before {
+  content: '💡';
+}
+
+.cf-question-explanation__text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Study Guide Modal Styles */
+.cf-modal-body h3,
+.cf-modal-body h4 {
+  margin-top: 0;
+}
+
+.cf-modal-body ul {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.cf-modal-body li {
+  margin-bottom: 4px;
+}
+
+/* Leaderboard Table */
+
 .cf-leaderboard-table thead {
   background: var(--bg-box-header);
   border-bottom: 2px solid var(--border-primary);
@@ -1376,6 +1450,19 @@
   
   .cf-sidebar {
     order: -1;
+  }
+
+  /* Tablet adjustments */
+  .cf-header__content {
+    padding: 10px 16px;
+  }
+
+  .cf-box__body {
+    padding: 24px;
+  }
+
+  .cf-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1889,5 +1976,485 @@
 
   .cf-user-rank-highlight__rank {
     font-size: 2.5rem;
+  }
+
+  /* Header mobile styles */
+  .cf-header__content {
+    padding: 10px 12px;
+    gap: 0.75rem;
+  }
+
+  .cf-logo {
+    font-size: 1.25rem;
+  }
+
+  .cf-header__subtitle {
+    display: none;
+  }
+
+  .cf-header__left,
+  .cf-header__right {
+    gap: 0.5rem;
+  }
+
+  .cf-user__name {
+    font-size: 0.9rem;
+  }
+
+  .cf-user__avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+
+  .cf-timer {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .cf-theme-toggle {
+    padding: 0.35rem 0.4rem;
+    font-size: 1rem;
+  }
+
+  /* Navigation tabs mobile */
+  .cf-nav {
+    padding: 0 4px 16px 4px;
+    margin-bottom: 16px;
+    gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cf-nav-tab {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  /* Box and container mobile */
+  .cf-container {
+    gap: 16px;
+    padding: 0 4px;
+  }
+
+  .cf-home-layout {
+    padding: 0 4px;
+  }
+
+  .cf-box__header {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+
+  .cf-box__body {
+    padding: 16px;
+  }
+
+  /* Welcome box mobile */
+  .cf-welcome-box {
+    padding: 16px;
+  }
+
+  /* Welcome box table mobile */
+  .cf-welcome-box .cf-table {
+    font-size: 0.9rem;
+  }
+
+  .cf-welcome-box .cf-table__label {
+    width: 110px;
+    font-size: 0.85rem;
+  }
+
+  /* Form mobile */
+  .cf-form-group {
+    margin-bottom: 16px;
+  }
+
+  .cf-input {
+    padding: 10px 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .cf-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* Problem navigation mobile */
+  .cf-problem-nav {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .cf-problem-nav__item {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  /* Problem content mobile */
+  .cf-problem__statement {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .cf-code {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cf-section-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  /* Options mobile */
+  .cf-options {
+    gap: 8px;
+  }
+
+  .cf-option {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .cf-option__label {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .cf-option__text {
+    font-size: 0.95rem;
+  }
+
+  /* Problem actions mobile */
+  .cf-problem__actions {
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+  }
+
+  .cf-problem__counter {
+    order: -1;
+    text-align: center;
+  }
+
+  .cf-btn--primary,
+  .cf-btn--secondary {
+    width: 100%;
+  }
+
+  /* Stats grid mobile */
+  .cf-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .cf-stat-card {
+    padding: 10px 12px;
+  }
+
+  .cf-stat-card__value {
+    font-size: 1.5rem;
+  }
+
+  /* Tables - add horizontal scroll */
+  .cf-table,
+  .cf-results-table,
+  .cf-standings,
+  .cf-history-table,
+  .cf-leaderboard-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cf-table tbody,
+  .cf-results-table tbody,
+  .cf-standings tbody,
+  .cf-history-table tbody,
+  .cf-leaderboard-table tbody {
+    display: table;
+    width: 100%;
+  }
+
+  .cf-table thead,
+  .cf-results-table thead,
+  .cf-standings thead,
+  .cf-history-table thead,
+  .cf-leaderboard-table thead {
+    display: table;
+    width: 100%;
+  }
+
+  .cf-table th,
+  .cf-table td,
+  .cf-results-table th,
+  .cf-results-table td,
+  .cf-standings td,
+  .cf-history-table th,
+  .cf-history-table td,
+  .cf-leaderboard-table th,
+  .cf-leaderboard-table td {
+    padding: 8px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  /* Filter buttons mobile */
+  .cf-filter {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .cf-filter-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Results list mobile */
+  .cf-result-item__header {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .cf-result-item__left {
+    gap: 10px;
+  }
+
+  .cf-result-item__title {
+    font-size: 0.95rem;
+  }
+
+  .cf-result-item__content {
+    padding: 0 12px 12px 12px;
+  }
+
+  /* Answer comparison mobile */
+  .cf-answer-comparison {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .cf-answer-box {
+    padding: 10px;
+  }
+
+  /* Score summary mobile */
+  .cf-score-summary {
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .cf-score-main {
+    font-size: 1.3rem;
+  }
+
+  /* Chart mobile */
+  .cf-chart-bar__label {
+    min-width: 60px;
+    font-size: 0.8rem;
+  }
+
+  .cf-chart-bar__container {
+    height: 28px;
+  }
+
+  .cf-chart-bar__value {
+    font-size: 0.8rem;
+  }
+
+  /* Domain and Explanation mobile */
+  .cf-question-domain,
+  .cf-question-explanation {
+    padding: 10px 12px;
+    margin-top: 12px;
+  }
+
+  .cf-question-domain__label,
+  .cf-question-explanation__label {
+    font-size: 0.8rem;
+  }
+
+  .cf-question-domain__value,
+  .cf-question-explanation__text {
+    font-size: 0.9rem;
+  }
+
+  /* Study guide modal mobile */
+  .cf-modal-body {
+    padding: 16px !important;
+    font-size: 0.95rem;
+  }
+
+  .cf-modal-body h3 {
+    font-size: 1.15rem !important;
+  }
+
+  .cf-modal-body h4 {
+    font-size: 1rem !important;
+  }
+
+  .cf-modal-body ul {
+    margin-left: 16px;
+    font-size: 0.9rem;
+  }
+
+  .cf-modal-body p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Extra small devices (phones in portrait mode) */
+@media (max-width: 480px) {
+  /* Header for very small screens */
+  .cf-header__content {
+    padding: 8px 10px;
+  }
+
+  .cf-logo {
+    font-size: 1.1rem;
+  }
+
+  .cf-user__name {
+    display: none;
+  }
+
+  .cf-timer {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .cf-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .cf-btn--small {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Navigation tabs for very small screens */
+  .cf-nav-tab {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Box body extra padding reduction */
+  .cf-box__body {
+    padding: 12px;
+  }
+
+  /* Problem navigation extra compact */
+  .cf-problem-nav__item {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  /* Stats grid single column on very small screens */
+  .cf-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Profile stats summary stacked */
+  .cf-profile-stats-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .cf-profile-stat {
+    text-align: left;
+  }
+
+  /* Tables more compact */
+  .cf-table th,
+  .cf-table td,
+  .cf-results-table th,
+  .cf-results-table td,
+  .cf-history-table th,
+  .cf-history-table td,
+  .cf-leaderboard-table th,
+  .cf-leaderboard-table td {
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+
+  /* Smaller rank display */
+  .cf-user-rank-highlight__rank {
+    font-size: 2rem;
+  }
+
+  /* Insight cards more compact */
+  .cf-insight-card {
+    min-height: 120px;
+    padding: 12px;
+  }
+
+  .cf-insight-card__value {
+    font-size: 2rem;
+  }
+
+  /* Results item more compact */
+  .cf-result-item__header {
+    padding: 10px;
+  }
+
+  .cf-result-item__content {
+    padding: 0 10px 10px 10px;
+  }
+
+  /* Score main smaller */
+  .cf-score-main {
+    font-size: 1.1rem;
+  }
+
+  /* Auth box specific mobile styles */
+  .cf-form-group .cf-label {
+    font-size: 0.9rem;
+  }
+
+  /* Modal adjustments for very small screens */
+  .cf-modal {
+    padding: 0;
+  }
+
+  .cf-modal__content {
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
+
+/* Landscape orientation on mobile devices */
+@media (max-width: 768px) and (orientation: landscape) {
+  .cf-header__content {
+    padding: 6px 12px;
+  }
+
+  .cf-timer {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .cf-logo {
+    font-size: 1.1rem;
+  }
+
+  .cf-box__body {
+    padding: 16px;
+  }
+
+  .cf-problem-nav__item {
+    width: 34px;
+    height: 34px;
   }
 }

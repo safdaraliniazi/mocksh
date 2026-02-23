@@ -527,6 +527,20 @@ function Profile({ user, userProfile, userStats, testHistory, loadingStats, tota
                             )
                           })}
                         </div>
+
+                        {/* Domain and Explanation */}
+                        {question.domain && (
+                          <div className="cf-question-domain">
+                            <div className="cf-question-domain__label">Domain:</div>
+                            <div className="cf-question-domain__value">{question.domain}</div>
+                          </div>
+                        )}
+                        {question.explanation && (
+                          <div className="cf-question-explanation">
+                            <div className="cf-question-explanation__label">Explanation</div>
+                            <div className="cf-question-explanation__text">{question.explanation}</div>
+                          </div>
+                        )}
                       </div>
                     )
                   })}

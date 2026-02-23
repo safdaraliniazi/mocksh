@@ -52,6 +52,7 @@ function App() {
   const [loadingStats, setLoadingStats] = useState(false)
   const [userProfile, setUserProfile] = useState(null)
   const [selectedPdf, setSelectedPdf] = useState(null)
+  const [showStudyGuide, setShowStudyGuide] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
     return saved === 'true'
@@ -820,6 +821,26 @@ function App() {
                 </div>
               </div>
             </div>
+
+            {/* Study Journey Link */}
+            <div className="cf-box" style={{ marginTop: '20px' }}>
+              <div className="cf-box__header">Success Story</div>
+              <div className="cf-box__body">
+                <button 
+                  className="cf-btn cf-btn--primary" 
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  onClick={() => setShowStudyGuide(true)}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zM1 4v2h6V4H1zm8 0v2h6V4H9zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5V7zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5H7z"/>
+                  </svg>
+                  How I Passed the Exam
+                </button>
+                <p style={{ marginTop: '12px', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5', textAlign: 'center' }}>
+                  Read about preparation tips, resources, and exam insights
+                </p>
+              </div>
+            </div>
           </aside>
         </div>
         ) : activeTab === 'profile' ? (
@@ -1023,6 +1044,19 @@ function App() {
                                 )
                               })}
                             </div>
+                            {/* Domain and Explanation */}
+                            {question.domain && (
+                              <div className="cf-question-domain">
+                                <div className="cf-question-domain__label">Domain:</div>
+                                <div className="cf-question-domain__value">{question.domain}</div>
+                              </div>
+                            )}
+                            {question.explanation && (
+                              <div className="cf-question-explanation">
+                                <div className="cf-question-explanation__label">Explanation</div>
+                                <div className="cf-question-explanation__text">{question.explanation}</div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -1174,6 +1208,199 @@ function App() {
                 Download PDF
               </a>
               <button className="cf-btn cf-btn--secondary" onClick={() => setSelectedPdf(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Study Guide Modal */}
+      {showStudyGuide && (
+        <div className="cf-modal-overlay" onClick={() => setShowStudyGuide(false)}>
+          <div className="cf-modal-content cf-modal-content--large" onClick={(e) => e.stopPropagation()} style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+            <div className="cf-modal-header">
+              <h2>🎓 My Journey to Databricks Certification Success</h2>
+              <button className="cf-modal__close" onClick={() => setShowStudyGuide(false)}>
+                <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="cf-modal-body" style={{ padding: '24px', lineHeight: '1.8' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <p style={{ fontSize: '1.05rem', color: 'var(--text-primary)' }}>
+                  I recently cleared the <strong>Databricks Certified Data Engineer Associate</strong> exam and wanted to share my preparation experience, key resources, and what to expect on the actual test.
+                </p>
+                <p style={{ marginTop: '12px', color: 'var(--text-secondary)' }}>
+                  This certification is ideal for data professionals who work with the Databricks Lakehouse Platform and need to design, build, and manage data pipelines using tools like Apache Spark, Delta Lake, and Databricks SQL.
+                </p>
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '1.3rem' }}>📚 How I Prepared</h3>
+                <p style={{ marginBottom: '12px' }}>I focused on hands-on experience, structured learning paths, and high-quality mock exams to get ready:</p>
+                
+                <div style={{ marginLeft: '20px' }}>
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ color: 'var(--accent-correct)' }}>✓ Databricks Academy – Data Engineer Associate Learning Path</strong>
+                    <p style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                      This is the official and free learning resource. It gives solid coverage of all exam domains and includes hands-on labs in the Databricks workspace.
+                    </p>
+                  </div>
+                  
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ color: 'var(--accent-correct)' }}>✓ Databricks Documentation</strong>
+                    <p style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                      I referred to this frequently for syntax and in-depth understanding of Delta Lake, Spark transformations, and structured streaming.
+                    </p>
+                  </div>
+                  
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ color: 'var(--accent-correct)' }}>✓ YouTube Tutorials</strong>
+                    <p style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                      I used short video walkthroughs to better understand key topics like Delta Lake, auto-loader, and data ingestion methods.
+                    </p>
+                  </div>
+                  
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ color: 'var(--accent-correct)' }}>✓ Mock.sh Practice Exams</strong>
+                    <p style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                      These were the most helpful in building exam confidence and getting used to the question patterns.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: '20px', background: 'var(--bg-correct)', borderRadius: '8px', borderLeft: '4px solid var(--accent-correct)', marginBottom: '24px' }}>
+                <h4 style={{ color: 'var(--accent-correct)', marginBottom: '12px' }}>💯 Mock.sh Practice Exams</h4>
+                <p style={{ color: 'var(--text-primary)' }}>
+                  The Mock.sh practice tests were a game-changer. About <strong>75–80%</strong> of the questions I saw in the real exam were either directly covered or similar in concept.
+                  The explanations helped me understand the "why" behind each answer, which was critical for reasoning through real-world scenarios on the exam.
+                </p>
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '1.3rem' }}>📝 What Came Up on the Actual Exam</h3>
+                <p style={{ marginBottom: '12px' }}>The exam had a mix of conceptual, scenario-based, and code-related questions. Here are the main topics I encountered:</p>
+                
+                <ul style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                  <li>Delta Lake fundamentals: ACID transactions, schema enforcement, time travel</li>
+                  <li>Apache Spark APIs: DataFrame transformations, actions, and Spark SQL</li>
+                  <li>Data ingestion using Auto Loader and COPY INTO</li>
+                  <li>Structured Streaming concepts and triggers</li>
+                  <li>Optimizing performance with Z-Ordering, caching, and partitioning</li>
+                  <li>Data governance: Unity Catalog basics, table permissions, and access control</li>
+                  <li>Job orchestration: tasks, clusters, scheduling, and dependencies</li>
+                  <li>Lakehouse architecture understanding and benefits</li>
+                  <li>Reading/writing data in various formats (JSON, Parquet, CSV)</li>
+                  <li>Error handling and troubleshooting during data pipeline execution</li>
+                </ul>
+                
+                <p style={{ marginTop: '12px', fontStyle: 'italic' }}>
+                  Many questions required understanding best practices, interpreting code snippets, or choosing the most efficient and scalable solution.
+                </p>
+              </div>
+
+              <div style={{ padding: '20px', background: 'var(--bg-wrong)', borderRadius: '8px', borderLeft: '4px solid var(--accent-wrong)', marginBottom: '24px' }}>
+                <h4 style={{ color: 'var(--accent-wrong)', marginBottom: '12px' }}>⚠️ Common Mistakes to Watch Out For</h4>
+                <ul style={{ marginLeft: '20px', color: 'var(--text-primary)' }}>
+                  <li>Confusing Auto Loader with COPY INTO — know when to use each</li>
+                  <li>Not reading the question carefully — some are intentionally tricky</li>
+                  <li>Misunderstanding Delta Lake features like OPTIMIZE, MERGE, and DELETE</li>
+                  <li>Overlooking how structured streaming handles triggers and checkpoints</li>
+                  <li>Not knowing the Unity Catalog scope (catalog {'>'} schema {'>'} table)</li>
+                </ul>
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '1.3rem' }}>🎯 Key Topics to Focus On</h3>
+                
+                <div style={{ display: 'grid', gap: '16px' }}>
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Databricks Lakehouse Architecture</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>Lakehouse vs traditional warehouse</li>
+                      <li>Bronze, Silver, Gold layer design</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Delta Lake</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>ACID properties</li>
+                      <li>Schema evolution and enforcement</li>
+                      <li>OPTIMIZE, ZORDER, MERGE, VACUUM</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Apache Spark with Databricks</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>DataFrame operations</li>
+                      <li>Caching and performance tuning</li>
+                      <li>Spark SQL</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Data Ingestion & Streaming</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>Auto Loader, COPY INTO</li>
+                      <li>Structured streaming modes and checkpointing</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Databricks Jobs and Pipelines</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>Task configuration</li>
+                      <li>Job clusters vs all-purpose clusters</li>
+                      <li>Trigger intervals</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ padding: '16px', background: 'var(--bg-box-header)', borderRadius: '6px', border: '1px solid var(--border-primary)' }}>
+                    <h4 style={{ marginBottom: '8px', color: 'var(--accent-primary)' }}>Unity Catalog and Governance</h4>
+                    <ul style={{ marginLeft: '20px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      <li>Table access control</li>
+                      <li>Managing catalogs and schemas</li>
+                      <li>Data lineage basics</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '1.3rem' }}>💡 Tips That Helped Me</h3>
+                <ul style={{ marginLeft: '20px', color: 'var(--text-secondary)' }}>
+                  <li>Get hands-on practice inside the Databricks workspace</li>
+                  <li>Review Databricks documentation examples regularly</li>
+                  <li>Use Mock.sh mock exams to test your understanding and timing</li>
+                  <li>Don't just memorize syntax—understand the use cases</li>
+                  <li>Practice reading and interpreting PySpark or SQL code quickly</li>
+                  <li>Know how Lakehouse design applies to real-world pipelines</li>
+                </ul>
+              </div>
+
+              <div style={{ padding: '24px', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-correct))', borderRadius: '8px', color: 'white', textAlign: 'center' }}>
+                <h3 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>✨ Final Thoughts</h3>
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.7', opacity: '0.95' }}>
+                  The Databricks Data Engineer Associate exam is highly practical, and passing it proves you're ready to design and maintain reliable data pipelines using the Lakehouse platform.
+                </p>
+                <p style={{ marginTop: '12px', fontSize: '1.05rem', lineHeight: '1.7', opacity: '0.95' }}>
+                  If you're preparing for this certification, I strongly recommend using the Databricks Academy, hands-on practice, and <strong>Mock.sh mock exams</strong>. 
+                  Focus on understanding the architecture, workflow logic, and best practices. With consistent effort over 2–3 weeks, it's very achievable.
+                </p>
+                <p style={{ marginTop: '16px', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                  Good luck! 🚀
+                </p>
+              </div>
+            </div>
+
+            <div className="cf-modal__footer">
+              <button className="cf-btn cf-btn--primary" onClick={() => setShowStudyGuide(false)}>
                 Close
               </button>
             </div>
